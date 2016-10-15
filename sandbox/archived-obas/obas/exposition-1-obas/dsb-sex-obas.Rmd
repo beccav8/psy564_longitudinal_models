@@ -1,0 +1,162 @@
+---
+title: "Exposition"
+output:
+  html_document:
+    css: ~/GitHub/cognition-stress-activity/libs/css/sidebar.css
+    keep_md: yes
+    toc: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+<!-- These two chunks should be added in the beginning of every .Rmd that you want to source an .R script -->
+<!--  The 1st mandatory chunck  -->
+<!--  Set the working directory to the repository's base directory -->
+```{r, echo=F, message=F} 
+#Don't combine this call with any other chunk 
+# cat("Working directory: ", getwd()) # check where you are
+  library(knitr)
+# Rmd is in "./reports/reportA/reportA.Rmd", but now the root is "./"
+  knitr::opts_knit$set(root.dir='../../../') 
+```
+
+<!--  The 2nd mandatory chunck  -->
+<!-- Set the report-wide options, and point to the external code file. -->
+```{r set_options, echo=F}
+# set options shared by all chunks
+opts_chunk$set(
+  results='show', 
+  message = TRUE,
+  comment = NA, 
+  tidy = FALSE,
+  fig.height = 4, 
+  fig.width = 5.5, 
+  out.width = "550px",
+  fig.path = 'figure_rmd/',     
+  dev = "png",
+  dpi = 400
+  # fig.path = 'figure_pdf/',     
+  # dev = "pdf"#,
+  # dev.args=list(pdf = list(colormodel = 'cmyk'))
+)
+C_echo <- TRUE
+C_message<- FALSE
+C_warning<- FALSE
+
+echoChunks <- FALSE
+options(width=120) #So the output is 50% wider than the default.
+# connect to the file with the underlying R script  
+read_chunk("./sandbox/obas/exposition-1-obas/dsb-sex-obas.R") 
+```
+
+```{r load-packages, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r load-sources, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+# Exposition
+
+## Ellis-Island
+
+
+The Memory and Aging Project data set was collected at Rush University Medical Clinic. [Click here to visit the Site! ](https://www.rush.edu/services-treatments/alzheimers-disease-center/radc-research/memory-and-aging-project-rush)
+
+Loading the data and renaming the variables
+
+```{r declare-globals, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r load-data, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+## Define Variables 
+
+* phys_bl_bp = each persons baseline score - the baseline grand mean (between person baseline compare)  
+* phys_bp_mean = the persons mean score across occasions - the grand mean  
+* phys_bp_median = the persons median score across occasions - the grand median    
+* phys_wp = that persons score at time j, minus their mean (deviations-from--own-mean)  
+* dsb_wp = the persons dsb score at time j, minus their mean, so that a positive value indicated scores higehr then their mean   
+* biomarker_high = indicates if the person's mean on that particular biomarker is above the 3rd quartile  
+
+physical activity question: hours per week that the ppt. engages in 5 different categories  
+
+## Tweak Data
+```{r tweak-data, echo=FALSE, message=C_message, warning=C_warning, eval=T}
+```
+
+## Graphs  
+```{r @knitr univariate-quality-check, echo=FALSE, message=C_message, warning=C_warning, eval=T}
+```
+
+```{r BasicGraph1, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+```{r BasicGraph2, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r @knitr multi-variate-quality-check, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+# **dsb over time**
+
+```{r graph-dsb, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+# **PA over time**
+
+```{r graph-PA, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+# **Between person effects**
+
+```{r graph-PA_bp, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+# **Within person effects**
+
+```{r graph-PA_wp, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+# **Raw PA scores and dsb**
+
+```{r graph-PA_dsb, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+# **Between Person PA and dsb**
+
+```{r graph-PAbp_dsb, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+# **Within Person PA and dsb**
+
+```{r graph-PAwp_dsb, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r BasicGraph6, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

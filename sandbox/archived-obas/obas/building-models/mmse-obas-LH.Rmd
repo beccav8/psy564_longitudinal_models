@@ -1,0 +1,236 @@
+---
+title: "mmse-obas"
+output:
+  html_document:
+    css: ~/GitHub/cognition-stress-activity/libs/css/sidebar.css
+    keep_md: yes
+    toc: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+
+---
+
+<!-- These two chunks should be added in the beginning of every .Rmd that you want to source an .R script -->
+<!--  The 1st mandatory chunck  -->
+<!--  Set the working directory to the repository's base directory -->
+```{r, echo=F, message=F} 
+#Don't combine this call with any other chunk 
+# cat("Working directory: ", getwd()) # check where you are
+  library(knitr)
+# Rmd is in "./reports/reportA/reportA.Rmd", but now the root is "./"
+  knitr::opts_knit$set(root.dir='../../../') 
+```
+
+<!--  The 2nd mandatory chunck  -->
+<!-- Set the report-wide options, and point to the external code file. -->
+```{r set_options, echo=F}
+# set options shared by all chunks
+opts_chunk$set(
+  results='show', 
+  message = TRUE,
+  comment = NA, 
+  tidy = FALSE,
+  fig.height = 4, 
+  fig.width = 5.5, 
+  out.width = "550px",
+  fig.path = 'figure_rmd/',     
+  dev = "png",
+  dpi = 400
+  # fig.path = 'figure_pdf/',     
+  # dev = "pdf"#,
+  # dev.args=list(pdf = list(colormodel = 'cmyk'))
+)
+C_echo <- TRUE
+C_message<- FALSE
+C_warning<- FALSE
+
+echoChunks <- FALSE
+options(width=120) #So the output is 50% wider than the default.
+# connect to the file with the underlying R script  
+read_chunk("./sandbox/obas/building-models/mmse-obas-LH.R") 
+```
+
+```{r load-packages, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r load-sources, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+
+```{r declare-globals, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r load-data, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r define-variables, echo=FALSE, message=C_message, warning=C_warning, eval=T}
+```
+# **confound Variables initial equations**
+```{r confound-equations, echo=C_echo, message=C_message, warning=C_warning, eval=T}
+```
+
+### full data set- confound models
+```{r confound-full, echo=C_echo, message=C_message, warning=C_warning, eval=T}
+```
+
+### male- confound models
+```{r confound-male, echo=C_echo, message=C_message, warning=C_warning, eval=T}
+```
+
+### female- confound models
+```{r confound-female, echo=C_echo, message=C_message, warning=C_warning, eval=T}
+```
+
+# **raw physical activity**
+```{r raw-PA-equation, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+### full data set - Raw PA
+```{r raw-full, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+### males - Raw PA
+```{r raw-male, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+### females -Raw PA
+```{r raw-female, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+
+
+# **Between-and-within-effects**
+
+```{r bp-wp-equation, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+```{r comments0, echo=FALSE, message=C_message, warning=C_warning}
+```
+### full- bp and wp
+```{r bp-wp-full, echo=C, message=C_message, warning=C_warning}
+```
+### male -bp and wp
+```{r bp-wp-male, echo=C, message=C_message, warning=C_warning}
+```
+### female - bp and wp
+```{r bp-wp-female, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+
+
+# **TVC-interaction**
+
+```{r comments2, echo=FALSE, message=C_message, warning=C_warning}
+```
+### physical activity (TVC) interaction with time equation
+```{r tvc-intxn-equation, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+### full - tvc interaction
+```{r tvc-intxn-full, echo=C_echo, message=C_message, warning=C_warning}
+```
+### male - tvc interaction
+```{r tvc-intxn-male, echo=C_echo, message=C_message, warning=C_warning}
+```
+### female - tvc interaction
+```{r tvc-intxn-female, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+
+
+# hypothetical graph
+```{r set-up-graph, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r graph0, echo=C_echo, message=C_message, warning=C_warning}
+```
+# **TVC by age-at-visit interaction**
+
+```{r tvc-intxn-equation-age, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+```{r tvc-intxn, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+```{r tvc-intxn-graph, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r comments3, echo=FALSE, message=C_message, warning=C_warning}
+```
+# **Fluctuation in MMSE**
+
+##Here, I explore the effects of using deviations from your average mmse score, to see if within person changes in PA also predict mmse changes at that occasion 
+
+```{r mmse_wp_fluctuations, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r mmse_wp_full, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r mmse_wp_male, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+```{r mmse_wp_female, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+# **random effects**
+## Here, I include the random effects of the within person PA variable.
+### random effects equation
+```{r Random-effects-equation, echo=C_echo, message=C_message, warning=C_warning}
+```
+### full- random effects 
+```{r Random-effects-full, echo=C_echo, message=C_message, warning=C_warning}
+```
+### male - random effects 
+```{r Random-effects-male, echo=C_echo, message=C_message, warning=C_warning}
+```
+### female - random effects 
+```{r Random-effects-female, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+
+##Moreover, WP effects are sig. across all 3 analyses. People vary in how much they fluctuate from their average over time, and this fluctuation is sig associated with mmse  
+(??)Am I interpreting this right??
+
+# ** allostatic load models**
+```{r biomarker-models, echo=C_echo, message=C_message, warning=C_warning}
+```
+### full
+```{r biomarker-full, echo=C_echo, message=C_message, warning=C_warning}
+```
+### male
+```{r biomarker-male, echo=C_echo, message=C_message, warning=C_warning}
+```
+### female
+```{r biomarker-female, echo=C_echo, message=C_message, warning=C_warning }
+```
+# **graph**
+```{r graph-biomarker, echo=FALSE, message=C_message, warning=C_warning}
+```
+
+
+# **AL score X physical Activity
+```{r biomarker-interaction, echo=C_echo, message=C_message, warning=C_warning, eval=FALSE}
+```
+# *explore*
+```{r PA-predicted-by-bio, echo=C_echo, message=C_message, warning=C_warning, eval=FALSE}
+```
+
+```{r transform, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+
+```{r PA_Within-predicted-by-bio_within, echo=C_echo, message=C_message, warning=C_warning}
+```
+
+
+
+
+
+
+
+
+
+

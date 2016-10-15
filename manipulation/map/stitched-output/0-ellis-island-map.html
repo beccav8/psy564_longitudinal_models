@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>The purpose of this script is to create a data object (dto) which will hold all data and metadata.# Run the lines below to stitch a basic html output. knitr::stitch_rmd(</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This report was automatically generated with the R package <strong>knitr</strong>
+(version 1.13).</p>
+
+<h1>The purpose of this script is to create a data object (dto) which will hold all data and metadata.# Run the lines below to stitch a basic html output. knitr::stitch_rmd(</h1>
+
+<p>script=&ldquo;./manipulation/map/0-ellis-island-map.R&rdquo;,
+  output=&ldquo;./manipulation/map/stitched-output/0-ellis-island-map.md&rdquo;
+)## </p>
+
+<h2>processing file: 0-ellis-island-map.Rmd</h2>
+
+<h2>Error in parse_block(g[-1], g[1], params.src): duplicate label &#39;load-sources&#39;</h2>
+
+<h1>The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!##############################  Land on Ellis Island  ##############################rm(list=ls(all=TRUE))  #Clear the variables from previous runs.cat(&ldquo;\f&rdquo;) # clear console </h1>
+
+<h1>Call <code>base::source()</code> on any repo file that defines functions needed below.  # Ideally, no real operations are performed in these sourced scripts. source(&ldquo;./scripts/common-functions.R&rdquo;) # used in multiple reports</h1>
+
+<h1>Attach packages so their functions don&#39;t need to be qualified when used# See more : <a href="http://r-pkgs.had.co.nz/namespace.html#search-pathlibrary(magrittr)">http://r-pkgs.had.co.nz/namespace.html#search-pathlibrary(magrittr)</a> # Pipeslibrary(ggplot2) # Graphs# Functions of these packages will need to be qualified when used# See more: <a href="http://r-pkgs.had.co.nz/namespace.html#search-pathrequireNamespace(%22tidyr%22)">http://r-pkgs.had.co.nz/namespace.html#search-pathrequireNamespace(&ldquo;tidyr&rdquo;)</a> #  data manipulationrequireNamespace(&ldquo;dplyr&rdquo;) # f() names conflict with other packages (esp. base, stats, and plyr).requireNamespace(&ldquo;testit&rdquo;) # for asserting conditions meet expected patterns.## Loading required namespace: testit</h1>
+
+<h1>getwd()# setwd(&ldquo;C:/Users/Rebecca/Documents/GitHub/cognition-stress-activity&rdquo;)</h1>
+
+<h1>reach out to the curator for a dataset prepared for general consumptiondata_path_input  &lt;- &ldquo;../MAP/data-unshared/derived/ds0_raw.rds&rdquo;# point to the local metadata to be used for this project (specific consumption)metadata_path_input &lt;- &ldquo;./data/shared/meta/meta-data-map.csv&rdquo;</h1>
+
+<h1>load data objectsunitData &lt;- readRDS(data_path_input) metaData &lt;- read.csv(metadata_path_input, stringsAsFactors=F, header=T)names(unitData)##   [1] &ldquo;id&rdquo;                    &ldquo;study&rdquo;</h1>
+
+<h2>[3] &ldquo;scaled_to.x&rdquo;           &ldquo;agreeableness&rdquo;</h2>
+
+<h2>[5] &ldquo;conscientiousness&rdquo;     &ldquo;extraversion&rdquo;</h2>
+
+<h2>[7] &ldquo;neo_altruism&rdquo;          &ldquo;neo_conscientiousness&rdquo;</h2>
+
+<h2>[9] &ldquo;neo_trust&rdquo;             &ldquo;openness&rdquo;</h2>
+
+<h2>[11] &ldquo;anxiety_10items&rdquo;       &ldquo;neuroticism_12&rdquo;</h2>
+
+<h2>[13] &ldquo;neuroticism_6&rdquo;         &ldquo;age_bl&rdquo;</h2>
+
+<h2>[15] &ldquo;age_death&rdquo;             &ldquo;died&rdquo;</h2>
+
+<h2>[17] &ldquo;educ&rdquo;                  &ldquo;msex&rdquo;</h2>
+
+<h2>[19] &ldquo;race&rdquo;                  &ldquo;spanish&rdquo;</h2>
+
+<h2>[21] &ldquo;apoe_genotype&rdquo;         &ldquo;ldai_bl&rdquo;</h2>
+
+<h2>[23] &ldquo;q3smo_bl&rdquo;              &ldquo;q4smo_bl&rdquo;</h2>
+
+<h2>[25] &ldquo;smoke_bl&rdquo;              &ldquo;smoking&rdquo;</h2>
+
+<h2>[27] &ldquo;fu_year&rdquo;               &ldquo;scaled_to.y&rdquo;</h2>
+
+<h2>[29] &ldquo;cesdsum&rdquo;               &ldquo;r_depres&rdquo;</h2>
+
+<h2>[31] &ldquo;intrusion&rdquo;             &ldquo;neglifeevents&rdquo;</h2>
+
+<h2>[33] &ldquo;negsocexchange&rdquo;        &ldquo;nohelp&rdquo;</h2>
+
+<h2>[35] &ldquo;panas&rdquo;                 &ldquo;perceivedstress&rdquo;</h2>
+
+<h2>[37] &ldquo;rejection&rdquo;             &ldquo;unsympathetic&rdquo;</h2>
+
+<h2>[39] &ldquo;dcfdx&rdquo;                 &ldquo;dementia&rdquo;</h2>
+
+<h2>[41] &ldquo;r_stroke&rdquo;              &ldquo;cogn_ep&rdquo;</h2>
+
+<h2>[43] &ldquo;cogn_global&rdquo;           &ldquo;cogn_po&rdquo;</h2>
+
+<h2>[45] &ldquo;cogn_ps&rdquo;               &ldquo;cogn_se&rdquo;</h2>
+
+<h2>[47] &ldquo;cogn_wo&rdquo;               &ldquo;cts_bname&rdquo;</h2>
+
+<h2>[49] &ldquo;cts_catflu&rdquo;            &ldquo;cts_db&rdquo;</h2>
+
+<h2>[51] &ldquo;cts_delay&rdquo;             &ldquo;cts_df&rdquo;</h2>
+
+<h2>[53] &ldquo;cts_doperf&rdquo;            &ldquo;cts_ebdr&rdquo;</h2>
+
+<h2>[55] &ldquo;cts_ebmt&rdquo;              &ldquo;cts_idea&rdquo;</h2>
+
+<h2>[57] &ldquo;cts_lopair&rdquo;            &ldquo;cts_mmse30&rdquo;</h2>
+
+<h2>[59] &ldquo;cts_nccrtd&rdquo;            &ldquo;cts_pmat&rdquo;</h2>
+
+<h2>[61] &ldquo;cts_read_nart&rdquo;         &ldquo;cts_read_wrat&rdquo;</h2>
+
+<h2>[63] &ldquo;cts_sdmt&rdquo;              &ldquo;cts_story&rdquo;</h2>
+
+<h2>[65] &ldquo;cts_wli&rdquo;               &ldquo;cts_wlii&rdquo;</h2>
+
+<h2>[67] &ldquo;cts_wliii&rdquo;             &ldquo;age_at_visit&rdquo;</h2>
+
+<h2>[69] &ldquo;iadlsum&rdquo;               &ldquo;katzsum&rdquo;</h2>
+
+<h2>[71] &ldquo;rosbscl&rdquo;               &ldquo;rosbsum&rdquo;</h2>
+
+<h2>[73] &ldquo;vision&rdquo;                &ldquo;visionlog&rdquo;</h2>
+
+<h2>[75] &ldquo;fev&rdquo;                   &ldquo;mep&rdquo;</h2>
+
+<h2>[77] &ldquo;mip&rdquo;                   &ldquo;pvc&rdquo;</h2>
+
+<h2>[79] &ldquo;bun&rdquo;                   &ldquo;ca&rdquo;</h2>
+
+<h2>[81] &ldquo;chlstrl&rdquo;               &ldquo;cl&rdquo;</h2>
+
+<h2>[83] &ldquo;co2&rdquo;                   &ldquo;crn&rdquo;</h2>
+
+<h2>[85] &ldquo;fasting&rdquo;               &ldquo;glucose&rdquo;</h2>
+
+<h2>[87] &ldquo;hba1c&rdquo;                 &ldquo;hdlchlstrl&rdquo;</h2>
+
+<h2>[89] &ldquo;hdlratio&rdquo;              &ldquo;k&rdquo;</h2>
+
+<h2>[91] &ldquo;ldlchlstrl&rdquo;            &ldquo;na&rdquo;</h2>
+
+<h2>[93] &ldquo;alcohol_g&rdquo;             &ldquo;bmi&rdquo;</h2>
+
+<h2>[95] &ldquo;htm&rdquo;                   &ldquo;phys5itemsum&rdquo;</h2>
+
+<h2>[97] &ldquo;wtkg&rdquo;                  &ldquo;bp11&rdquo;</h2>
+
+<h2>[99] &ldquo;bp2&rdquo;                   &ldquo;bp3&rdquo;</h2>
+
+<h2>[101] &ldquo;bp31&rdquo;                  &ldquo;hypertension_cum&rdquo;</h2>
+
+<h2>[103] &ldquo;dm_cum&rdquo;                &ldquo;thyroid_cum&rdquo;</h2>
+
+<h2>[105] &ldquo;chf_cum&rdquo;               &ldquo;claudication_cum&rdquo;</h2>
+
+<h2>[107] &ldquo;heart_cum&rdquo;             &ldquo;stroke_cum&rdquo;</h2>
+
+<h2>[109] &ldquo;vasc_3dis_sum&rdquo;         &ldquo;vasc_4dis_sum&rdquo;</h2>
+
+<h2>[111] &ldquo;vasc_risks_sum&rdquo;        &ldquo;gait_speed&rdquo;</h2>
+
+<h2>[113] &ldquo;gripavg&rdquo;</h2>
+
+<h1>inspect loaded data objects (using basic demographic variables )ds &lt;- unitData # assing aliaslength(unique(ds$id)) # there are this many of subjects## [1] 3477</h1>
+
+<p>t &lt;- table(ds[,&ldquo;fu_year&rdquo;], ds[,&ldquo;died&rdquo;]); t[t==0]&lt;-&ldquo;.&rdquo;;t##     </p>
+
+<h2>0    1</h2>
+
+<h2>0  2590 1489</h2>
+
+<h2>1  2204 1318</h2>
+
+<h2>2  1859 1206</h2>
+
+<h2>3  1497 1055</h2>
+
+<h2>4  1371 934</h2>
+
+<h2>5  1217 799</h2>
+
+<h2>6  1154 700</h2>
+
+<h2>7  1095 589</h2>
+
+<h2>8  922  461</h2>
+
+<h2>9  625  366</h2>
+
+<h2>10 489  298</h2>
+
+<h2>11 368  230</h2>
+
+<h2>12 286  167</h2>
+
+<h2>13 254  135</h2>
+
+<h2>14 186  101</h2>
+
+<h2>15 154  76</h2>
+
+<h2>16 138  44</h2>
+
+<h2>17 116  27</h2>
+
+<h2>18 99   19</h2>
+
+<h2>19 49   3</h2>
+
+<h2>20 17   .</h2>
+
+<p>t &lt;- table(ds[,&ldquo;msex&rdquo;], ds[,&ldquo;race&rdquo;], useNA = &ldquo;always&rdquo;); t[t==0]&lt;-&ldquo;.&rdquo;;t##       </p>
+
+<h2>1     2    3  6  <NA></h2>
+
+<h2>0    13981 5191 53 59 6</h2>
+
+<h2>1    5728  1642 14 25 9</h2>
+
+<h2><NA> .     .    .  .  .</h2>
+
+<p>t &lt;- table(ds[,&ldquo;educ&rdquo;], ds[,&ldquo;race&rdquo;]); t[t==0]&lt;-&ldquo;.&rdquo;;t##     </p>
+
+<h2>1    2    3  6</h2>
+
+<h2>0  4    4    .  .</h2>
+
+<h2>2  8    .    .  .</h2>
+
+<h2>3  7    2    8  .</h2>
+
+<h2>4  20   3    .  .</h2>
+
+<h2>5  24   12   .  .</h2>
+
+<h2>6  82   31   .  .</h2>
+
+<h2>7  54   .    7  .</h2>
+
+<h2>8  181  79   18 .</h2>
+
+<h2>9  102  55   .  .</h2>
+
+<h2>10 193  158  .  19</h2>
+
+<h2>11 212  175  .  .</h2>
+
+<h2>12 2671 1276 1  19</h2>
+
+<h2>13 888  434  .  6</h2>
+
+<h2>14 1261 1083 .  .</h2>
+
+<h2>15 634  365  .  13</h2>
+
+<h2>16 3730 1059 14 8</h2>
+
+<h2>17 692  118  .  .</h2>
+
+<h2>18 3652 962  5  8</h2>
+
+<h2>19 780  213  .  .</h2>
+
+<h2>20 2025 386  14 .</h2>
+
+<h2>21 1175 137  .  10</h2>
+
+<h2>22 485  96   .  .</h2>
+
+<h2>23 208  22   .  .</h2>
+
+<h2>24 288  60   .  1</h2>
+
+<h2>25 128  14   .  .</h2>
+
+<h2>26 51   11   .  .</h2>
+
+<h2>27 37   .    .  .</h2>
+
+<h2>28 35   .    .  .</h2>
+
+<h2>29 .    10   .  .</h2>
+
+<h2>30 47   42   .  .</h2>
+
+<p>dto &lt;- list()# the first element of data transfer object contains unit datadto[[&ldquo;unitData&rdquo;]] &lt;- unitData# the second element of data transfer object contains meta datadto[[&ldquo;metaData&rdquo;]] &lt;-  metaData# verify and glimpsedto[[&ldquo;unitData&rdquo;]] %&gt;% dplyr::glimpse()## Observations: 26,708</p>
+
+<h2>Variables: 113</h2>
+
+<h2>$ id                    <int> 9121, 9121, 9121, 9121, 9121, 21073, 330&hellip;</h2>
+
+<h2>$ study                 <chr> &ldquo;MAP &rdquo;, &ldquo;MAP &rdquo;, &ldquo;MAP &rdquo;, &ldquo;MAP &rdquo;, &ldquo;MAP &rdquo;, &hellip;</h2>
+
+<h2>$ scaled_to.x           <chr> &ldquo;MAP &rdquo;, &ldquo;MAP &rdquo;, &ldquo;MAP &rdquo;, &ldquo;MAP &rdquo;, &ldquo;MAP &rdquo;, &hellip;</h2>
+
+<h2>$ agreeableness         <int> NA, NA, NA, NA, NA, 32, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ conscientiousness     <int> 35, 35, 35, 35, 35, 34, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ extraversion          <int> 34, 34, 34, 34, 34, 34, 30, 30, 32, 32, &hellip;</h2>
+
+<h2>$ neo_altruism          <int> 27, 27, 27, 27, 27, NA, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ neo_conscientiousness <int> 35, 35, 35, 35, 35, NA, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ neo_trust             <int> 25, 25, 25, 25, 25, NA, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ openness              <int> NA, NA, NA, NA, NA, 29, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ anxiety_10items       <dbl> 0, 0, 0, 0, 0, 3, NA, NA, 0, 0, 0, 0, 0,&hellip;</h2>
+
+<h2>$ neuroticism_12        <int> 9, 9, 9, 9, 9, 23, NA, NA, 16, 16, 16, 1&hellip;</h2>
+
+<h2>$ neuroticism_6         <int> 8, 8, 8, 8, 8, 11, 1, 1, 14, 14, 14, 14,&hellip;</h2>
+
+<h2>$ age_bl                <dbl> 79.96988, 79.96988, 79.96988, 79.96988, &hellip;</h2>
+
+<h2>$ age_death             <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ died                  <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0&hellip;</h2>
+
+<h2>$ educ                  <int> 12, 12, 12, 12, 12, 22, 14, 14, 8, 8, 8,&hellip;</h2>
+
+<h2>$ msex                  <int> 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1&hellip;</h2>
+
+<h2>$ race                  <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1&hellip;</h2>
+
+<h2>$ spanish               <int> 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1&hellip;</h2>
+
+<h2>$ apoe_genotype         <int> 34, 34, 34, 34, 34, NA, 33, 33, 33, 33, &hellip;</h2>
+
+<h2>$ ldai_bl               <dbl> 0.2, 0.2, 0.2, 0.2, 0.2, 0.0, 0.0, 0.0, &hellip;</h2>
+
+<h2>$ q3smo_bl              <int> 20, 20, 20, 20, 20, NA, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ q4smo_bl              <int> 31, 31, 31, 31, 31, NA, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ smoke_bl              <int> 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0&hellip;</h2>
+
+<h2>$ smoking               <int> 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0&hellip;</h2>
+
+<h2>$ fu_year               <int> 0, 1, 2, 3, 4, 0, 0, 1, 0, 2, 3, 4, 5, 6&hellip;</h2>
+
+<h2>$ scaled_to.y           <chr> &ldquo;RMM&rdquo;, &ldquo;RMM&rdquo;, &ldquo;RMM&rdquo;, &ldquo;RMM&rdquo;, &ldquo;RMM&rdquo;, &ldquo;RMM&rdquo;&hellip;</h2>
+
+<h2>$ cesdsum               <int> 0, 0, 0, 0, 0, 0, 1, 2, 6, 1, 3, 1, 0, 2&hellip;</h2>
+
+<h2>$ r_depres              <int> 4, 4, 4, 4, NA, 4, 4, 4, 3, 4, 4, 4, 4, &hellip;</h2>
+
+<h2>$ intrusion             <dbl> NA, NA, NA, 2.000000, NA, NA, NA, NA, NA&hellip;</h2>
+
+<h2>$ neglifeevents         <int> NA, NA, NA, 4, NA, NA, NA, NA, NA, NA, N&hellip;</h2>
+
+<h2>$ negsocexchange        <dbl> NA, NA, NA, 1.833333, NA, NA, NA, NA, NA&hellip;</h2>
+
+<h2>$ nohelp                <dbl> NA, NA, NA, 1.666667, NA, NA, NA, NA, NA&hellip;</h2>
+
+<h2>$ panas                 <dbl> NA, NA, NA, 1.1, NA, NA, NA, NA, NA, NA,&hellip;</h2>
+
+<h2>$ perceivedstress       <dbl> NA, NA, NA, 2.5, NA, NA, NA, NA, NA, NA,&hellip;</h2>
+
+<h2>$ rejection             <dbl> NA, NA, NA, 1.666667, NA, NA, NA, NA, NA&hellip;</h2>
+
+<h2>$ unsympathetic         <dbl> NA, NA, NA, 2, NA, NA, NA, NA, NA, NA, N&hellip;</h2>
+
+<h2>$ dcfdx                 <int> 1, 1, 1, 1, NA, 4, 1, NA, 1, 2, 1, 1, 1,&hellip;</h2>
+
+<h2>$ dementia              <int> 0, 0, 0, 0, NA, 1, 0, NA, 0, 0, 0, 0, 0,&hellip;</h2>
+
+<h2>$ r_stroke              <int> NA, NA, 4, 4, NA, 4, 4, NA, 4, NA, 4, NA&hellip;</h2>
+
+<h2>$ cogn_ep               <dbl> 0.073389978, -0.002270858, -0.533467384,&hellip;</h2>
+
+<h2>$ cogn_global           <dbl> 0.25733204, 0.33752780, 0.06659408, 0.40&hellip;</h2>
+
+<h2>$ cogn_po               <dbl> 0.299150420, 0.893261567, 0.893261567, 0&hellip;</h2>
+
+<h2>$ cogn_ps               <dbl> 0.48563724, 0.88320592, 0.78368706, 0.59&hellip;</h2>
+
+<h2>$ cogn_se               <dbl> 0.780455216, 0.938832669, 1.202795091, 1&hellip;</h2>
+
+<h2>$ cogn_wo               <dbl> 0.157699036, -0.004753158, -0.319903508,&hellip;</h2>
+
+<h2>$ cts_bname             <int> 15, 15, 15, 15, 15, 10, 12, NA, 15, 15, &hellip;</h2>
+
+<h2>$ cts_catflu            <int> 40, 43, 48, 49, 45, 20, 20, NA, 31, 27, &hellip;</h2>
+
+<h2>$ cts_db                <int> 6, 6, 4, 4, 4, 4, 6, NA, 2, 4, 3, 5, 3, &hellip;</h2>
+
+<h2>$ cts_delay             <int> 10, 7, 7, 10, 10, 0, 4, NA, 14, 11, 11, &hellip;</h2>
+
+<h2>$ cts_df                <int> 9, 8, 9, 9, 9, 11, 8, NA, 6, 8, 9, 9, 10&hellip;</h2>
+
+<h2>$ cts_doperf            <int> 7, 7, 6, 7, 8, 1, 7, NA, 7, 4, 5, 5, 6, &hellip;</h2>
+
+<h2>$ cts_ebdr              <int> 9, 9, 6, 8, 9, 0, 10, NA, 8, 0, 8, 7, 10&hellip;</h2>
+
+<h2>$ cts_ebmt              <int> 7, 9, 6, 12, 9, 6, 11, NA, 8, 10, 7, 9, &hellip;</h2>
+
+<h2>$ cts_idea              <int> 8, 8, 8, 8, 8, 7, 8, NA, 7, 8, 8, 8, 8, &hellip;</h2>
+
+<h2>$ cts_lopair            <int> 9, 14, 14, 15, 15, 5, 5, NA, 10, 12, 8, &hellip;</h2>
+
+<h2>$ cts_mmse30            <dbl> 29, 29, 30, 30, 29, 18, 29, NA, 27, 25, &hellip;</h2>
+
+<h2>$ cts_nccrtd            <int> 24, 34, 26, 27, 28, 7, 19, NA, 16, 19, 1&hellip;</h2>
+
+<h2>$ cts_pmat              <int> 13, 12, 12, 11, 11, 9, 10, NA, 11, 7, 13&hellip;</h2>
+
+<h2>$ cts_read_nart         <int> 9, 8, 9, 8, 9, 9, 10, NA, 5, 5, 3, 3, 3,&hellip;</h2>
+
+<h2>$ cts_read_wrat         <int> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ cts_sdmt              <int> 49, 43, 53, 47, 51, 19, 39, NA, 24, 21, &hellip;</h2>
+
+<h2>$ cts_story             <int> 10, 9, 7, 8, 11, 2, 8, NA, 14, 14, 10, 9&hellip;</h2>
+
+<h2>$ cts_wli               <int> 19, 18, 17, 18, 16, 16, 20, NA, 16, 13, &hellip;</h2>
+
+<h2>$ cts_wlii              <int> 7, 6, 5, 6, 5, 0, 5, NA, 5, 5, 3, 5, 5, &hellip;</h2>
+
+<h2>$ cts_wliii             <int> 10, 10, 10, 10, 10, 4, 10, NA, 10, 10, 1&hellip;</h2>
+
+<h2>$ age_at_visit          <dbl> 79.96988, 81.08145, 81.61259, 82.59548, &hellip;</h2>
+
+<h2>$ iadlsum               <int> 0, 0, 0, 0, 0, 0, 5, 3, 0, 0, 0, 0, 0, 0&hellip;</h2>
+
+<h2>$ katzsum               <int> 6, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0&hellip;</h2>
+
+<h2>$ rosbscl               <int> 1, 3, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3, 2, 3&hellip;</h2>
+
+<h2>$ rosbsum               <int> 2, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 1, 0&hellip;</h2>
+
+<h2>$ vision                <int> 1, 1, 1, 2, 2, 1, 1, 4, 1, 2, 1, NA, 2, &hellip;</h2>
+
+<h2>$ visionlog             <dbl> 0.3, 0.3, 0.3, 0.4, 0.4, 0.3, 0.3, 0.7, &hellip;</h2>
+
+<h2>$ fev                   <dbl> 1.650, 1.280, 1.655, NA, 1.525, NA, 1.11&hellip;</h2>
+
+<h2>$ mep                   <dbl> 39.5, 33.5, 43.0, NA, 39.0, NA, 84.0, NA&hellip;</h2>
+
+<h2>$ mip                   <dbl> 32.5, 36.5, 35.0, NA, 41.5, NA, 73.5, NA&hellip;</h2>
+
+<h2>$ pvc                   <dbl> 2.285, 1.285, 1.690, NA, 1.940, NA, 1.51&hellip;</h2>
+
+<h2>$ bun                   <int> 13, NA, 13, 13, 14, 33, 32, 35, 14, 12, &hellip;</h2>
+
+<h2>$ ca                    <dbl> 9.5, NA, 9.4, 9.4, 9.2, 10.0, 9.2, 8.8, &hellip;</h2>
+
+<h2>$ chlstrl               <int> 235, NA, 205, 230, 210, 188, 201, 197, 1&hellip;</h2>
+
+<h2>$ cl                    <int> 96, NA, 102, 93, 99, 102, 103, 103, 102,&hellip;</h2>
+
+<h2>$ co2                   <int> 24, NA, 24, 25, 25, 22, 22, 25, 23, 20, &hellip;</h2>
+
+<h2>$ crn                   <dbl> 0.85, NA, 0.98, 0.89, 0.82, 1.01, 1.30, &hellip;</h2>
+
+<h2>$ fasting               <int> 2, NA, 2, 2, 2, 2, 3, 3, 3, 2, 1, NA, 3,&hellip;</h2>
+
+<h2>$ glucose               <int> 92, NA, 77, 85, 92, 94, 180, 153, 170, 2&hellip;</h2>
+
+<h2>$ hba1c                 <dbl> 5.6, NA, 5.5, 5.5, 6.1, 5.8, NA, NA, NA,&hellip;</h2>
+
+<h2>$ hdlchlstrl            <int> 79, NA, 76, 79, 69, 99, 50, 51, 30, 37, &hellip;</h2>
+
+<h2>$ hdlratio              <dbl> 3.0, NA, 2.7, 2.9, 3.0, 1.9, 4.0, 3.9, 4&hellip;</h2>
+
+<h2>$ k                     <dbl> 5.0, NA, 4.2, 4.3, 4.5, 4.3, 4.8, 4.6, 4&hellip;</h2>
+
+<h2>$ ldlchlstrl            <int> 133, NA, 112, 134, 119, 60, 107, 99, NA,&hellip;</h2>
+
+<h2>$ na                    <int> 136, NA, 139, 130, 136, 139, 139, 140, 1&hellip;</h2>
+
+<h2>$ alcohol_g             <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, &hellip;</h2>
+
+<h2>$ bmi                   <dbl> 26.83177, 27.61514, 26.97526, 26.40132, &hellip;</h2>
+
+<h2>$ htm                   <dbl> 1.778004, 1.752604, 1.778004, 1.778004, &hellip;</h2>
+
+<h2>$ phys5itemsum          <dbl> 1.7500000, 4.0416667, 0.6250000, 0.45833&hellip;</h2>
+
+<h2>$ wtkg                  <dbl> 84.8232, 84.8232, 85.2768, 83.4624, 84.3&hellip;</h2>
+
+<h2>$ bp11                  <chr> &ldquo;159/090&rdquo;, &ldquo;145/090&rdquo;, &ldquo;160/095&rdquo;, &ldquo;147/09&hellip;</h2>
+
+<h2>$ bp2                   <chr> &quot;159/090&rdquo;, &ldquo;150/084&rdquo;, &ldquo;160/088&rdquo;, &ldquo;149/09&hellip;</h2>
+
+<h2>$ bp3                   <int> 1, 1, NA, 1, NA, NA, 1, 1, 1, 1, 1, 1, 1&hellip;</h2>
+
+<h2>$ bp31                  <chr> &quot;157/082&rdquo;, &ldquo;109/077&rdquo;, &ldquo;151/082&rdquo;, &ldquo;138/08&hellip;</h2>
+
+<h2>$ hypertension_cum      <int> 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1&hellip;</h2>
+
+<h2>$ dm_cum                <int> 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1&hellip;</h2>
+
+<h2>$ thyroid_cum           <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0&hellip;</h2>
+
+<h2>$ chf_cum               <int> 0, 0, 0, 0, 0, NA, 0, 1, 0, 0, 0, 0, 0, &hellip;</h2>
+
+<h2>$ claudication_cum      <int> 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1&hellip;</h2>
+
+<h2>$ heart_cum             <int> 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0&hellip;</h2>
+
+<h2>$ stroke_cum            <int> NA, NA, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,&hellip;</h2>
+
+<h2>$ vasc_3dis_sum         <dbl> 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1&hellip;</h2>
+
+<h2>$ vasc_4dis_sum         <dbl> 0, 0, 0, 0, 0, NA, 0, 1, 1, 1, 1, 1, 1, &hellip;</h2>
+
+<h2>$ vasc_risks_sum        <dbl> 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2&hellip;</h2>
+
+<h2>$ gait_speed            <dbl> 0.4393514, NA, NA, 0.4876800, 0.3483429,&hellip;</h2>
+
+<h2>$ gripavg               <dbl> 41.00, 41.00, 35.50, NA, 25.75, 21.50, 5&hellip;</h2>
+
+<p>dto[[&quot;metaData&rdquo;]] %&gt;% dplyr::glimpse()## Observations: 113</p>
+
+<h2>Variables: 9</h2>
+
+<h2>$ name          <chr> &ldquo;id&rdquo;, &ldquo;study&rdquo;, &ldquo;scaled_to.x&rdquo;, &ldquo;agreeableness&rdquo;, &ldquo;&hellip;</h2>
+
+<h2>$ label         <chr> NA, NA, NA, &quot;NEO agreeableness-ROS&rdquo;, &ldquo;Conscienti&hellip;</h2>
+
+<h2>$ type          <chr> &quot;design&rdquo;, &ldquo;design&rdquo;, &ldquo;design&rdquo;, &ldquo;personality&rdquo;, &ldquo;pe&hellip;</h2>
+
+<h2>$ name_new      <chr> &quot;id&rdquo;, &ldquo;study&rdquo;, &ldquo;scaled_to.x&rdquo;, &ldquo;agreeableness&rdquo;, &ldquo;&hellip;</h2>
+
+<h2>$ construct     <chr> &quot;id&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;&hellip;</h2>
+
+<h2>$ self_reported <lgl> FALSE, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N&hellip;</h2>
+
+<h2>$ longitudinal  <lgl> FALSE, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N&hellip;</h2>
+
+<h2>$ unit          <chr> &ldquo;person&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;, &ldquo;&rdquo;&hellip;</h2>
+
+<h2>$ include       <lgl> TRUE, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA&hellip;</h2>
+
+<p>meta_data &lt;- dto[[&ldquo;metaData&rdquo;]] %&gt;%
+  dplyr::filter(include == TRUE) %&gt;%
+  # dplyr::select(name, name_new, type, label, construct) %&gt;%
+  dplyr::arrange(type, construct, name)knitr::kable(meta_data)</p>
+
+<table><thead>
+<tr>
+<th align="left">name</th>
+<th align="left">label</th>
+<th align="left">type</th>
+<th align="left">name_new</th>
+<th align="left">construct</th>
+<th align="left">self_reported</th>
+<th align="left">longitudinal</th>
+<th align="left">unit</th>
+<th align="left">include</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">chlstrl</td>
+<td align="left">Cholesterol</td>
+<td align="left">clinical</td>
+<td align="left">cholesterol</td>
+<td align="left">allostatic_load</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">blood level; mg/dl</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">crn</td>
+<td align="left">Creatinine</td>
+<td align="left">clinical</td>
+<td align="left">creatine</td>
+<td align="left">allostatic_load</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">blood level</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">glucose</td>
+<td align="left">Glucose</td>
+<td align="left">clinical</td>
+<td align="left">glucose</td>
+<td align="left">allostatic_load</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">blood level</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">hba1c</td>
+<td align="left">Hemoglobin A1c</td>
+<td align="left">clinical</td>
+<td align="left">hemoglobin</td>
+<td align="left">allostatic_load</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">blood level</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">hdlchlstrl</td>
+<td align="left">HDL cholesterol</td>
+<td align="left">clinical</td>
+<td align="left">hdl</td>
+<td align="left">allostatic_load</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">blood level</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">hdlratio</td>
+<td align="left">HDL ratio</td>
+<td align="left">clinical</td>
+<td align="left">hdlratio</td>
+<td align="left">allostatic_load</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">blood level</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">ldlchlstrl</td>
+<td align="left">LDL cholesterol</td>
+<td align="left">clinical</td>
+<td align="left">ldl</td>
+<td align="left">allostatic_load</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">blood level</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">apoe_genotype</td>
+<td align="left">ApoE genotype</td>
+<td align="left">clinical</td>
+<td align="left">apoe</td>
+<td align="left">apoe</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">scale</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">r_stroke</td>
+<td align="left">Clinical stroke dx</td>
+<td align="left">clinical</td>
+<td align="left">r_stroke</td>
+<td align="left">stroke</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">category</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cts_mmse30</td>
+<td align="left">MMSE - 2014</td>
+<td align="left">cognitive</td>
+<td align="left">mmse</td>
+<td align="left">dementia</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">0 to 30</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">dementia</td>
+<td align="left">Dementia diagnosis</td>
+<td align="left">cognitive</td>
+<td align="left">dementia</td>
+<td align="left">dementia</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">0, 1</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cogn_ep</td>
+<td align="left">Calculated domain score-episodic memory</td>
+<td align="left">cognitive</td>
+<td align="left">cogn_ep</td>
+<td align="left">episodic memory</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">composite</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cogn_global</td>
+<td align="left">Calculated domain score- Global</td>
+<td align="left">cognitive</td>
+<td align="left">cogn_global</td>
+<td align="left">global cognition</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">composite</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cogn_po</td>
+<td align="left">Calculated domain score - perceptual orientation</td>
+<td align="left">cognitive</td>
+<td align="left">cogn_po</td>
+<td align="left">perceptual orientation</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">composite</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cogn_ps</td>
+<td align="left">Calculated domain score - perceptual speed</td>
+<td align="left">cognitive</td>
+<td align="left">cogn_ps</td>
+<td align="left">perceptual speed</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">composite</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cts_sdmt</td>
+<td align="left">Symbol digit modalitities - 2014</td>
+<td align="left">cognitive</td>
+<td align="left">symbol_digit_mod</td>
+<td align="left">perceptual speed</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">0 to 110</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cogn_se</td>
+<td align="left">Calculated domain score - semantic memory</td>
+<td align="left">cognitive</td>
+<td align="left">cogn_se</td>
+<td align="left">semantic memory</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">composite</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cts_bname</td>
+<td align="left">Boston naming - 2014</td>
+<td align="left">cognitive</td>
+<td align="left">cts_bname</td>
+<td align="left">semantic memory</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">0 to 15</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cts_catflu</td>
+<td align="left">Category fluency - 2014</td>
+<td align="left">cognitive</td>
+<td align="left">catfluency</td>
+<td align="left">semantic memory</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">0 to 75</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cogn_wo</td>
+<td align="left">Calculated domain score - working memory</td>
+<td align="left">cognitive</td>
+<td align="left">cogn_wo</td>
+<td align="left">working memory</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">composite</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cts_db</td>
+<td align="left">Digits backwards - 2014</td>
+<td align="left">cognitive</td>
+<td align="left">digit_back</td>
+<td align="left">working memory</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">0 to 12</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">cts_df</td>
+<td align="left">Digits forwards - 2014</td>
+<td align="left">cognitive</td>
+<td align="left">digit_forward</td>
+<td align="left">working memory</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">0 to 12</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">age_at_visit</td>
+<td align="left">Age at cycle - fractional</td>
+<td align="left">demographic</td>
+<td align="left">age_at_visit</td>
+<td align="left">age</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">year</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">age_bl</td>
+<td align="left">Age at baseline</td>
+<td align="left">demographic</td>
+<td align="left">age_bl</td>
+<td align="left">age</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">year</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">age_death</td>
+<td align="left">Age at death</td>
+<td align="left">demographic</td>
+<td align="left">age_death</td>
+<td align="left">age</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">year</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">died</td>
+<td align="left">Indicator of death</td>
+<td align="left">demographic</td>
+<td align="left">died</td>
+<td align="left">age</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">category</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">educ</td>
+<td align="left">Years of education</td>
+<td align="left">demographic</td>
+<td align="left">edu</td>
+<td align="left">education</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">years</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">race</td>
+<td align="left">Participant&#39;s race</td>
+<td align="left">demographic</td>
+<td align="left">race</td>
+<td align="left">race</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">category</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">spanish</td>
+<td align="left">Spanish/Hispanic origin</td>
+<td align="left">demographic</td>
+<td align="left">spanish</td>
+<td align="left">race</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">category</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">msex</td>
+<td align="left">Gender</td>
+<td align="left">demographic</td>
+<td align="left">female</td>
+<td align="left">sex</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">category</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">scaled_to.y</td>
+<td align="left">No label found in codebook</td>
+<td align="left">design</td>
+<td align="left">scaled_to.y</td>
+<td align="left">data_set</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">category</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">id</td>
+<td align="left">NA</td>
+<td align="left">design</td>
+<td align="left">id</td>
+<td align="left">id</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">person</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">fu_year</td>
+<td align="left">Follow-up year</td>
+<td align="left">design</td>
+<td align="left">full_year</td>
+<td align="left">time</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">time point</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">bmi</td>
+<td align="left">Body mass index</td>
+<td align="left">physical</td>
+<td align="left">bmi</td>
+<td align="left">allostatic_load</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">kg/msq</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">iadlsum</td>
+<td align="left">Instrumental activities of daily liviing</td>
+<td align="left">physical</td>
+<td align="left">iadlsum</td>
+<td align="left">physact</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">scale</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">phys5itemsum</td>
+<td align="left">Summary of physical activity</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">measure (in hours/ week spend in 5 different categories of PA)</td>
+<td align="left">physical</td>
+<td align="left">physical_activity</td>
+<td align="left">physact</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">scale</td>
+<td align="left">TRUE</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">cesdsum</td>
+<td align="left">CESD-Measure of depressive symptoms</td>
+<td align="left">psychological</td>
+<td align="left">cesdsum</td>
+<td align="left">depression</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">symptom</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">r_depres</td>
+<td align="left">Major depression dx-clinic rating</td>
+<td align="left">psychological</td>
+<td align="left">r_depres</td>
+<td align="left">depression</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="left">1-higly probably;2-probable;3-possible; 4-not present</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">neglifeevents</td>
+<td align="left">Negative life events; higher values mean more NLE</td>
+<td align="left">psychological</td>
+<td align="left">neglifeevents</td>
+<td align="left">negative_life_events</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">scale</td>
+<td align="left">TRUE</td>
+</tr>
+<tr>
+<td align="left">perceivedstress</td>
+<td align="left">Perceived stress; higher values mean more perceived stress</td>
+<td align="left">psychological</td>
+<td align="left">perceivedstress</td>
+<td align="left">stress</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
+<td align="left">scale</td>
+<td align="left">TRUE</td>
+</tr>
+</tbody></table>
+
+<h1>rename variablesd_rules &lt;- dto[[&ldquo;metaData&rdquo;]] %&gt;%</h1>
+
+<p>dplyr::filter(name %in% names(ds)) %&gt;% 
+  dplyr::select(name, name<em>new ) # leave only collumn, which values you wish to appendnames(ds) &lt;- d_rules[,&ldquo;name_new&rdquo;]# keep only relevant variablesvariables_to_keep &lt;- dto$metaData %&gt;% 
+  dplyr::filter(include==TRUE)variables_to_keep &lt;- variables_to_keep$name_newds &lt;- ds %&gt;% 
+  dplyr::select</em>(.dots = variables_to_keep)# transfer changes to dtodto[[&ldquo;unitData&rdquo;]] &lt;- ds
+#the origional variable msex used the following values #1=male, 0=female table(ds$female, useNA=&ldquo;always&rdquo;) #7418 males ## </p>
+
+<h2>0     1  <NA></h2>
+
+<h2>19290  7418     0</h2>
+
+<p>ds$female &lt;-!(ds$female==1)  #sex=TRUE if femaletable(ds$female, useNA=&ldquo;always&rdquo;) #7481 FALSE (i.e. males) ## </p>
+
+<h2>FALSE  TRUE  <NA></h2>
+
+<h2>7418 19290     0</h2>
+
+<p>names## function (x)  .Primitive(&ldquo;names&rdquo;)
+str(ds$female)##  logi [1:26708] TRUE TRUE TRUE TRUE TRUE TRUE &hellip;</p>
+
+<h1>Save as a compressed, binary R dataset.  # It&#39;s no longer readable with a text editor, but it saves metadata (eg, factor information).saveRDS(dto, file=&ldquo;./data/unshared/derived/map/dto.rds&rdquo;, compress=&ldquo;xz&rdquo;)</h1>
+
+<h1>the production of the dto object is now complete# we verify its structure and content:dto &lt;- readRDS(&ldquo;./data/unshared/derived/map/dto.rds&rdquo;)names(dto)## [1] &ldquo;unitData&rdquo; &ldquo;metaData&rdquo;</h1>
+
+<h1>1st element - unit(person) level datanames(dto[[&ldquo;unitData&rdquo;]])##  [1] &ldquo;id&rdquo;                &ldquo;age_bl&rdquo;            &ldquo;age_death&rdquo;</h1>
+
+<h2>[4] &ldquo;died&rdquo;              &ldquo;edu&rdquo;               &ldquo;female&rdquo;</h2>
+
+<h2>[7] &ldquo;race&rdquo;              &ldquo;spanish&rdquo;           &ldquo;apoe&rdquo;</h2>
+
+<h2>[10] &ldquo;full_year&rdquo;         &ldquo;scaled_to.y&rdquo;       &ldquo;cesdsum&rdquo;</h2>
+
+<h2>[13] &ldquo;r_depres&rdquo;          &ldquo;neglifeevents&rdquo;     &ldquo;perceivedstress&rdquo;</h2>
+
+<h2>[16] &ldquo;dementia&rdquo;          &ldquo;r_stroke&rdquo;          &ldquo;cogn_ep&rdquo;</h2>
+
+<h2>[19] &ldquo;cogn_global&rdquo;       &ldquo;cogn_po&rdquo;           &ldquo;cogn_ps&rdquo;</h2>
+
+<h2>[22] &ldquo;cogn_se&rdquo;           &ldquo;cogn_wo&rdquo;           &ldquo;cts_bname&rdquo;</h2>
+
+<h2>[25] &ldquo;catfluency&rdquo;        &ldquo;digit_back&rdquo;        &ldquo;digit_forward&rdquo;</h2>
+
+<h2>[28] &ldquo;mmse&rdquo;              &ldquo;symbol_digit_mod&rdquo;  &ldquo;age_at_visit&rdquo;</h2>
+
+<h2>[31] &ldquo;iadlsum&rdquo;           &ldquo;cholesterol&rdquo;       &ldquo;creatine&rdquo;</h2>
+
+<h2>[34] &ldquo;glucose&rdquo;           &ldquo;hemoglobin&rdquo;        &ldquo;hdl&rdquo;</h2>
+
+<h2>[37] &ldquo;hdlratio&rdquo;          &ldquo;ldl&rdquo;               &ldquo;bmi&rdquo;</h2>
+
+<h2>[40] &ldquo;physical_activity&rdquo;</h2>
+
+<h1>2nd element - meta data, info about variablesnames(dto[[&ldquo;metaData&rdquo;]])## [1] &ldquo;name&rdquo;          &ldquo;label&rdquo;         &ldquo;type&rdquo;          &ldquo;name_new&rdquo;</h1>
+
+<h2>[5] &ldquo;construct&rdquo;     &ldquo;self_reported&rdquo; &ldquo;longitudinal&rdquo;  &ldquo;unit&rdquo;</h2>
+
+<h2>[9] &ldquo;include&rdquo;</h2>
+
+<p>The R session information (including the OS info, R version and all
+packages used):</p>
+
+<p>sessionInfo()## R version 3.3.1 (2016-06-21)</p>
+
+<h2>Platform: x86_64-w64-mingw32/x64 (64-bit)</h2>
+
+<h2>Running under: Windows 7 x64 (build 7601) Service Pack 1</h2>
+
+<h2>locale:</h2>
+
+<h2>[1] LC_COLLATE=English_Canada.1252  LC_CTYPE=English_Canada.1252</h2>
+
+<h2>[3] LC_MONETARY=English_Canada.1252 LC_NUMERIC=C</h2>
+
+<h2>[5] LC_TIME=English_Canada.1252</h2>
+
+<h2>attached base packages:</h2>
+
+<h2>[1] stats     graphics  grDevices utils     datasets  methods   base</h2>
+
+<h2>other attached packages:</h2>
+
+<h2>[1] psych_1.6.6     lattice_0.20-33 stringr_1.0.0   reshape2_1.4.1</h2>
+
+<h2>[5] dplyr_0.5.0     markdown_0.7.7  outliers_0.14   lmerTest_2.0-32</h2>
+
+<h2>[9] lme4_1.1-12     Matrix_1.2-6    knitr_1.13      ggplot2_2.1.0</h2>
+
+<h2>[13] magrittr_1.5</h2>
+
+<h2>loaded via a namespace (and not attached):</h2>
+
+<h2>[1] splines_3.3.1       colorspace_1.2-6    htmltools_0.3.5</h2>
+
+<h2>[4] yaml_2.1.13         chron_2.3-47        survival_2.39-4</h2>
+
+<h2>[7] nloptr_1.0.4        foreign_0.8-66      DBI_0.4-1</h2>
+
+<h2>[10] RColorBrewer_1.1-2  plyr_1.8.4          munsell_0.4.3</h2>
+
+<h2>[13] gtable_0.2.0        coda_0.18-1         evaluate_0.9</h2>
+
+<h2>[16] labeling_0.3        latticeExtra_0.6-28 parallel_3.3.1</h2>
+
+<h2>[19] highr_0.6           Rcpp_0.12.5         acepack_1.3-3.3</h2>
+
+<h2>[22] scales_0.4.0        arm_1.8-6           formatR_1.4</h2>
+
+<h2>[25] Hmisc_3.17-4        abind_1.4-3         gridExtra_2.2.1</h2>
+
+<h2>[28] mnormt_1.5-4        digest_0.6.9        stringi_1.1.1</h2>
+
+<h2>[31] grid_3.3.1          tools_3.3.1         lazyeval_0.2.0</h2>
+
+<h2>[34] tibble_1.1          dichromat_2.0-0     Formula_1.2-1</h2>
+
+<h2>[37] cluster_2.0.4       tidyr_0.5.1         MASS_7.3-45</h2>
+
+<h2>[40] data.table_1.9.6    assertthat_0.1      minqa_1.2.4</h2>
+
+<h2>[43] rmarkdown_1.0       R6_2.1.2            rpart_4.1-10</h2>
+
+<h2>[46] nnet_7.3-12         nlme_3.1-128</h2>
+
+<p>Sys.time()## [1] &ldquo;2016-07-11 18:56:58 PDT&rdquo;</p>
+
+</body>
+
+</html>

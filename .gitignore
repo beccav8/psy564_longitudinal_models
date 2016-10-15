@@ -1,47 +1,34 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+.Rproj.user/60108A78/sdb/s-ACD88458/lock_file
+##############
+# R and RStudio files.
+.Rhistory
+.RData
+.Rproj.user
+.Rproj.user/
 
-# Folder config file
-Desktop.ini
+# The devtools zip is downloaded when the package is updating itself.  If it's not deleted, there's no reason to commit it to the repository.
+devtools.zip
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+##############
+# Protected Information; see cubuspl42's answer in http://stackoverflow.com/questions/2415873/exceptions-in-gitignore
+/unshared_material/*
+/unshared-material/*
+/data_unshared/*
+/data-unshared/*
+/data/unshared/raw/*
+/data/unshared/derived/*
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+##############
+# Exceptions
+!data/*.md
+!data/*/*.md
+!data/*/*/*.md
+!data/*/*/*/*.md
+!data/unshared/derived/map/README.md
+!data/unshared/derived/obas/README.md
 
-# Windows shortcuts
-*.lnk
-
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+##############
+# Exclude caches in case they contain PHI
+cache/
+*/cache/
+*/*/cache/
