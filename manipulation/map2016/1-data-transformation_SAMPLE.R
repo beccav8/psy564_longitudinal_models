@@ -49,14 +49,42 @@ dim(d)
 head(d)
 unique(d$id)
 
-str(d)
+names(d)
+# str(d)
+
+myvars<- c("id","year_in_study", "dementia", "age_bl","age_at_visit","edu", "msex","race","apoe",
+           "episodic","percep_speed","semantic","wm","global","dig_b","dig_f","mmse",
+           "nle","pss","physical_activity")
+
+           # "cts_sdmt","cts_wli","cts_wlii","cts_wliii","neglifeevents","perceivedstress","phys5itemsum")
+
+d <- map_sample[myvars]
 
 d$id<-as.numeric(d$id)
 d$year_in_study<-as.numeric(d$year_in_study)
-d$cogdx<-as.numeric(d$cogdx)
 d$dementia<-as.numeric(d$dementia)
 d$age_bl<-as.numeric(d$age_bl)
+d$age_at_visit<-as.numeric(d$age_at_visit)
+d$edu<-as.numeric(d$edu)
+d$msex<-as.numeric(d$msex)
+d$race<-as.numeric(d$race)
+d$apoe<-as.numeric(d$apoe)
+d$episodic<-as.numeric(d$episodic)
+d$percep_speed<-as.numeric(d$percep_speed)
+d$semantic<-as.numeric(d$semantic)
+d$wm<-as.numeric(d$wm)
+d$global<-as.numeric(d$global)
+d$dig_b<-as.numeric(d$dig_b)
+d$dig_f<-as.numeric(d$dig_f)
+d$mmse<-as.numeric(d$mmse)
+d$nle<-as.numeric(d$mmse)
+d$pss<-as.numeric(d$pss)
+d$physical_activity<-as.numeric(d$physical_activity)
+
 #continue to make numeric if it works in hlm
 
 
 write.table(d, file="./data/unshared/derived/map2016/hlm_map_sample.dat", row.names=FALSE, sep="\t", quote=FALSE)
+
+
+
