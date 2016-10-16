@@ -39,7 +39,15 @@ names(dto)
 map_sample<-dto[["unitData"]]
 names(map_sample)
 
-test <- subset(map_sample, map_sample$id %in% sample(unique(map_sample$id), size=300))
+# test <- subset(map_sample, map_sample$id %in% sample(unique(map_sample$id), size=300))
+
+
+set.seed(1)
+ids <- sample(map_sample$id,300)
+d <- map_sample %>%  dplyr::filter( id %in% ids)
+dim(d)
+head(d)
+unique(d$id)
 
 
 write.table(test, file="./data/unshared/derived/map2016/hlm_map_sample.dat", row.names=FALSE, sep="\t", quote=FALSE)
