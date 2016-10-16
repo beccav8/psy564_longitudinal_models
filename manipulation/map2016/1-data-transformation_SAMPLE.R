@@ -49,5 +49,14 @@ dim(d)
 head(d)
 unique(d$id)
 
+str(d)
 
-write.table(test, file="./data/unshared/derived/map2016/hlm_map_sample.dat", row.names=FALSE, sep="\t", quote=FALSE)
+d$id<-as.numeric(d$id)
+d$year_in_study<-as.numeric(d$year_in_study)
+d$cogdx<-as.numeric(d$cogdx)
+d$dementia<-as.numeric(d$dementia)
+d$age_bl<-as.numeric(d$age_bl)
+#continue to make numeric if it works in hlm
+
+
+write.table(d, file="./data/unshared/derived/map2016/hlm_map_sample.dat", row.names=FALSE, sep="\t", quote=FALSE)
