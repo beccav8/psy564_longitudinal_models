@@ -42,4 +42,5 @@ names(map_data)
 head(map_data)
 str(map_data)
 
+saveRDS(map_data, "./data/unshared/derived/map2016/map_full.rds")
 write.table(map_data, file="./data/unshared/derived/map2016/hlm_data_prep.dat", row.names=FALSE, sep="\t", quote=FALSE)
