@@ -70,7 +70,7 @@ names(ds)
 
 myvars<- c("projid","study","fu_year","cogdx","dementia", "age_bl","age_at_visit","age_death","educ", "msex","race","apoe_genotype","cogdate", 
            "cesdsum","cogn_ep","cogn_po", "cogn_ps","cogn_se","cogn_wo","cogn_global","cts_db","cts_df","cts_mmse30",
-           "cts_sdmt","cts_wli","cts_wlii","cts_wliii","neglifeevents","perceivedstress","phys5itemsum", "chlstrl","glucose","hba1c","hdlchlstrl","hdlratio","ldlchlstrl",
+           "cts_sdmt","cts_wli","cts_wlii","cts_wliii","neglifeevents","perceivedstress","phys5itemsum", "chlstrl","glucose","hba1c","hdlchlstrl","hdlratio","ldlchlstrl", "crn",
            "bmi","social_isolation","bp11","bp2","bp3","bp31")
 
 data<- ds[myvars]
