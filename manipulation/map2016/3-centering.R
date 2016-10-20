@@ -29,6 +29,26 @@ head(dto)
 data<-dto
 
 
+
+set.seed(1)
+ids <- sample(data$id,20)
+d <- data %>%  dplyr::filter( id %in% ids)
+names(d)
+
+p1 <- ggplot(d, aes(x=year_in_study, y=physical_activity, group=id)) +
+  geom_line() +
+  # stat_smooth(method=lm, se=FALSE)+
+  scale_color_brewer(palette="Set2") +
+  # geom_text(aes(label=id))+
+  ggtitle("Growth curve for individuals")
+p1
+
+
+library(lattice)
+xyplot(physical_activity ~ year_in_study | id, data=d, as.table=T)
+
+
+
 ##########################-----Center-PA-----#########################################################
 ##----physical-activity-between-person---MEAN------------------------------------------------------------
 # phys_bp = the persons mean on PA across occasions - the grand mean of PA in the population  (mean=2.94)
