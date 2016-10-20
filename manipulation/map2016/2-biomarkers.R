@@ -86,7 +86,7 @@ view_id <- function(ds,id){
   
 }
 # view a random person for sporadic inspections
-ids <- sample(unique(ds$id),1)
+ids <- sample(unique(ds$id),3)
 
 #1
 encode_biomarker <- function(data, measure_name, threashold, keep_wave=T){
@@ -145,10 +145,10 @@ encode_biomarker_inverse <- function(data, measure_name, threashold, keep_wave=T
   return(data)
 }
 # test function o
-d <- ds %>% dplyr::select(id, hdl); head(d)
+d <- ds %>% dplyr::select(id, hdlchlstrl); head(d)
 d <- encode_biomarker_inverse(
   data         = d, 
-  measure_name = "hdl",
+  measure_name = "hdlchlstrl",
   threashold   = 47, 
   keep_wave    = T
 )
@@ -169,14 +169,15 @@ ds<- encode_biomarker(
 )
 # head(d)
 
-#hemoglobin----
-hist(ds$hemoglobin) 
-summary(ds$hemoglobin, useNA) #3rdq=6.200
+#hba1c----
+
+hist(ds$hba1c) 
+summary(ds$hba1c, useNA) #3rdq=6.100
 
 ds<- encode_biomarker(
   data         = ds, 
-  measure_name = "hemoglobin",
-  threashold   = 6.2, 
+  measure_name = "hba1c",
+  threashold   = 6.1, 
   keep_wave    = T
 )
 
@@ -195,62 +196,69 @@ ds<- encode_biomarker(
 
 
 #ldl---
-hist(ds$ldl)
-summary(ds$ldl, useNA) #mean 100, #3rdq=123
+hist(ds$ldlchlstrl)
+summary(ds$ldlchlstrl, useNA) #mean 100, #3rdq=121
 
 ds<- encode_biomarker(
   data         = ds, 
-  measure_name = "ldl",
-  threashold   = 123, 
+  measure_name = "ldlchlstrl",
+  threashold   = 121, 
   keep_wave    = T
 )
 
 
 #---hdl
-hist(ds$hdl)
-summary(ds$hdl, useNA) #1stq=48.0 ##low is bad
+hist(ds$hdlchlstrl)
+summary(ds$hdlchlstrl, useNA) #1stq=47.0 ##low is bad
 
 #encode biomarker 2
 ds<- encode_biomarker_inverse(
   data         = ds, 
-  measure_name = "hdl",
-  threashold   = 48, 
+  measure_name = "hdlchlstrl",
+  threashold   = 47, 
   keep_wave    = T
 )
 
 
 #--- glucose
 hist(ds$glucose)
-summary(ds$glucose, useNA)#3rdq=118
+summary(ds$glucose, useNA)#3rdq=117
 
 ds<- encode_biomarker(
   data         = ds, 
   measure_name = "glucose",
-  threashold   = 118, 
+  threashold   = 117, 
   keep_wave    = T
 )
 
-#--- creatine
-hist(ds$creatine)
-summary(ds$creatine, useNA) #3rdq=1.20
+#--- creatinine
+
+hist(ds$creatinine)
+names(ds)
+summary(ds$creatinine, useNA) #3rdq=1.17
 
 ds<- encode_biomarker(
   data         = ds, 
-  measure_name = "creatine",
-  threashold   = 1.2, 
+  measure_name = "creatinine",
+  threashold   = 1.17, 
   keep_wave    = T
 )
 
 #keep re-reunning this to see different people in the sample - IT WORKED
-ids <- sample(unique(ds$id),1)
+ids <- sample(unique(ds$id),3)
 ds %>%
   dplyr::filter(id %in% ids ) %>%
   dplyr::group_by(id) %>%
-  dplyr::select(id,creatine,creatine_HIGH, creatine_HIGH_wave)
+  dplyr::select(id,creatinine,creatinine_HIGH, creatinine_HIGH_wave)
+ids <- sample(unique(ds$id),3)
+ds %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id,glucose,glucose_HIGH, glucose_HIGH_wave)
 
-
+names(ds)
 #--- obtain-multivariate-counts ----------------------
-computed_variables <-  c("glucose_HIGH", "cholesterol_HIGH", "hemoglobin_HIGH", "hdlratio_HIGH", "hdl_LOW", "ldl_HIGH","creatine_HIGH" ) 
+computed_variables <-  c("glucose_HIGH", "cholesterol_HIGH", "hba1c_HIGH", "hdlratio_HIGH", "hdlchlstrl_LOW", "ldlchlstrl_HIGH","creatinine_HIGH" ) 
 bio<- ds %>% 
   # dplyr::group_by(glucoseHIGH,hgba1cHIGH) %>% 
   dplyr::group_by_(.dots = computed_variables) %>% 
@@ -258,58 +266,67 @@ bio<- ds %>%
 
 
 #--- create-composite -----------------------------------------------------------
-# al_count<-rep( 0, nrow(ds))
-# ds$al_count<-al_count
-
-# 
-# for(i in unique(ds$id)) {
-#   for (j in 1:length(ds$creatine[ds$id==i])) {
-#     
-#     if (isTRUE(ds$creatine_HIGH[ds$id==i][j]=='TRUE')) {
-#       ds$al_count[ds$id==i][j] <- ds$al_count[ds$id==i][j] + 1}
-#     
-#     if (isTRUE(ds$cholesterol_HIGH[ds$id==i][j]=='TRUE')) {
-#       ds$al_count[ds$id==i][j] <- ds$al_count[ds$id==i][j] + 1}
-#     
-#     if (isTRUE(ds$hemoglobin_HIGH[ds$id==i][j]=='TRUE')) {
-#       ds$al_count[ds$id==i][j] <- ds$al_count[ds$id==i][j] + 1}
-#     
-#     if (isTRUE(ds$hdl_LOW[ds$id==i][j]=='TRUE')) {
-#       ds$al_count[ds$id==i][j] <- ds$al_count[ds$id==i][j] + 1}
-#     
-#     if (isTRUE(ds$hdlratio_HIGH[ds$id==i][j]=='TRUE')) {
-#       ds$al_count[ds$id==i][j] <- ds$al_count[ds$id==i][j] + 1}
-#     
-#     if (isTRUE(ds$ldl_HIGH[ds$id==i][j]=='TRUE')) {
-#       ds$al_count[ds$id==i][j] <- ds$al_count[ds$id==i][j] + 1}
-#     
-#     if (isTRUE(ds$glucose_HIGH[ds$id==i][j]=='TRUE')) {
-#       ds$al_count[ds$id==i][j] <- ds$al_count[ds$id==i][j] + 1}
-#     
-#   }}
+ al_count_BL<-rep( 0, nrow(ds))
+ ds$al_count_BL<-al_count_BL
 
 
+ for(i in unique(ds$id)) {
+   for (j in 1:length(ds$creatinine[ds$id==i])) {
+     if (isTRUE(ds$creatinine_HIGH[ds$id==i][j]=='TRUE')) {
+       ds$al_count_BL[ds$id==i][j] <- ds$al_count_BL[ds$id==i][j] + 1}
+
+     if (isTRUE(ds$cholesterol_HIGH[ds$id==i][j]=='TRUE')) {
+       ds$al_count_BL[ds$id==i][j] <- ds$al_count_BL[ds$id==i][j] + 1}
+
+     if (isTRUE(ds$hba1c_HIGH[ds$id==i][j]=='TRUE')) {
+       ds$al_count_BL[ds$id==i][j] <- ds$al_count_BL[ds$id==i][j] + 1}
+
+     if (isTRUE(ds$hdlchlstrl_LOW[ds$id==i][j]=='TRUE')) {
+       ds$al_count_BL[ds$id==i][j] <- ds$al_count_BL[ds$id==i][j] + 1}
+
+     if (isTRUE(ds$hdlratio_HIGH[ds$id==i][j]=='TRUE')) {
+       ds$al_count_BL[ds$id==i][j] <- ds$al_count_BL[ds$id==i][j] + 1}
+
+     if (isTRUE(ds$ldlchlstrl_HIGH[ds$id==i][j]=='TRUE')) {
+       ds$al_count_BL[ds$id==i][j] <- ds$al_count_BL[ds$id==i][j] + 1}
+
+     if (isTRUE(ds$glucose_HIGH[ds$id==i][j]=='TRUE')) {
+       ds$al_count_BL[ds$id==i][j] <- ds$al_count_BL[ds$id==i][j] + 1}
+
+   }}
+ 
+ test <- ds %>% 
+   dplyr::select(id, cholesterol_HIGH_wave, hba1c_HIGH_wave, hdlratio_HIGH_wave, hdlchlstrl_LOW_wave,ldlchlstrl_HIGH_wave, glucose_HIGH_wave,creatinine_HIGH_wave, al_count_BL)
+ head(test)
+ 
+ ids <- sample(unique(ds$id),3)
+ test <- ds %>% 
+   dplyr::select(ids, al_count_BL)
+ head(test)
+ 
+
+#wave-----
 al_count_wave<-rep( 0, nrow(ds))
 ds$al_count_wave<-al_count_wave
 
 for (i in 1:nrow(ds)) {
   
-  if (isTRUE(ds$creatine_HIGH_wave[i]=='TRUE')) {
+  if (isTRUE(ds$creatinine_HIGH_wave[i]=='TRUE')) {
     ds$al_count_wave[i] <- ds$al_count_wave[i] + 1}
   
   if (isTRUE(ds$cholesterol_HIGH_wave[i]=='TRUE')) {
     ds$al_count_wave[i] <- ds$al_count_wave[i] + 1}
   
-  if (isTRUE(ds$hemoglobin_HIGH_wave[i]=='TRUE')) {
+  if (isTRUE(ds$hba1c_HIGH_wave[i]=='TRUE')) {
     ds$al_count_wave[i] <- ds$al_count_wave[i] + 1}
   
-  if (isTRUE(ds$hdl_LOW_wave[i]=='TRUE')) {
+  if (isTRUE(ds$hdlchlstrl_LOW_wave[i]=='TRUE')) {
     ds$al_count_wave[i] <- ds$al_count_wave[i] + 1}
   
   if (isTRUE(ds$hdlratio_HIGH_wave[i]=='TRUE')) {
     ds$al_count_wave[i] <- ds$al_count_wave[i] + 1}
   
-  if (isTRUE(ds$ldl_HIGH_wave[i]=='TRUE')) {
+  if (isTRUE(ds$ldlchlstrl_HIGH_wave[i]=='TRUE')) {
     ds$al_count_wave[i] <- ds$al_count_wave[i] + 1}
   
   if (isTRUE(ds$glucose_HIGH_wave[i]=='TRUE')) {
@@ -319,7 +336,11 @@ for (i in 1:nrow(ds)) {
 
 
 test <- ds %>% 
-  dplyr::select(id, cholesterol_HIGH_wave, hemoglobin_HIGH_wave, hdlratio_HIGH_wave, hdl_LOW_wave,ldl_HIGH_wave, glucose_HIGH_wave,creatine_HIGH_wave, al_count_wave)
+  dplyr::select(id, cholesterol_HIGH_wave, hba1c_HIGH_wave, hdlratio_HIGH_wave, hdlchlstrl_LOW_wave,ldlchlstrl_HIGH_wave, glucose_HIGH_wave,creatinine_HIGH_wave, al_count_wave)
+head(test)
+
+test <- ds %>% 
+  dplyr::select(id, al_count_wave)
 head(test)
 
 hist(ds$al_count_wave)
@@ -330,6 +351,28 @@ ds %>% histogram_discrete("al_count_wave")
 
 #category variable for biomarkers 
 table(ds$al_count_wave, useNA="always")
+
+#assigns allostatic load category for each person at baseline
+for (i in 1:length(ds$al_count_BL)) {
+  
+  if (isTRUE(ds$al_count_BL[i] == 0)) {
+    ds$al_catg_BL[i] <- "LOW" }
+  
+  else if (isTRUE(ds$al_count_BL[i] <=2 )) {
+    ds$al_catg_BL[i] <- "MED" }
+  
+  else 
+    # (isTRUE(ds$phys_wp_wave[i] >=2 )){
+    ds$al_catg_BL[i] <- "HIGH"  
+} 
+
+ids <- sample(unique(ds$id),1)
+ds %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id,al_count_BL, al_catg_BL
+  )
+
 
 #assigns allostatic load category for each person at every observation 
 for (i in 1:length(ds$al_count_wave)) {
@@ -350,20 +393,21 @@ ids <- sample(unique(ds$id),1)
 ds %>%
   dplyr::filter(id %in% ids ) %>%
   dplyr::group_by(id) %>%
-  dplyr::select(id,al_count_wave, al_catg_wave, cholesterol_HIGH_wave, hemoglobin_HIGH_wave, hdlratio_HIGH_wave, hdl_LOW_wave,ldl_HIGH_wave, glucose_HIGH_wave,creatine_HIGH_wave, al_count_wave
+  dplyr::select(id,al_count_wave, al_catg_wave
   )
 
 eg<-ds %>%
   dplyr::filter(id %in% ids ) %>%
   dplyr::group_by(id) %>%
-  dplyr::select(id,al_count_wave, al_catg_wave, cholesterol_HIGH_wave, hemoglobin_HIGH_wave, hdlratio_HIGH_wave, hdl_LOW_wave,ldl_HIGH_wave, glucose_HIGH_wave,creatine_HIGH_wave, al_count_wave
+  dplyr::select(id,al_count_wave, al_catg_wave, cholesterol_HIGH_wave, hba1c_HIGH_wave, hdlratio_HIGH_wave, hdlchlstrl_LOW_wave,ldlchlstrl_HIGH_wave, glucose_HIGH_wave,creatinine_HIGH_wave, al_count_wave
   )
 
 set.seed(1)
 ids <- sample(ds$id,20)
 d <- ds %>%  dplyr::filter( id %in% ids)
+names(ds)
 
-p1 <- ggplot(d, aes(x=full_year, y=physical_activity, group=id)) +
+p1 <- ggplot(d, aes(x=year_in_study, y=physical_activity, group=id)) +
   geom_line() +
   # stat_smooth(method=lm, se=FALSE)+
   scale_color_brewer(palette="Set2") +
@@ -372,11 +416,11 @@ p1 <- ggplot(d, aes(x=full_year, y=physical_activity, group=id)) +
 p1
 
 library(lattice)
-xyplot(physical_activity ~ full_year | id, data=d, as.table=T)
+xyplot(physical_activity ~ year_in_study | id, data=d, as.table=T)
 
 
 
-p2 <- ggplot(d, aes(x=full_year, y=al_count_wave, group=id)) +
+p2 <- ggplot(d, aes(x=year_in_study, y=al_count_wave, group=id)) +
   geom_line() +
   # stat_smooth(method=lm, se=FALSE)+
   scale_color_brewer(palette="Set2") +
@@ -384,12 +428,14 @@ p2 <- ggplot(d, aes(x=full_year, y=al_count_wave, group=id)) +
   ggtitle("Growth curve for individuals")
 p2
 
-xyplot(al_count_wave ~ full_year | id, data=d, as.table=T)
+xyplot(al_count_wave ~ year_in_study | id, data=d, as.table=T)
 
 
 #frequency table of created allostatic categories 
 table(ds$al_catg_wave, useNA="always")
+#frequency table of created allostatic categories 
+table(ds$al_catg_BL, useNA="always")
 # --- save-data ----------------------------------------------------------
 
-saveRDS(ds, "./data/unshared/derived/map/dto-AL.rds")
+saveRDS(ds, "./data/unshared/derived/map2016/dto-AL.rds")
 
