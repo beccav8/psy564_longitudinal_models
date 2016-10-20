@@ -435,7 +435,25 @@ xyplot(al_count_wave ~ year_in_study | id, data=d, as.table=T)
 table(ds$al_catg_wave, useNA="always")
 #frequency table of created allostatic categories 
 table(ds$al_catg_BL, useNA="always")
+
+
+
+#subset
+names(ds)
+
+myvars<- c("id","study","year_in_study","cogdx","dementia", "age_bl","age_at_visit","age_death","edu", "msex","race","apoe","date_at_baseline", 
+           "cesdsum","episodic","percep_orient", "percep_speed","semantic","wm","global","dig_b","dig_f","mmse",
+           "sdmt","wl_im","wl_del","wl_rec","nle","pss","physical_activity", 
+           "al_count_BL", "al_count_wave", "al_catg_BL", "al_catg_wave","social_isolation")
+
+ds2<- ds[myvars]
+head(ds2)
+names(ds2)
+
+
 # --- save-data ----------------------------------------------------------
+
+saveRDS(ds2, "./data/unshared/derived/map2016/dto-AL_subset.rds")
 
 saveRDS(ds, "./data/unshared/derived/map2016/dto-AL.rds")
 
