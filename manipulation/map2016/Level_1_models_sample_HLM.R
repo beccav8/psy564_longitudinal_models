@@ -56,7 +56,7 @@ lmerTest::summary((model_0))
 fit0<-model_0
 
 #yi= B0 + ei
-#int/B0 =26.27432, residual (e) = 11.91
+#int/B0 =26.75, residual (e) = 13.829
 
 #deviance= 13618.0
 #logLik = --6809.0
@@ -78,16 +78,17 @@ model_1a<- lmerTest::lmer(eq_1a, data=ds0, REML= FALSE)
 lmerTest::summary((model_1a))
 fit1a<-model_1a
 #deviance = 13151.4
-#logLik = --6575.7
+#logLik = -6575.7
 #AIC=13159.4
-#int=27 (i.e. mean when year=0), slope(yrs_in_study)= -4.5 (unit decrease per year)
+#int= 28.6713  (i.e. mean when year=0), slope(yrs_in_study)= -4.5 (unit decrease per year)
 
 # % improved from fully UCM = UCMresid_var - model_resid_var / UCMresid_var
 ( 13.829 - 11.05 ) / 13.829 
 #= 20 %
 
 #wald test (is the slope sig sif. than 0?) = estimate of FE/SE (and look at distribution)
-anova(fit0,fit1a) #fit1a fits sig better
+# anova(fit0,fit1a) #fit1a fits sig better
+#cant use this?
 
 #Time variable, Fixed Effects B-----------------------------
 
@@ -97,6 +98,10 @@ eq_1b <- as.formula("mmse ~ 1 + age_at_visit_meanc +
 model_1b<- lmerTest::lmer(eq_1b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_1b))
 fit1b <-model_1b
+#deviance = 13137.0
+#logLik = -6568.5
+#AIC= 13145.0
+#int= 26.72  (i.e. mean when year=0), slope(yrs_in_study)= -0.38110 (unit decrease per increase in unit age)
 
 anova(fit1a,fit1b) #sig?? why 
 
@@ -119,60 +124,75 @@ anova(fit1b, fit1c)#NS
 #B1j = gamma10 + gamme11 + U1j #slope
 
 
-#year in study
+#age_centered
 eq_2 <- as.formula("mmse ~ 1 + age_at_visit_meanc +          
                    ( 1 + age_at_visit_meanc |id)")
 model_2<- lmerTest::lmer(eq_2, data=ds0, REML= FALSE) 
 lmerTest::summary((model_2))
 fit2<-model_2
 #deviance = 11995.9
-#logLik = -5919.8
-#AIC=11851.6
-#int=28 (i.e. mean when year=0), slope(yrs_in_study)= -0.5 (unit decrease per year)
+#logLik = -5997.9
+#AIC= 12007.9
+#int= 27.97665 (i.e. mean when year=0), slope(yrs_in_study)= -0.40539 (unit decrease per year)
+#residual var =  5.3849
 
-# % improved from F.E only  = UCMresid_var - model_resid_var / UCMresid_var
- ( 11.119  - 5.1564 ) / 11.119
- #= 53 %
-
-#wald test (is the slope sig sif. than 0?) = estimate of FE/SE (and look at distribution)
-anova(fit1a,fit2) #fit2 fits sig better, lower AAIC and logLik
-#can compre models that only differ in the random effects this way, but a walk test is needed
-#if fixed effects differ
-
-
-##--adding-PA
-
-eq_3 <- as.formula("mmse ~ 1 + year_in_study + phys_wp +       
-                   ( 1 + year_in_study  |id)")
+#year in study
+eq_3 <- as.formula("mmse ~ 1 + year_in_study +          
+                   ( 1 + year_in_study |id)")
 model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE) 
 lmerTest::summary((model_3))
 fit3<-model_3
-#how do i do a walk test to comapre this to model 2?
-#ie. added a fixed effect
+
+#deviance =  11839.6 
+#logLik = -5919.8
+#AIC= 11851.6 
+#int= 28.78428 (i.e. mean when year=0), slope(yrs_in_study)= -0.52155 (unit decrease per year)
+#residual var= 5.1564 
 
 
-
-##--adding-PA
-
-eq_4 <- as.formula("mmse ~ 1 + year_in_study + phys_wp +       
-                   ( 1 + year_in_study + phys_wp |id)")
-model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE) 
-lmerTest::summary((model_4))
-fit4<-model_4
-
-anova(fit3,fit4)
-# Df       AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
-#fit3  7 54718 54769 -27352    54704                             
-#fit4 10 54681 54754 -27330    54661 43.766      3  1.692e-09 ***
-
-
-
-
-#level2 assignment ?
-#including average Pss 
-eq_4 <- as.formula("mmse ~ 1 + year_in_study + phys_wp + pss +      
-                   ( 1 + year_in_study + phys_wp |id)")
-model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE) 
-lmerTest::summary((model_4))
-fit4<-model_4
-
+# # % improved from F.E only  = UCMresid_var - model_resid_var / UCMresid_var
+#  ( 11.119  - 5.1564 ) / 11.119
+#  #= 53 %
+# 
+# #wald test (is the slope sig sif. than 0?) = estimate of FE/SE (and look at distribution)
+# anova(fit1a,fit2) #fit2 fits sig better, lower AAIC and logLik
+# #can compre models that only differ in the random effects this way, but a walk test is needed
+# #if fixed effects differ
+# 
+# 
+# ##--adding-PA
+# 
+# eq_3 <- as.formula("mmse ~ 1 + year_in_study + phys_wp +       
+#                    ( 1 + year_in_study  |id)")
+# model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_3))
+# fit3<-model_3
+# #how do i do a walk test to comapre this to model 2?
+# #ie. added a fixed effect
+# 
+# 
+# 
+# ##--adding-PA
+# 
+# eq_4 <- as.formula("mmse ~ 1 + year_in_study + phys_wp +       
+#                    ( 1 + year_in_study + phys_wp |id)")
+# model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_4))
+# fit4<-model_4
+# 
+# anova(fit3,fit4)
+# # Df       AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# #fit3  7 54718 54769 -27352    54704                             
+# #fit4 10 54681 54754 -27330    54661 43.766      3  1.692e-09 ***
+# 
+# 
+# 
+# 
+# #level2 assignment ?
+# #including average Pss 
+# eq_4 <- as.formula("mmse ~ 1 + year_in_study + phys_wp + pss +      
+#                    ( 1 + year_in_study + phys_wp |id)")
+# model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_4))
+# fit4<-model_4
+# 
