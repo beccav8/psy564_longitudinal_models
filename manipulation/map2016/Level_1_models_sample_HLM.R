@@ -38,7 +38,7 @@ getwd()
 # @knitr declare-globals ---------------------------------------------------------
 # @knitr declare-globals ---------------------------------------------------------
 
-path_input0  <- "./data/unshared/derived/map2016/data_centered.rds" 
+path_input0  <- "./data/unshared/derived/map2016/data_sample.rds" 
 
 # @knitr load-data ---------------------------------------------------------------
 ds0  <- readRDS(path_input0) #total raw data  
@@ -58,9 +58,9 @@ fit0<-model_0
 #yi= B0 + ei
 #int/B0 =26.27432, residual (e) = 11.91
 
-#deviance= 63884.6
-#logLik = -31942.3
-#AIC=63890.6
+#deviance= 13618.0
+#logLik = --6809.0
+#AIC= 13624.0
 
 
 #TIME-VARIABLES-FIXED EFFECTS ONLY ----------------------------------------------------------------------
@@ -77,14 +77,14 @@ eq_1a <- as.formula("mmse ~ 1 + year_in_study +
 model_1a<- lmerTest::lmer(eq_1a, data=ds0, REML= FALSE) 
 lmerTest::summary((model_1a))
 fit1a<-model_1a
-#deviance = 62057.7
-#logLik = -31028.9
-#AIC=62065.7
+#deviance = 13151.4
+#logLik = --6575.7
+#AIC=13159.4
 #int=27 (i.e. mean when year=0), slope(yrs_in_study)= -4.5 (unit decrease per year)
 
 # % improved from fully UCM = UCMresid_var - model_resid_var / UCMresid_var
-( 11.91 - 9.701 ) / 11.91 
-#= 18 %
+( 13.829 - 11.05 ) / 13.829 
+#= 20 %
 
 #wald test (is the slope sig sif. than 0?) = estimate of FE/SE (and look at distribution)
 anova(fit0,fit1a) #fit1a fits sig better
@@ -97,10 +97,8 @@ eq_1b <- as.formula("mmse ~ 1 + age_at_visit_meanc +
 model_1b<- lmerTest::lmer(eq_1b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_1b))
 fit1b <-model_1b
-#deviance=62156.1
-#logLik= -31078.1
-#AIC=62164
-anova(fit1a,fit1b) #NS
+
+anova(fit1a,fit1b) #sig?? why 
 
 #Time variable, Fixed Effects C-----------------------------
 
@@ -111,9 +109,7 @@ model_1c<- lmerTest::lmer(eq_1c, data=ds0, REML= FALSE)
 lmerTest::summary((model_1c))
 fit1c<-model_1c
 
-#logLik = -31078.1
-#deviance = 62156.1
-anova(fit1a, fit1c)#NS
+anova(fit1b, fit1c)#NS
 
 
 #FIXED-AND-RANDOM-EFFECTS-----------------------------------------------------------
@@ -124,19 +120,19 @@ anova(fit1a, fit1c)#NS
 
 
 #year in study
-eq_2 <- as.formula("mmse ~ 1 + year_in_study +          
-                   ( 1 + year_in_study |id)")
+eq_2 <- as.formula("mmse ~ 1 + age_at_visit_meanc +          
+                   ( 1 + age_at_visit_meanc |id)")
 model_2<- lmerTest::lmer(eq_2, data=ds0, REML= FALSE) 
 lmerTest::summary((model_2))
 fit2<-model_2
-#deviance = 56869.8
-#logLik = 28434.9
-#AIC=56881.8
-#int=27 (i.e. mean when year=0), slope(yrs_in_study)= -4.5 (unit decrease per year)
+#deviance = 11995.9
+#logLik = -5919.8
+#AIC=11851.6
+#int=28 (i.e. mean when year=0), slope(yrs_in_study)= -0.5 (unit decrease per year)
 
-# # % improved from fully UCM = UCMresid_var - model_resid_var / UCMresid_var
-# ( 11.91 - 9.701 ) / 11.91 
-# #= 18 %
+# % improved from F.E only  = UCMresid_var - model_resid_var / UCMresid_var
+ ( 11.119  - 5.1564 ) / 11.119
+ #= 53 %
 
 #wald test (is the slope sig sif. than 0?) = estimate of FE/SE (and look at distribution)
 anova(fit1a,fit2) #fit2 fits sig better, lower AAIC and logLik

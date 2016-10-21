@@ -82,5 +82,7 @@ d$age_at_visit65<-as.numeric(d$age_at_visit65)
 
 unique(d$id)
 
+
+saveRDS(d, "./data/unshared/derived/map2016/data_sample.rds")
 write.table(d, file="./data/unshared/derived/map2016/hlm_map_sample.dat", row.names=FALSE, sep="\t", quote=FALSE)
 
