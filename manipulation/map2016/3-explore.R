@@ -396,3 +396,37 @@ library(lattice)
 xyplot(mmse ~ year_in_study | id, data=d, as.table=T)
 
 
+###--------------------------------------------------------###########################
+names(data)
+g<- ggplot2::ggplot(data, aes_string(x= "phys_wp", y="percep_speed") ) +
+  geom_point(shape=21, size=5)+
+  stat_smooth(method=lm, se=TRUE)+
+  scale_color_brewer(palette="Set2") 
+  # coord_cartesian(ylim = c(0,15)) +
+g
+
+g<- ggplot2::ggplot(data, aes_string(x= "physical_activity", y="percep_speed") ) +
+  geom_point(shape=21, size=5)+
+  stat_smooth(method=lm, se=TRUE)+
+  scale_color_brewer(palette="Set2") 
+# coord_cartesian(ylim = c(0,15)) +
+g
+
+
+#positively correlated
+
+g<- ggplot2::ggplot(data, aes_string(x= "phys_wp", y="mmse") ) +
+  geom_point(shape=21, size=5)+
+  stat_smooth(method=lm, se=TRUE)+
+  scale_color_brewer(palette="Set2") 
+# coord_cartesian(ylim = c(0,15)) +
+g
+
+g<- ggplot2::ggplot(data, aes_string(x= "physical_activity", y="mmse") ) +
+  geom_point(shape=21, size=5)+
+  stat_smooth(method=lm, se=TRUE)+
+  scale_color_brewer(palette="Set2") 
+# coord_cartesian(ylim = c(0,15)) +
+g
+
+
