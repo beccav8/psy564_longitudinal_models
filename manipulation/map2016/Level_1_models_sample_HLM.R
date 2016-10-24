@@ -149,7 +149,7 @@ fit3<-model_3
 #int= 28.78428 (i.e. mean when year=0), slope(yrs_in_study)= -0.52155 (unit decrease per year)
 #residual var= 5.1564 
 
-
+names(ds0)
 # # % improved from F.E only  = UCMresid_var - model_resid_var / UCMresid_var
 #  ( 11.119  - 5.1564 ) / 11.119
 #  #= 53 %
