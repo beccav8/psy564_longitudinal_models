@@ -71,6 +71,18 @@ fit0<-model_0
 
 #Time variable, Fixed Effects A-------------------------------
 
+##CONDITIONAL ON AGE
+ ##LEVEL 1 WITHIN PERSON
+## CHANGE IN Y FOR A GIVEN INDIVIDUAL ON A GIVEN MEASUREMENT OCCASION AS A FUNCTION OF THAT PERSONS PERFORMANCE FOR AGE=0 (INT)
+##PLUS A SLOPE, I.E RATE OF CHANGE PER ADDITIONAL YEAR OF AGE, PLUS ERROR (EPSILON(ij) -> W/I REDISUAL VARIENCE REMAINING TO BE EXPLAINED 
+##EPSILON(IJ) IS IN THE RANDOM EFFECTS
+
+ ##LEVEL 2 BETWEEN PERSON (I.E. INTERCEPTS AND SLOPES AS OUTCOMES, EITHER ALLOWING SLOPES TO VARY OR NOT)
+    #I.E. MODELING INDIVIDUAL DIFFERENCES IN E.G. INTERCEPT (OR SLOPE) AS A FUNCTION OF THE POPULATION AVERAGE INTERCEPT (Y00) (OR SLOPE Y10) FOR TIME=0
+    # U0i- TELLS US IF THERE ARE INDIVIDUAL DIFFERENCES IN STARTING POINTS REMANING TO BE EXPLAINED AFTER 
+    #(NON ZERO AND SIG MEANS YES, THERE IS AND WE SHOULD ADD ADDITIONAL PREDICTORS)
+    #U1i IF RANDOM EFFECTS
+
 #year in study
 eq_1a <- as.formula("mmse ~ 1 + year_in_study +          
                     ( 1 |id)")
@@ -82,9 +94,12 @@ fit1a<-model_1a
 #AIC=13159.4
 #int= 28.6713  (i.e. mean when year=0), slope(yrs_in_study)= -4.5 (unit decrease per year)
 
+
 # % improved from fully UCM = UCMresid_var - model_resid_var / UCMresid_var
 ( 13.829 - 11.05 ) / 13.829 
 #= 20 %
+#####SIGMA IS A WITHIN PERSON RANDOM EFFECT, THUS THIS IS HOW MUCH WITHIN PERSON
+##### VARIENCE DOES TIME ACCOUNT FOR
 
 #wald test (is the slope sig sif. than 0?) = estimate of FE/SE (and look at distribution)
 # anova(fit0,fit1a) #fit1a fits sig better

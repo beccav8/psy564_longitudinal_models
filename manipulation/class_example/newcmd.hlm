@@ -1,0 +1,25 @@
+#This command file was run with C:\Users\Rebecca\Documents\GitHub\psy564_longitudinal_models\manipulation\class_example\tol.mdm
+NUMIT:100
+STOPVAL:0.0000010000
+NONLIN:n
+LEVEL1:TOL=INTRCPT1+AGE11+RANDOM
+LEVEL2:INTRCPT1=INTRCPT2+RANDOM/
+LEVEL2:AGE11=INTRCPT2+RANDOM/
+LEVEL1WEIGHT:NONE
+LEVEL2WEIGHT:NONE
+VARIANCEKNOWN:NONE
+LEVEL1DELETION:NONE
+RESFIL1:N
+RESFIL2:N
+HETEROL1VAR:n
+ACCEL:5
+LVR:N
+LEV1OLS:10
+MLF:y
+HYPOTH:n
+FIXTAU:3
+CONSTRAIN:N
+GRAPHGAMMAS:C:\Users\Rebecca\Documents\GitHub\psy564_longitudinal_models\manipulation\class_example\grapheq.geq
+OUTPUT:C:\Users\Rebecca\Documents\GitHub\psy564_longitudinal_models\manipulation\class_example\hlm2.html
+FULLOUTPUT:N
+TITLE:no title
