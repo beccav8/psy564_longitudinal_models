@@ -59,7 +59,7 @@ fit0<-model_0
 #int/B0 =26.75, residual (e) = 13.829
 
 #deviance= 13618.0
-#logLik = --6809.0
+#logLik = -6809.0
 #AIC= 13624.0
 
 
@@ -71,18 +71,6 @@ fit0<-model_0
 
 #Time variable, Fixed Effects A-------------------------------
 
-##CONDITIONAL ON AGE
- ##LEVEL 1 WITHIN PERSON
-## CHANGE IN Y FOR A GIVEN INDIVIDUAL ON A GIVEN MEASUREMENT OCCASION AS A FUNCTION OF THAT PERSONS PERFORMANCE FOR AGE=0 (INT)
-##PLUS A SLOPE, I.E RATE OF CHANGE PER ADDITIONAL YEAR OF AGE, PLUS ERROR (EPSILON(ij) -> W/I REDISUAL VARIENCE REMAINING TO BE EXPLAINED 
-##EPSILON(IJ) IS IN THE RANDOM EFFECTS
-
- ##LEVEL 2 BETWEEN PERSON (I.E. INTERCEPTS AND SLOPES AS OUTCOMES, EITHER ALLOWING SLOPES TO VARY OR NOT)
-    #I.E. MODELING INDIVIDUAL DIFFERENCES IN E.G. INTERCEPT (OR SLOPE) AS A FUNCTION OF THE POPULATION AVERAGE INTERCEPT (Y00) (OR SLOPE Y10) FOR TIME=0
-    # U0i- TELLS US IF THERE ARE INDIVIDUAL DIFFERENCES IN STARTING POINTS REMANING TO BE EXPLAINED AFTER 
-    #(NON ZERO AND SIG MEANS YES, THERE IS AND WE SHOULD ADD ADDITIONAL PREDICTORS)
-    #U1i IF RANDOM EFFECTS
-
 #year in study
 eq_1a <- as.formula("mmse ~ 1 + year_in_study +          
                     ( 1 |id)")
@@ -90,7 +78,13 @@ model_1a<- lmerTest::lmer(eq_1a, data=ds0, REML= FALSE)
 lmerTest::summary((model_1a))
 fit1a<-model_1a
 #deviance = 13151.4
+      #should be at least twice as lage as the difference in the number of extra parameters
+      # difference in deviance between NESTED models is a chi-sq distribued
+      # with df being equal to the difference in # est parameters between the two models
+      # if sig, the one with the smalled deviance is better
 #logLik = -6575.7
+      # -2LL how much WORSE this model is from the best possible (Saturated) model
+      # closer to 0 is best
 #AIC=13159.4
 #int= 28.6713  (i.e. mean when year=0), slope(yrs_in_study)= -4.5 (unit decrease per year)
 
@@ -117,20 +111,30 @@ fit1b <-model_1b
 #logLik = -6568.5
 #AIC= 13145.0
 #int= 26.72  (i.e. mean when year=0), slope(yrs_in_study)= -0.38110 (unit decrease per increase in unit age)
+( 13.829 - 11.119 ) / 13.829 #= 19.6 % improved 
 
-anova(fit1a,fit1b) #sig?? why 
 
 #Time variable, Fixed Effects C-----------------------------
-
+range(ds0$age_at_visit, na.rm=TRUE)
+hist(ds0$age_at_visit)
+age_at_visit75<- (ds0$age_at_visit) - (75)
 #age at visit, centered at 65 
-eq_1c <- as.formula("mmse ~ 1 + age_at_visit65 +          
+eq_1c <- as.formula("mmse ~ 1 + age_at_visit75 +          
                     (1  |id)")
 model_1c<- lmerTest::lmer(eq_1c, data=ds0, REML= FALSE) 
 lmerTest::summary((model_1c))
 fit1c<-model_1c
 
-anova(fit1b, fit1c)#NS
+#deviance = 13137.0
+#logLik = -6568.5
+#AIC= 13145.0
+#int= 29.83518  (i.e. mean when year=0), slope(yrs_in_study)= -0.38110 (unit decrease per increase in unit age)
+( 13.829 - 11.119 ) / 13.829 #= 19.6 % improved 
 
+
+# the deviance of the model with age mean centered, and age centered at 75 was the lowest
+#because these models have the same number of parameters being estimated, I will chose to use 
+#age mean centered as my time variable 
 
 #FIXED-AND-RANDOM-EFFECTS-----------------------------------------------------------
 
@@ -151,54 +155,74 @@ fit2<-model_2
 #int= 27.97665 (i.e. mean when year=0), slope(yrs_in_study)= -0.40539 (unit decrease per year)
 #residual var =  5.3849
 
-#year in study
-eq_3 <- as.formula("mmse ~ 1 + year_in_study +          
-                   ( 1 + year_in_study |id)")
-model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE) 
+# chisq= deviance (int) - deviance(int& slope)
+#df= dif in number of parameters = df
+
+13137.0 - 11995.9
+#1141, df= 6-5 = 1 #for sure significant 
+
+
+
+test <- as.formula("physical_activity ~ 1 +            
+                   (1  |id)")
+model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)
+lmerTest::summary((model_test))
+
+#ICC = 42 % between person varience 
+4.727 / (4.727 + 6.578)
+
+
+# ##--adding-PA
+
+# yi= B0j + B1j(time) + B2j(PA) + eij
+#B0j = gamma00 + gamme01 + U0j #int
+#B1j = gamma10 + gamme11 + U1j #slope age
+#B2j = gamma10 + gamme11 +    #slope PA
+#person mean centered i.e. fluctuation (i.e. at times when people exercise more than usual)
+eq_3 <- as.formula("mmse ~ 1 + age_at_visit_meanc + phys_wp +
+                   ( 1 + age_at_visit_meanc  |id)")
+model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)
 lmerTest::summary((model_3))
 fit3<-model_3
+# deviance = 11420.1
+#int= 27.95
+#slope (age) = -.362
+#slope (phys_wp) = .047
 
-#deviance =  11839.6 
-#logLik = -5919.8
-#AIC= 11851.6 
-#int= 28.78428 (i.e. mean when year=0), slope(yrs_in_study)= -0.52155 (unit decrease per year)
-#residual var= 5.1564 
+#is does PA sig improve the model?
+11995.9 - 11420.1
+575.8 #df= 8-6 = 2   #sig better fit with F.E of within person PA
 
-names(ds0)
-# # % improved from F.E only  = UCMresid_var - model_resid_var / UCMresid_var
-#  ( 11.119  - 5.1564 ) / 11.119
-#  #= 53 %
-# 
-# #wald test (is the slope sig sif. than 0?) = estimate of FE/SE (and look at distribution)
-# anova(fit1a,fit2) #fit2 fits sig better, lower AAIC and logLik
-# #can compre models that only differ in the random effects this way, but a walk test is needed
-# #if fixed effects differ
-# 
-# 
-# ##--adding-PA
-# 
-# eq_3 <- as.formula("mmse ~ 1 + year_in_study + phys_wp +       
-#                    ( 1 + year_in_study  |id)")
-# model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_3))
-# fit3<-model_3
-# #how do i do a walk test to comapre this to model 2?
-# #ie. added a fixed effect
-# 
-# 
-# 
-# ##--adding-PA
-# 
-# eq_4 <- as.formula("mmse ~ 1 + year_in_study + phys_wp +       
-#                    ( 1 + year_in_study + phys_wp |id)")
-# model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_4))
-# fit4<-model_4
-# 
-# anova(fit3,fit4)
-# # Df       AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
-# #fit3  7 54718 54769 -27352    54704                             
-# #fit4 10 54681 54754 -27330    54661 43.766      3  1.692e-09 ***
+
+#grand mean centered (i.e do people who exercise more than the average person)
+hist(ds0$phys_bp_mean)
+
+eq_3a <- as.formula("mmse ~ 1 + age_at_visit_meanc + phys_bp_mean +
+                   ( 1 + age_at_visit_meanc  |id)")
+model_3a<- lmerTest::lmer(eq_3a, data=ds0, REML= FALSE)
+lmerTest::summary((model_3a))
+fit3<-model_3a
+#deviance = 11419.8
+#int= 27.954
+#slope age = -.362
+# slope PA bP = 0.046
+
+## the same as WP centered?
+
+
+hist(ds0$phys_bp_mean)
+hist(ds0$phys_wp)
+
+eq_3b <- as.formula("mmse ~ 1 + age_at_visit_meanc + phys_bp_mean + phys_wp +
+                    ( 1 + age_at_visit_meanc  |id)")
+model_3b<- lmerTest::lmer(eq_3b, data=ds0, REML= FALSE)
+lmerTest::summary((model_3b))
+fit3<-model_3b
+
+
+
+
+
 # 
 # 
 # 
