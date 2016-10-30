@@ -33,6 +33,7 @@ requireNamespace("car") # For it's `recode()` function.
 # ---- load-data ---------------------------------------------------------------
 # load the product of 0-ellis-island.R,  a list object containing data and metadata
 dto <- readRDS("./data/unshared/derived/map2016/dto_raw.rds")
+
 # ---- inspect-data -------------------------------------------------------------
 # the list is composed of the following elements
 names(dto)

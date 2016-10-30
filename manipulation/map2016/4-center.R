@@ -39,7 +39,8 @@ for(i in unique(data$id)) {
     data$phys_bp_mean[data$id==i][j]<- ( (data$physical_activity[data$id==i][j]) - (mean(data$physical_activity, na.rm =TRUE)) ) 
     
   } }
-#mean=2.94
+
+
 data$physical_activity[data$id==21305588]
 data$phys_bp_mean[data$id==21305588]
 ids <- sample(unique(data$id),3)
@@ -78,6 +79,31 @@ data$physical_activity[data$id==21305588]
 data$phys_wp[data$id==21305588]
 
 
+##------- center-pss------------------------------------------------------
+ # between person
+for(i in unique(data$id)) {
+  for (j in 1:length(data$pss[data$id==i])) {
+    
+    data$pss_bp_meanc[data$id==i][j]<- ( (data$pss[data$id==i][j]) - (mean(data$pss, na.rm =TRUE)) )
+    
+  } }
+
+data$pss[data$id==21305588]
+data$pss_bp_meanc[data$id==21305588]
+
+
+
+  # within person
+
+for(i in unique(data$id)) {
+  for (j in 1:length(data$pss[data$id==i])) {
+    
+    data$pss_wp[data$id==i][j]<- (data$pss[data$id==i][j]) - (mean(data$pss[data$id==i], na.rm =TRUE))
+  } }
+
+data$pss[data$id==21305588]
+data$pss_wp[data$id==21305588]
+
 #######################################-center-age-#################################################
 
 #center at mean age-------------------------
@@ -93,17 +119,66 @@ data$age_at_visit_meanc[data$id==21305588]
 
 range(data$age_at_visit, na.rm=TRUE) #53-107
 histogram(data$age_at_visit)
-#choose 65
+#choose 75
 
-data$age_at_visit65<- (data$age_at_visit) - (65)
+data$age_at_visit65<- (data$age_at_visit) - (75)
 
 
 data$age_at_visit[data$id==21305588]
 data$age_at_visit65[data$id==21305588]
 
 
+##-- select only the variables I want (i.e. further refine)
+
 names(data)
 
+myvars<- c("id","year_in_study", "dementia", "age_bl","age_at_visit","edu", "msex","race","apoe",
+           "episodic","percep_speed","semantic","wm","global","dig_b","dig_f","mmse",
+           "nle","pss","physical_activity", "al_count_BL","al_count_wave","al_catg_BL", "al_catg_wave", "pss_bp_meanc", "pss_wp", 
+           "social_isolation", "phys_bp_mean","phys_bp_median","phys_wp", "age_at_visit_meanc","age_at_visit65")
 
-saveRDS(data, "./data/unshared/derived/map2016/data_centered.rds")
+
+d <- data[myvars]
+
+
+d$id<-as.numeric(d$id)
+d$year_in_study<-as.numeric(d$year_in_study)
+d$dementia<-as.numeric(d$dementia)
+d$age_bl<-as.numeric(d$age_bl)
+d$age_at_visit<-as.numeric(d$age_at_visit)
+d$edu<-as.numeric(d$edu)
+d$msex<-as.numeric(d$msex)
+d$race<-as.numeric(d$race)
+d$apoe<-as.numeric(d$apoe)
+d$episodic<-as.numeric(d$episodic)
+d$percep_speed<-as.numeric(d$percep_speed)
+d$semantic<-as.numeric(d$semantic)
+d$wm<-as.numeric(d$wm)
+d$global<-as.numeric(d$global)
+d$dig_b<-as.numeric(d$dig_b)
+d$dig_f<-as.numeric(d$dig_f)
+d$mmse<-as.numeric(d$mmse)
+d$nle<-as.numeric(d$mmse)
+d$pss<-as.numeric(d$pss)
+d$physical_activity<-as.numeric(d$physical_activity)
+d$al_count_BL<-as.numeric(d$al_count_BL)
+d$al_count_wave<-as.numeric(d$al_count_wave)
+d$al_catg_BL<-as.numeric(d$al_catg_BL)
+d$al_catg_wave<-as.numeric(d$al_catg_wave)
+d$social_isolation<-as.numeric(d$social_isolation)
+d$phys_bp_mean<-as.numeric(d$phys_bp_mean)
+d$phys_bp_median<-as.numeric(d$phys_bp_median)
+d$phys_wp<-as.numeric(d$phys_wp)
+d$age_at_visit_meanc<-as.numeric(d$age_at_visit_meanc)
+d$age_at_visit65<-as.numeric(d$age_at_visit65)
+d$pss_wp<-as.numeric(d$pss_wp)
+d$pss_bp_meanc<-as.numeric(d$pss_bp_meanc)
+
+
+length(unique(d$id))  #1853 participants 
+
+
+saveRDS(d, "./data/unshared/derived/map2016/map_full_bio_centered.rds")
+
+write.table(d, file="./data/unshared/derived/map2016/map_full_bio_centered", row.names=FALSE, sep="\t", quote=FALSE)
 

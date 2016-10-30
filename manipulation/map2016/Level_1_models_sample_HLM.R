@@ -1,3 +1,12 @@
+# # # The purpose of this script is to create a data object (dto) which will hold all data and metadata.
+# # # Run the lines below to stitch a basic html output.
+# knitr::stitch_rmd(
+#   script="./manipulation/map2016/Level_1_models_sample_HLM.R",
+#   output="./manipulation/map2016/output/level1_models_sample.md"
+# )
+# # The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
+#
+
 
 # Clear memory from previous runs
 base::rm(list=base::ls(all=TRUE))
@@ -38,7 +47,7 @@ getwd()
 # @knitr declare-globals ---------------------------------------------------------
 # @knitr declare-globals ---------------------------------------------------------
 
-path_input0  <- "./data/unshared/derived/map2016/data_sample.rds" 
+path_input0  <- "./data/unshared/derived/map2016/map_sample_bio_centered.rds" 
 
 # @knitr load-data ---------------------------------------------------------------
 ds0  <- readRDS(path_input0) #total raw data  
@@ -210,28 +219,52 @@ fit3<-model_3a
 ## the same as WP centered?
 
 
-hist(ds0$phys_bp_mean)
-hist(ds0$phys_wp)
-
-eq_3b <- as.formula("mmse ~ 1 + age_at_visit_meanc + phys_bp_mean + phys_wp +
-                    ( 1 + age_at_visit_meanc  |id)")
-model_3b<- lmerTest::lmer(eq_3b, data=ds0, REML= FALSE)
-lmerTest::summary((model_3b))
-fit3<-model_3b
-
-
-
-
-
+# hist(ds0$phys_bp_mean)
+# hist(ds0$phys_wp)
 # 
-# 
-# 
-# 
-# #level2 assignment ?
-# #including average Pss 
-# eq_4 <- as.formula("mmse ~ 1 + year_in_study + phys_wp + pss +      
-#                    ( 1 + year_in_study + phys_wp |id)")
-# model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_4))
-# fit4<-model_4
-# 
+# eq_3b <- as.formula("mmse ~ 1 + age_at_visit_meanc + phys_bp_mean + phys_wp +
+#                     ( 1 + age_at_visit_meanc  |id)")
+# model_3b<- lmerTest::lmer(eq_3b, data=ds0, REML= FALSE)
+# lmerTest::summary((model_3b))
+# fit3<-model_3b
+
+# ##--adding- stress 
+
+# yi= B0j + B1j(time) + B2j(PAwp) + PSS  + eij
+#B0j = gamma00 + gamme01 + U0j  #int
+#B1j = gamma10 + gamme11 + U1j  #slope age
+#B2j = gamma20 + gamme21 +      #slope PA
+#B3j = gamma30 + gamme31 +     #slope stress
+
+
+
+eq_4 <- as.formula("mmse ~ 1 + age_at_visit_meanc + phys_wp + pss_wp +
+                   ( 1 + age_at_visit_meanc  |id)")
+model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE)
+lmerTest::summary((model_4))
+fit4<-model_4
+# deviance = 3177.7
+#int= 27.89333
+#slope (age) = -0.14063
+#slope (phys_wp) = 0.03018 
+#slope (pss_bp)  = 0.36   ## why is this positive
+
+#is does PA sig improve the model?
+11420.2 - 3177.7
+575.8 #df= 10-8 = 2   #sig better fit with Phys_wp and pss_bp
+
+
+g1<- ggplot2::ggplot(ds0, aes_string(x= "age_at_visit_meanc", y="pss_bp_meanc")) +
+  geom_point(shape=21, size=5) +
+  stat_smooth(method=lm, se=FALSE)
+g1
+
+p1 <- ggplot(ds0, aes(x=age_at_visit_meanc, y=pss_bp_meanc, group=id)) +
+  geom_line() 
+  
+p1
+
+
+
+
+
