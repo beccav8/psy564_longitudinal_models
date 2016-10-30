@@ -41,5 +41,5 @@ length(unique(d$id))
 
 
 saveRDS(d, "./data/unshared/derived/map2016/map_sample_bio_centered.rds")
-write.table(d, file="./data/unshared/derived/map_sample_bio_centered.dat", row.names=FALSE, sep="\t", quote=FALSE)
+write.table(d, file="./data/unshared/derived/map2016/map_sample_bio_centered.dat", row.names=FALSE, sep="\t", quote=FALSE)
 
