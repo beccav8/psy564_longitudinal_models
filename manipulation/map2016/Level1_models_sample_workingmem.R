@@ -1,9 +1,9 @@
 # # The purpose of this script is to create a data object (dto) which will hold all data and metadata.
 # # Run the lines below to stitch a basic html output.
-knitr::stitch_rmd(
-  script="./manipulation/map2016/Level1_models_sample_workingmem.R",
-  output="./manipulation/map2016/output/level1_models_wm_sample.md"
-)
+# knitr::stitch_rmd(
+#   script="./manipulation/map2016/Level1_models_sample_workingmem.R",
+#   output="./manipulation/map2016/output/level1_models_wm_sample.md"
+# )
 # The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
 
 # ----- load-source ------

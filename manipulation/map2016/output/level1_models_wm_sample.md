@@ -469,8 +469,8 @@ sessionInfo()## R version 3.3.1 (2016-06-21)
 ## [31] Hmisc_3.17-4        scales_0.4.0        MASS_7.3-45        
 ## [34] splines_3.3.1       abind_1.4-3         assertthat_0.1     
 ## [37] dichromat_2.0-0     testit_0.5          colorspace_1.2-6   
-## [40] stringi_1.1.1       acepack_1.3-3.3     munsell_0.4.3      
-## [43] chron_2.3-47
-Sys.time()## [1] "2016-10-30 13:10:54 PDT"
+## [40] stringi_1.1.1       acepack_1.3-3.3     lazyeval_0.2.0     
+## [43] munsell_0.4.3       markdown_0.7.7      chron_2.3-47
+Sys.time()## [1] "2016-10-30 17:27:21 PDT"
 
 
