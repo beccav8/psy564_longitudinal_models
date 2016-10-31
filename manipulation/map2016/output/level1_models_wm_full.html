@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>The purpose of this script is to create a data object (dto) which will hold all data and metadata.# Run the lines below to stitch a basic html output.knitr::stitch_rmd(</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This report was automatically generated with the R package <strong>knitr</strong>
+(version 1.13).</p>
+
+<h1>The purpose of this script is to create a data object (dto) which will hold all data and metadata.# Run the lines below to stitch a basic html output.knitr::stitch_rmd(</h1>
+
+<p>script=&ldquo;./manipulation/map2016/Level1_models_full_workingmem.R&rdquo;,
+  output=&ldquo;./manipulation/map2016/output/level1_models_wm_full.md&rdquo;
+)## </p>
+
+<h2>processing file: Level1_models_full_workingmem.Rmd</h2>
+
+<h2>Error in parse_block(g[-1], g[1], params.src): duplicate label &#39;load-source&#39;</h2>
+
+<h1>The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!</h1>
+
+<h1>Clear memory from previous runsbase::rm(list=base::ls(all=TRUE))cat(&ldquo;\f&rdquo;)# Attach these packages so their functions don&#39;t need to be qualified: <a href="http://r-pkgs.had.co.nz/namespace.html#search-pathlibrary(magrittr)">http://r-pkgs.had.co.nz/namespace.html#search-pathlibrary(magrittr)</a> # enables piping : %&gt;%library(lmerTest)library(outliers)# Call <code>base::source()</code> on any repo file that defines functions needed below.  Ideally, no real operations are performed.source(&ldquo;./scripts/common-functions.R&rdquo;) # used in multiple reportssource(&ldquo;./scripts/graph-presets.R&rdquo;)source(&ldquo;./scripts/general-graphs.R&rdquo;)  #in scripts foldersource(&ldquo;./scripts/specific-graphs.R&rdquo;)source(&ldquo;./scripts/specific-graphs-pred.R&rdquo;)source(&ldquo;./scripts/graphs-pred.R&rdquo;)source(&ldquo;./scripts/graphs-predVID.R&rdquo;)source(&ldquo;./scripts/functions-for-glm-models.R&rdquo;)source(&ldquo;./scripts/multiplot-function.R&rdquo;)# source(&ldquo;./scripts/graph-presets.R&rdquo;) # fonts, colors, themes# Verify these packages are available on the machine, but their functions need to be qualified: <a href="http://r-pkgs.had.co.nz/namespace.html#search-pathrequireNamespace(%22ggplot2%22)">http://r-pkgs.had.co.nz/namespace.html#search-pathrequireNamespace(&ldquo;ggplot2&rdquo;)</a> # graphing# requireNamespace(&ldquo;readr&rdquo;) # data inputrequireNamespace(&ldquo;tidyr&rdquo;) # data manipulationrequireNamespace(&ldquo;dplyr&rdquo;) # Avoid attaching dplyr, b/c its function names conflict with a lot of packages (esp base, stats, and plyr).requireNamespace(&ldquo;testit&rdquo;)# For asserting conditions meet expected patterns.requireNamespace(&ldquo;nlme&rdquo;) # estimate mixed models | esp. gls()requireNamespace(&ldquo;lme4&rdquo;) # estimate mixed models | esp. lmer()requireNamespace(&ldquo;arm&rdquo;)  # process model objectsgetwd()## [1] &ldquo;C:/Users/Rebecca/Documents/GitHub/psy564_longitudinal_models&rdquo;</h1>
+
+<p>path_input0  &lt;- &ldquo;./data/unshared/derived/map2016/map_full_bio_centered.rds&rdquo; 
+ds0  &lt;- readRDS(path_input0) #total raw data  names(ds0)##  [1] &ldquo;id&rdquo;                 &ldquo;year_in_study&rdquo;      &ldquo;dementia&rdquo;          </p>
+
+<h2>[4] &ldquo;age_bl&rdquo;             &ldquo;age_at_visit&rdquo;       &ldquo;edu&rdquo;</h2>
+
+<h2>[7] &ldquo;msex&rdquo;               &ldquo;race&rdquo;               &ldquo;apoe&rdquo;</h2>
+
+<h2>[10] &ldquo;episodic&rdquo;           &ldquo;percep_speed&rdquo;       &ldquo;semantic&rdquo;</h2>
+
+<h2>[13] &ldquo;wm&rdquo;                 &ldquo;global&rdquo;             &ldquo;dig_b&rdquo;</h2>
+
+<h2>[16] &ldquo;dig_f&rdquo;              &ldquo;mmse&rdquo;               &ldquo;nle&rdquo;</h2>
+
+<h2>[19] &ldquo;pss&rdquo;                &ldquo;physical_activity&rdquo;  &ldquo;al_count_BL&rdquo;</h2>
+
+<h2>[22] &ldquo;al_count_wave&rdquo;      &ldquo;al_catg_BL&rdquo;         &ldquo;al_catg_wave&rdquo;</h2>
+
+<h2>[25] &ldquo;pss_bp_meanc&rdquo;       &ldquo;pss_wp&rdquo;             &ldquo;social_isolation&rdquo;</h2>
+
+<h2>[28] &ldquo;phys_bp_mean&rdquo;       &ldquo;phys_bp_median&rdquo;     &ldquo;phys_wp&rdquo;</h2>
+
+<h2>[31] &ldquo;age_at_visit_meanc&rdquo; &ldquo;age_at_visit65&rdquo;</h2>
+
+<p>#yi= B0 + eirange(ds0$wm, na.rm=TRUE)  #-3.57 to 2.34## [1] -3.568466  2.694933
+range(ds0$pss_bp_meanc, na.rm=TRUE)## [1] -2.024697  1.725303
+hist(ds0$wm) #relatively normal distfigure/Fully unconditional Level 1 model/ UCM-1.pdfeq_0 &lt;- as.formula(&ldquo;wm ~ 1 +<br/>
+                   (1  |id)&rdquo;)model_0&lt;- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) lmerTest::summary((model_0))## summary from lme4 is returned</p>
+
+<h2>some computational error has occurred in lmerTest</h2>
+
+<h2>Linear mixed model fit by maximum likelihood  [&#39;lmerMod&#39;]</h2>
+
+<h2>Formula: wm ~ 1 + (1 | id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>20997.3  21019.3 -10495.7  20991.3    11251</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-6.3576 -0.4920  0.0290  0.5469  4.0470</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name        Variance Std.Dev.</h2>
+
+<h2>id       (Intercept) 0.5480   0.7403</h2>
+
+<h2>Residual             0.2534   0.5034</h2>
+
+<h2>Number of obs: 11254, groups:  id, 1843</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error t value</h2>
+
+<h2>(Intercept) -0.12210    0.01829  -6.674</h2>
+
+<p>fit0&lt;-model_0#yi= B0 + ei</p>
+
+<h1>yi= B0j + B1j(time) + eij#B0j = gamma00 + gamme01 + U0j #int#B1j = gamma10 + gamme11  &mdash;  #slope#Time variable, Fixed Effects A&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-#year in studyeq_1a &lt;- as.formula(&ldquo;wm ~ 1 + year_in_study +</h1>
+
+<pre><code>                ( 1 |id)&quot;)model_1a&lt;- lmerTest::lmer(eq_1a, data=ds0, REML= FALSE) lmerTest::summary((model_1a))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+</code></pre>
+
+<h2>approximations to degrees of freedom [lmerMod]</h2>
+
+<h2>Formula: wm ~ 1 + year_in_study + (1 | id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>19929.1  19958.4  -9960.6  19921.1    11250</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-6.2506 -0.5123  0.0307  0.5589  4.0701</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name        Variance Std.Dev.</h2>
+
+<h2>id       (Intercept) 0.5847   0.7647</h2>
+
+<h2>Residual             0.2241   0.4734</h2>
+
+<h2>Number of obs: 11254, groups:  id, 1843</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error         df t value Pr(&gt;|t|)</h2>
+
+<h2>(Intercept)    2.245e-02  1.922e-02  1.998e+03   1.168    0.243</h2>
+
+<h2>year_in_study -5.203e-02  1.537e-03  9.892e+03 -33.847   &lt;2e-16 ***</h2>
+
+<h2>&mdash;</h2>
+
+<h2>Signif. codes:  0 &#39;<em>**&#39; 0.001 &#39;</em><em>&#39; 0.01 &#39;</em>&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</h2>
+
+<h2>Correlation of Fixed Effects:</h2>
+
+<h2>(Intr)</h2>
+
+<h2>year_n_stdy -0.224</h2>
+
+<p>fit1a&lt;-model_1a#Time variable, Fixed Effects B&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;#age at visit, mean centered eq_1b &lt;- as.formula(&quot;wm ~ 1 + age_at_visit_meanc +<br/>
+                    (1  |id)&rdquo;)model_1b&lt;- lmerTest::lmer(eq_1b, data=ds0, REML= FALSE) lmerTest::summary((model_1b))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite</p>
+
+<h2>approximations to degrees of freedom [lmerMod]</h2>
+
+<h2>Formula: wm ~ 1 + age_at_visit_meanc + (1 | id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>19996.1  20025.4  -9994.0  19988.1    11250</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-6.2833 -0.5067  0.0305  0.5646  4.1232</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name        Variance Std.Dev.</h2>
+
+<h2>id       (Intercept) 0.5892   0.7676</h2>
+
+<h2>Residual             0.2254   0.4748</h2>
+
+<h2>Number of obs: 11254, groups:  id, 1843</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error         df t value Pr(&gt;|t|)</h2>
+
+<h2>(Intercept)        -1.453e-01  1.881e-02  1.725e+03  -7.725 1.87e-14 ***</h2>
+
+<h2>age_at_visit_meanc -4.342e-02  1.326e-03  1.028e+04 -32.749  &lt; 2e-16 ***</h2>
+
+<h2>&mdash;</h2>
+
+<h2>Signif. codes:  0 &#39;<em>**&#39; 0.001 &#39;</em><em>&#39; 0.01 &#39;</em>&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</h2>
+
+<h2>Correlation of Fixed Effects:</h2>
+
+<h2>(Intr)</h2>
+
+<h2>ag_t_vst_mn 0.036</h2>
+
+<p>fit1b &lt;-model_1b</p>
+
+<h1>yi= B0j + B1j(time) + eij#B0j = gamma00 + gamme01 + U0j #int#B1j = gamma10 + gamme11 + U1j #slope#age_centeredeq_2 &lt;- as.formula(&ldquo;wm ~ 1 + age_at_visit_meanc +</h1>
+
+<pre><code>               ( 1 + age_at_visit_meanc |id)&quot;)model_2&lt;- lmerTest::lmer(eq_2, data=ds0, REML= FALSE) lmerTest::summary((model_2))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+</code></pre>
+
+<h2>approximations to degrees of freedom [lmerMod]</h2>
+
+<h2>Formula: wm ~ 1 + age_at_visit_meanc + (1 + age_at_visit_meanc | id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>19226.7  19270.7  -9607.3  19214.7    11248</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-6.9305 -0.5258  0.0159  0.5581  3.9241</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name               Variance Std.Dev. Corr</h2>
+
+<h2>id       (Intercept)        0.550532 0.74198</h2>
+
+<h2>age_at_visit_meanc 0.003821 0.06182  0.16</h2>
+
+<h2>Residual                    0.184578 0.42963</h2>
+
+<h2>Number of obs: 11254, groups:  id, 1843</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error         df t value Pr(&gt;|t|)</h2>
+
+<h2>(Intercept)        -8.241e-02  1.955e-02  1.622e+03  -4.216 2.62e-05 ***</h2>
+
+<h2>age_at_visit_meanc -4.554e-02  2.192e-03  1.116e+03 -20.771  &lt; 2e-16 ***</h2>
+
+<h2>&mdash;</h2>
+
+<h2>Signif. codes:  0 &#39;<em>**&#39; 0.001 &#39;</em><em>&#39; 0.01 &#39;</em>&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</h2>
+
+<h2>Correlation of Fixed Effects:</h2>
+
+<h2>(Intr)</h2>
+
+<h2>ag_t_vst_mn 0.119</h2>
+
+<p>fit2&lt;-model_2
+#WMtest &lt;- as.formula(&quot;wm ~ 1 +<br/>
+                   (1  |id)&rdquo;)model_test&lt;- lmerTest::lmer(test, data=ds0, REML= FALSE)lmerTest::summary((model_test))## summary from lme4 is returned</p>
+
+<h2>some computational error has occurred in lmerTest</h2>
+
+<h2>Linear mixed model fit by maximum likelihood  [&#39;lmerMod&#39;]</h2>
+
+<h2>Formula: wm ~ 1 + (1 | id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>20997.3  21019.3 -10495.7  20991.3    11251</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-6.3576 -0.4920  0.0290  0.5469  4.0470</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name        Variance Std.Dev.</h2>
+
+<h2>id       (Intercept) 0.5480   0.7403</h2>
+
+<h2>Residual             0.2534   0.5034</h2>
+
+<h2>Number of obs: 11254, groups:  id, 1843</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error t value</h2>
+
+<h2>(Intercept) -0.12210    0.01829  -6.674</h2>
+
+<p>#PAtest &lt;- as.formula(&ldquo;physical_activity ~ 1 +<br/>
+                   (1  |id)&rdquo;)model_test&lt;- lmerTest::lmer(test, data=ds0, REML= FALSE)lmerTest::summary((model_test))## summary from lme4 is returned</p>
+
+<h2>some computational error has occurred in lmerTest</h2>
+
+<h2>Linear mixed model fit by maximum likelihood  [&#39;lmerMod&#39;]</h2>
+
+<h2>Formula: physical_activity ~ 1 + (1 | id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>56360.2  56382.2 -28177.1  56354.2    11230</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-4.7893 -0.4711 -0.1748  0.3329 11.1622</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name        Variance Std.Dev.</h2>
+
+<h2>id       (Intercept) 5.627    2.372</h2>
+
+<h2>Residual             6.741    2.596</h2>
+
+<h2>Number of obs: 11233, groups:  id, 1848</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error t value</h2>
+
+<h2>(Intercept)  2.92178    0.06286   46.48</h2>
+
+<p>#Stresstest &lt;- as.formula(&ldquo;pss ~ 1 +<br/>
+                   (1  |id)&rdquo;)model_test&lt;- lmerTest::lmer(test, data=ds0, REML= FALSE)lmerTest::summary((model_test))## summary from lme4 is returned</p>
+
+<h2>some computational error has occurred in lmerTest</h2>
+
+<h2>Linear mixed model fit by maximum likelihood  [&#39;lmerMod&#39;]</h2>
+
+<h2>Formula: pss ~ 1 + (1 | id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>4636.2   4654.5  -2315.1   4630.2     3324</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-4.2420 -0.4038  0.0213  0.5138  4.3520</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name        Variance Std.Dev.</h2>
+
+<h2>id       (Intercept) 0.07515  0.2741</h2>
+
+<h2>Residual             0.18618  0.4315</h2>
+
+<h2>Number of obs: 3327, groups:  id, 1006</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error t value</h2>
+
+<h2>(Intercept)   2.0213     0.0121     167</h2>
+
+<h1>yi= B0j + B1j(time) + B2j(PA) + eij#B0j = gamma00 + gamme01 + U0j #int#B1j = gamma10 + gamme11 + U1j #slope age#B2j = gamma10 + gamme11 +    #slope PA#person mean centered i.e. fluctuation (i.e. at times when people exercise more than usual)eq_3 &lt;- as.formula(&ldquo;wm ~ 1 + age_at_visit_meanc + phys_wp +</h1>
+
+<pre><code>               ( 1 + age_at_visit_meanc  |id)&quot;)model_3&lt;- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)lmerTest::summary((model_3))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+</code></pre>
+
+<h2>approximations to degrees of freedom [lmerMod]</h2>
+
+<h2>Formula:</h2>
+
+<h2>wm ~ 1 + age_at_visit_meanc + phys_wp + (1 + age_at_visit_meanc |      id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>18507.4  18558.6  -9246.7  18493.4    11057</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-7.0135 -0.5240  0.0122  0.5598  3.7963</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name               Variance Std.Dev. Corr</h2>
+
+<h2>id       (Intercept)        0.537180 0.73293</h2>
+
+<h2>age_at_visit_meanc 0.003033 0.05507  0.16</h2>
+
+<h2>Residual                    0.179650 0.42385</h2>
+
+<h2>Number of obs: 11064, groups:  id, 1840</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error         df t value Pr(&gt;|t|)</h2>
+
+<h2>(Intercept)        -8.400e-02  1.918e-02  1.626e+03  -4.381 1.26e-05 ***</h2>
+
+<h2>age_at_visit_meanc -4.170e-02  2.060e-03  1.062e+03 -20.238  &lt; 2e-16 ***</h2>
+
+<h2>phys_wp             4.767e-03  1.795e-03  9.085e+03   2.655  0.00795 **</h2>
+
+<h2>&mdash;</h2>
+
+<h2>Signif. codes:  0 &#39;<em>**&#39; 0.001 &#39;</em><em>&#39; 0.01 &#39;</em>&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</h2>
+
+<h2>Correlation of Fixed Effects:</h2>
+
+<h2>(Intr) ag<em>t</em>_</h2>
+
+<h2>ag_t_vst_mn  0.117</h2>
+
+<h2>phys_wp     -0.004  0.074</h2>
+
+<p>fit3&lt;-model_3#grand mean centered (more exercise than average)eq_3a &lt;- as.formula(&quot;wm ~ 1 + age_at_visit_meanc + phys_bp_mean +
+                    ( 1 + age_at_visit_meanc  |id)&rdquo;)model_3a&lt;- lmerTest::lmer(eq_3a, data=ds0, REML= FALSE)lmerTest::summary((model_3a))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite</p>
+
+<h2>approximations to degrees of freedom [lmerMod]</h2>
+
+<h2>Formula:</h2>
+
+<h2>wm ~ 1 + age_at_visit_meanc + phys_bp_mean + (1 + age_at_visit_meanc |</h2>
+
+<h2>id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>18507.3  18558.5  -9246.7  18493.3    11057</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-7.0121 -0.5243  0.0114  0.5597  3.7965</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name               Variance Std.Dev. Corr</h2>
+
+<h2>id       (Intercept)        0.536571 0.73251</h2>
+
+<h2>age_at_visit_meanc 0.003035 0.05509  0.16</h2>
+
+<h2>Residual                    0.179664 0.42387</h2>
+
+<h2>Number of obs: 11064, groups:  id, 1840</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error         df t value Pr(&gt;|t|)</h2>
+
+<h2>(Intercept)        -8.368e-02  1.917e-02  1.625e+03  -4.366 1.34e-05 ***</h2>
+
+<h2>age_at_visit_meanc -4.162e-02  2.063e-03  1.067e+03 -20.172  &lt; 2e-16 ***</h2>
+
+<h2>phys_bp_mean        4.651e-03  1.744e-03  1.004e+04   2.667  0.00767 **</h2>
+
+<h2>&mdash;</h2>
+
+<h2>Signif. codes:  0 &#39;<em>**&#39; 0.001 &#39;</em><em>&#39; 0.01 &#39;</em>&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</h2>
+
+<h2>Correlation of Fixed Effects:</h2>
+
+<h2>(Intr) ag<em>t</em>_</h2>
+
+<h2>ag_t_vst_mn 0.116</h2>
+
+<h2>phys_bp_men 0.001  0.088</h2>
+
+<p>fit3&lt;-model_3a#barley changed the model
+#person mean centered eq_4 &lt;- as.formula(&ldquo;wm ~ 1 + age_at_visit_meanc + pss_wp +
+                   ( 1 + age_at_visit_meanc  |id)&rdquo;)model_4&lt;- lmerTest::lmer(eq_4, data=ds0, REML= FALSE)lmerTest::summary((model_4))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite</p>
+
+<h2>approximations to degrees of freedom [lmerMod]</h2>
+
+<h2>Formula: wm ~ 1 + age_at_visit_meanc + pss_wp + (1 + age_at_visit_meanc |</h2>
+
+<h2>id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>5470.9   5513.7  -2728.5   5456.9     3295</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-3.8258 -0.5073 -0.0004  0.5185  3.8713</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name               Variance  Std.Dev. Corr</h2>
+
+<h2>id       (Intercept)        0.4216304 0.64933</h2>
+
+<h2>age_at_visit_meanc 0.0006666 0.02582  -0.07</h2>
+
+<h2>Residual                    0.1558366 0.39476</h2>
+
+<h2>Number of obs: 3302, groups:  id, 1002</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error         df t value Pr(&gt;|t|)</h2>
+
+<h2>(Intercept)         1.768e-02  2.297e-02  9.437e+02   0.770    0.442</h2>
+
+<h2>age_at_visit_meanc -2.002e-02  2.509e-03  4.911e+02  -7.977 1.07e-14 ***</h2>
+
+<h2>pss_wp             -7.749e-03  1.953e-02  2.247e+03  -0.397    0.692</h2>
+
+<h2>&mdash;</h2>
+
+<h2>Signif. codes:  0 &#39;<em>**&#39; 0.001 &#39;</em><em>&#39; 0.01 &#39;</em>&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</h2>
+
+<h2>Correlation of Fixed Effects:</h2>
+
+<h2>(Intr) ag<em>t</em>_</h2>
+
+<h2>ag_t_vst_mn -0.140</h2>
+
+<h2>pss_wp      -0.006  0.034</h2>
+
+<p>#grand mean centeredeq_4a &lt;- as.formula(&ldquo;wm ~ 1 + age_at_visit_meanc + pss_bp_meanc +
+                    ( 1 + age_at_visit_meanc  |id)&rdquo;)model_4a&lt;- lmerTest::lmer(eq_4a, data=ds0, REML= FALSE)lmerTest::summary((model_4a))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite</p>
+
+<h2>approximations to degrees of freedom [lmerMod]</h2>
+
+<h2>Formula:</h2>
+
+<h2>wm ~ 1 + age_at_visit_meanc + pss_bp_meanc + (1 + age_at_visit_meanc |</h2>
+
+<h2>id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>5470.9   5513.6  -2728.5   5456.9     3295</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-3.8240 -0.5069 -0.0029  0.5188  3.8816</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name               Variance  Std.Dev. Corr</h2>
+
+<h2>id       (Intercept)        0.4214116 0.64916</h2>
+
+<h2>age_at_visit_meanc 0.0006574 0.02564  -0.07</h2>
+
+<h2>Residual                    0.1559653 0.39492</h2>
+
+<h2>Number of obs: 3302, groups:  id, 1002</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error         df t value Pr(&gt;|t|)</h2>
+
+<h2>(Intercept)         1.756e-02  2.296e-02  9.421e+02   0.765    0.445</h2>
+
+<h2>age_at_visit_meanc -1.992e-02  2.508e-03  4.914e+02  -7.943 1.35e-14 ***</h2>
+
+<h2>pss_bp_meanc        8.084e-03  1.842e-02  2.759e+03   0.439    0.661</h2>
+
+<h2>&mdash;</h2>
+
+<h2>Signif. codes:  0 &#39;<em>**&#39; 0.001 &#39;</em><em>&#39; 0.01 &#39;</em>&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</h2>
+
+<h2>Correlation of Fixed Effects:</h2>
+
+<h2>(Intr) ag<em>t</em>_</h2>
+
+<h2>ag_t_vst_mn -0.141</h2>
+
+<h2>pss_bp_menc -0.004  0.050</h2>
+
+<p>#raweq_4b &lt;- as.formula(&ldquo;wm ~ 1 + age_at_visit_meanc + pss +
+                    ( 1 + age_at_visit_meanc  |id)&rdquo;)model_4b&lt;- lmerTest::lmer(eq_4b, data=ds0, REML= FALSE)lmerTest::summary((model_4b))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite</p>
+
+<h2>approximations to degrees of freedom [lmerMod]</h2>
+
+<h2>Formula: wm ~ 1 + age_at_visit_meanc + pss + (1 + age_at_visit_meanc |</h2>
+
+<h2>id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>5470.9   5513.6  -2728.5   5456.9     3295</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-3.8240 -0.5069 -0.0029  0.5188  3.8816</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name               Variance  Std.Dev. Corr</h2>
+
+<h2>id       (Intercept)        0.4214116 0.64916</h2>
+
+<h2>age_at_visit_meanc 0.0006574 0.02564  -0.07</h2>
+
+<h2>Residual                    0.1559653 0.39492</h2>
+
+<h2>Number of obs: 3302, groups:  id, 1002</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error         df t value Pr(&gt;|t|)</h2>
+
+<h2>(Intercept)         1.195e-03  4.387e-02  3.232e+03   0.027    0.978</h2>
+
+<h2>age_at_visit_meanc -1.992e-02  2.508e-03  4.910e+02  -7.943 1.35e-14 ***</h2>
+
+<h2>pss                 8.084e-03  1.842e-02  2.759e+03   0.439    0.661</h2>
+
+<h2>&mdash;</h2>
+
+<h2>Signif. codes:  0 &#39;<em>**&#39; 0.001 &#39;</em><em>&#39; 0.01 &#39;</em>&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</h2>
+
+<h2>Correlation of Fixed Effects:</h2>
+
+<h2>(Intr) ag<em>t</em>_</h2>
+
+<h2>ag_t_vst_mn -0.116</h2>
+
+<h2>pss         -0.852  0.050</h2>
+
+<p>eq_5 &lt;- as.formula(&ldquo;wm ~ 1 + age_at_visit_meanc + phys_wp + pss_wp +
+                   ( 1 + age_at_visit_meanc  |id)&rdquo;)model_5&lt;- lmerTest::lmer(eq_5, data=ds0, REML= FALSE)lmerTest::summary((model_5))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite</p>
+
+<h2>approximations to degrees of freedom [lmerMod]</h2>
+
+<h2>Formula:</h2>
+
+<h2>wm ~ 1 + age_at_visit_meanc + phys_wp + pss_wp + (1 + age_at_visit_meanc |</h2>
+
+<h2>id)</h2>
+
+<h2>Data: ds0</h2>
+
+<h2>AIC      BIC   logLik deviance df.resid</h2>
+
+<h2>5437.5   5486.3  -2710.8   5421.5     3283</h2>
+
+<h2>Scaled residuals:</h2>
+
+<h2>Min      1Q  Median      3Q     Max</h2>
+
+<h2>-3.8416 -0.5078 -0.0025  0.5308  3.8535</h2>
+
+<h2>Random effects:</h2>
+
+<h2>Groups   Name               Variance  Std.Dev. Corr</h2>
+
+<h2>id       (Intercept)        0.4241002 0.65123</h2>
+
+<h2>age_at_visit_meanc 0.0005859 0.02421  -0.07</h2>
+
+<h2>Residual                    0.1551070 0.39384</h2>
+
+<h2>Number of obs: 3291, groups:  id, 1001</h2>
+
+<h2>Fixed effects:</h2>
+
+<h2>Estimate Std. Error         df t value Pr(&gt;|t|)</h2>
+
+<h2>(Intercept)         1.795e-02  2.297e-02  9.429e+02   0.782    0.435</h2>
+
+<h2>age_at_visit_meanc -1.919e-02  2.492e-03  5.017e+02  -7.702 7.19e-14 ***</h2>
+
+<h2>phys_wp             4.841e-03  3.238e-03  2.485e+03   1.495    0.135</h2>
+
+<h2>pss_wp             -1.113e-02  1.954e-02  2.245e+03  -0.570    0.569</h2>
+
+<h2>&mdash;</h2>
+
+<h2>Signif. codes:  0 &#39;<em>**&#39; 0.001 &#39;</em><em>&#39; 0.01 &#39;</em>&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</h2>
+
+<h2>Correlation of Fixed Effects:</h2>
+
+<h2>(Intr) ag<em>t</em>_ phys_w</h2>
+
+<h2>ag_t_vst_mn -0.140</h2>
+
+<h2>phys_wp      0.004  0.085</h2>
+
+<h2>pss_wp      -0.006  0.031 -0.013</h2>
+
+<p>fit4&lt;-model_5</p>
+
+<p>The R session information (including the OS info, R version and all
+packages used):</p>
+
+<p>sessionInfo()## R version 3.3.1 (2016-06-21)</p>
+
+<h2>Platform: x86_64-w64-mingw32/x64 (64-bit)</h2>
+
+<h2>Running under: Windows 7 x64 (build 7601) Service Pack 1</h2>
+
+<h2>locale:</h2>
+
+<h2>[1] LC_COLLATE=English_Canada.1252  LC_CTYPE=English_Canada.1252</h2>
+
+<h2>[3] LC_MONETARY=English_Canada.1252 LC_NUMERIC=C</h2>
+
+<h2>[5] LC_TIME=English_Canada.1252</h2>
+
+<h2>attached base packages:</h2>
+
+<h2>[1] stats     graphics  grDevices utils     datasets  methods   base</h2>
+
+<h2>other attached packages:</h2>
+
+<h2>[1] ggplot2_2.1.0   outliers_0.14   magrittr_1.5    lmerTest_2.0-32</h2>
+
+<h2>[5] lme4_1.1-12     Matrix_1.2-6</h2>
+
+<h2>loaded via a namespace (and not attached):</h2>
+
+<h2>[1] Rcpp_0.12.5         formatR_1.4         nloptr_1.0.4</h2>
+
+<h2>[4] RColorBrewer_1.1-2  plyr_1.8.4          tools_3.3.1</h2>
+
+<h2>[7] rpart_4.1-10        evaluate_0.9        tibble_1.1</h2>
+
+<h2>[10] nlme_3.1-128        gtable_0.2.0        lattice_0.20-33</h2>
+
+<h2>[13] DBI_0.4-1           coda_0.18-1         gridExtra_2.2.1</h2>
+
+<h2>[16] stringr_1.0.0       knitr_1.13          dplyr_0.5.0</h2>
+
+<h2>[19] cluster_2.0.4       grid_3.3.1          nnet_7.3-12</h2>
+
+<h2>[22] data.table_1.9.6    R6_2.1.2            survival_2.39-4</h2>
+
+<h2>[25] arm_1.8-6           foreign_0.8-66      latticeExtra_0.6-28</h2>
+
+<h2>[28] minqa_1.2.4         Formula_1.2-1       tidyr_0.6.0</h2>
+
+<h2>[31] Hmisc_3.17-4        scales_0.4.0        MASS_7.3-45</h2>
+
+<h2>[34] splines_3.3.1       abind_1.4-3         assertthat_0.1</h2>
+
+<h2>[37] dichromat_2.0-0     testit_0.5          colorspace_1.2-6</h2>
+
+<h2>[40] stringi_1.1.1       acepack_1.3-3.3     munsell_0.4.3</h2>
+
+<h2>[43] markdown_0.7.7      chron_2.3-47</h2>
+
+<p>Sys.time()## [1] &ldquo;2016-10-30 19:37:58 PDT&rdquo;</p>
+
+</body>
+
+</html>

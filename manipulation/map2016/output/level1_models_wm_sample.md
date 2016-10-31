@@ -5,18 +5,73 @@
 This report was automatically generated with the R package **knitr**
 (version 1.13).
 
-# # The purpose of this script is to create a data object (dto) which will hold all data and metadata.# # Run the lines below to stitch a basic html output.knitr::stitch_rmd(
-  script="./manipulation/map2016/Level1_models_sample_workingmem.R",
-  output="./manipulation/map2016/output/level1_models_wm_sample.md"
-)## 
-## 
-## processing file: Level1_models_sample_workingmem.Rmd
-## Error in parse_block(g[-1], g[1], params.src): duplicate label 'load-source'
-# The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
-# Clear memory from previous runsbase::rm(list=base::ls(all=TRUE))cat("\f")# Attach these packages so their functions don't need to be qualified: http://r-pkgs.had.co.nz/namespace.html#search-pathlibrary(magrittr) # enables piping : %>%library(lmerTest)library(outliers)# Call `base::source()` on any repo file that defines functions needed below.  Ideally, no real operations are performed.source("./scripts/common-functions.R") # used in multiple reportssource("./scripts/graph-presets.R")source("./scripts/general-graphs.R")  #in scripts foldersource("./scripts/specific-graphs.R")source("./scripts/specific-graphs-pred.R")source("./scripts/graphs-pred.R")source("./scripts/graphs-predVID.R")source("./scripts/functions-for-glm-models.R")source("./scripts/multiplot-function.R")# source("./scripts/graph-presets.R") # fonts, colors, themes# Verify these packages are available on the machine, but their functions need to be qualified: http://r-pkgs.had.co.nz/namespace.html#search-pathrequireNamespace("ggplot2") # graphing# requireNamespace("readr") # data inputrequireNamespace("tidyr") # data manipulationrequireNamespace("dplyr") # Avoid attaching dplyr, b/c its function names conflict with a lot of packages (esp base, stats, and plyr).requireNamespace("testit")# For asserting conditions meet expected patterns.requireNamespace("nlme") # estimate mixed models | esp. gls()requireNamespace("lme4") # estimate mixed models | esp. lmer()requireNamespace("arm")  # process model objectsgetwd()## [1] "C:/Users/Rebecca/Documents/GitHub/psy564_longitudinal_models"
 
+```r
+# # The purpose of this script is to create a data object (dto) which will hold all data and metadata.
+# # Run the lines below to stitch a basic html output.
+# knitr::stitch_rmd(
+#   script="./manipulation/map2016/Level1_models_sample_workingmem.R",
+#   output="./manipulation/map2016/output/level1_models_wm_sample.md"
+# )
+# The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
+```
+
+```r
+# Clear memory from previous runs
+base::rm(list=base::ls(all=TRUE))
+cat("\f")
+```
+
+
+
+```r
+# Attach these packages so their functions don't need to be qualified: http://r-pkgs.had.co.nz/namespace.html#search-path
+library(magrittr) # enables piping : %>%
+library(lmerTest)
+library(outliers)
+
+
+
+# Call `base::source()` on any repo file that defines functions needed below.  Ideally, no real operations are performed.
+source("./scripts/common-functions.R") # used in multiple reports
+source("./scripts/graph-presets.R")
+source("./scripts/general-graphs.R")  #in scripts folder
+source("./scripts/specific-graphs.R")
+source("./scripts/specific-graphs-pred.R")
+source("./scripts/graphs-pred.R")
+source("./scripts/graphs-predVID.R")
+source("./scripts/functions-for-glm-models.R")
+source("./scripts/multiplot-function.R")
+# source("./scripts/graph-presets.R") # fonts, colors, themes
+
+# Verify these packages are available on the machine, but their functions need to be qualified: http://r-pkgs.had.co.nz/namespace.html#search-path
+requireNamespace("ggplot2") # graphing
+# requireNamespace("readr") # data input
+requireNamespace("tidyr") # data manipulation
+requireNamespace("dplyr") # Avoid attaching dplyr, b/c its function names conflict with a lot of packages (esp base, stats, and plyr).
+requireNamespace("testit")# For asserting conditions meet expected patterns.
+requireNamespace("nlme") # estimate mixed models | esp. gls()
+requireNamespace("lme4") # estimate mixed models | esp. lmer()
+requireNamespace("arm")  # process model objects
+getwd()
+```
+
+```
+## [1] "C:/Users/Rebecca/Documents/GitHub/psy564_longitudinal_models"
+```
+
+```r
 path_input0  <- "./data/unshared/derived/map2016/map_sample_bio_centered.rds" 
-ds0  <- readRDS(path_input0) #total raw data  names(ds0)##  [1] "id"                 "year_in_study"      "dementia"          
+```
+
+```r
+ds0  <- readRDS(path_input0) #total raw data  
+
+names(ds0)
+```
+
+```
+##  [1] "id"                 "year_in_study"      "dementia"          
 ##  [4] "age_bl"             "age_at_visit"       "edu"               
 ##  [7] "msex"               "race"               "apoe"              
 ## [10] "episodic"           "percep_speed"       "semantic"          
@@ -27,13 +82,47 @@ ds0  <- readRDS(path_input0) #total raw data  names(ds0)##  [1] "id"            
 ## [25] "pss_bp_meanc"       "pss_wp"             "social_isolation"  
 ## [28] "phys_bp_mean"       "phys_bp_median"     "phys_wp"           
 ## [31] "age_at_visit_meanc" "age_at_visit65"
+```
 
 
-#yi= B0 + eirange(ds0$wm, na.rm=TRUE)  #-3.57 to 2.34## [1] -3.568466  2.348452
-range(ds0$pss_bp_meanc, na.rm=TRUE)## [1] -2.024697  1.475303
-hist(ds0$wm) #relatively normal distfigure/Fully unconditional Level 1 model/ UCM-1.pdfeq_0 <- as.formula("wm ~ 1 +            
-                   (1  |id)")model_0<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) lmerTest::summary((model_0))## summary from lme4 is returned
+```r
+#yi= B0 + ei
+
+range(ds0$wm, na.rm=TRUE)  #-3.57 to 2.34
+```
+
+```
+## [1] -3.568466  2.348452
+```
+
+```r
+range(ds0$pss_bp_meanc, na.rm=TRUE)
+```
+
+```
+## [1] -2.024697  1.475303
+```
+
+```r
+hist(ds0$wm) #relatively normal dist
+```
+
+<img src="figure/Level1-models-sample-workingmem-RmdFully unconditional Level 1 model/ UCM-1.png" title="plot of chunk Fully unconditional Level 1 model/ UCM" alt="plot of chunk Fully unconditional Level 1 model/ UCM" style="display: block; margin: auto;" />
+
+```r
+eq_0 <- as.formula("wm ~ 1 +            
+                   (1  |id)")
+
+model_0<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+lmerTest::summary((model_0))
+```
+
+```
+## summary from lme4 is returned
 ## some computational error has occurred in lmerTest
+```
+
+```
 ## Linear mixed model fit by maximum likelihood  ['lmerMod']
 ## Formula: wm ~ 1 + (1 | id)
 ##    Data: ds0
@@ -54,10 +143,34 @@ hist(ds0$wm) #relatively normal distfigure/Fully unconditional Level 1 model/ UC
 ## Fixed effects:
 ##              Estimate Std. Error t value
 ## (Intercept) -0.005032   0.043699  -0.115
-fit0<-model_0#yi= B0 + ei#int/B0 = -0.005, residual (e) =  0.27#deviance=  4381.2#AIC= 4387.2
+```
 
-# yi= B0j + B1j(time) + eij#B0j = gamma00 + gamme01 + U0j #int#B1j = gamma10 + gamme11  ---  #slope#Time variable, Fixed Effects A-------------------------------#year in studyeq_1a <- as.formula("wm ~ 1 + year_in_study +          
-                    ( 1 |id)")model_1a<- lmerTest::lmer(eq_1a, data=ds0, REML= FALSE) lmerTest::summary((model_1a))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+```r
+fit0<-model_0
+
+#yi= B0 + ei
+#int/B0 = -0.005, residual (e) =  0.27
+
+#deviance=  4381.2
+#AIC= 4387.2
+```
+
+
+```r
+# yi= B0j + B1j(time) + eij
+#B0j = gamma00 + gamme01 + U0j #int
+#B1j = gamma10 + gamme11  ---  #slope
+
+#Time variable, Fixed Effects A-------------------------------
+#year in study
+eq_1a <- as.formula("wm ~ 1 + year_in_study +          
+                    ( 1 |id)")
+model_1a<- lmerTest::lmer(eq_1a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_1a))
+```
+
+```
+## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
 ##   approximations to degrees of freedom [lmerMod]
 ## Formula: wm ~ 1 + year_in_study + (1 | id)
 ##    Data: ds0
@@ -85,9 +198,37 @@ fit0<-model_0#yi= B0 + ei#int/B0 = -0.005, residual (e) =  0.27#deviance=  4381.
 ## Correlation of Fixed Effects:
 ##             (Intr)
 ## year_n_stdy -0.256
-fit1a<-model_1a#deviance = 4034.5#int= 2.271e-01  (i.e. mean when year=0), slope(yrs_in_study)= -5.643e-02 (unit decrease per year)# % improved from fully UCM = UCMresid_var - model_resid_var / UCMresid_var(0.2726  - 0.2293 ) / 0.2726  ## [1] 0.1588408
-#= 16 %#####SIGMA IS A WITHIN PERSON RANDOM EFFECT, THUS THIS IS HOW MUCH WITHIN PERSON##### VARIENCE TIME ACCOUNTS FOR#Time variable, Fixed Effects B-----------------------------#age at visit, mean centered eq_1b <- as.formula("wm ~ 1 + age_at_visit_meanc +          
-                    (1  |id)")model_1b<- lmerTest::lmer(eq_1b, data=ds0, REML= FALSE) lmerTest::summary((model_1b))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+```
+
+```r
+fit1a<-model_1a
+#deviance = 4034.5
+#int= 2.271e-01  (i.e. mean when year=0), slope(yrs_in_study)= -5.643e-02 (unit decrease per year)
+
+
+# % improved from fully UCM = UCMresid_var - model_resid_var / UCMresid_var
+(0.2726  - 0.2293 ) / 0.2726  
+```
+
+```
+## [1] 0.1588408
+```
+
+```r
+#= 16 %
+#####SIGMA IS A WITHIN PERSON RANDOM EFFECT, THUS THIS IS HOW MUCH WITHIN PERSON
+##### VARIENCE TIME ACCOUNTS FOR
+
+#Time variable, Fixed Effects B-----------------------------
+#age at visit, mean centered 
+eq_1b <- as.formula("wm ~ 1 + age_at_visit_meanc +          
+                    (1  |id)")
+model_1b<- lmerTest::lmer(eq_1b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_1b))
+```
+
+```
+## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
 ##   approximations to degrees of freedom [lmerMod]
 ## Formula: wm ~ 1 + age_at_visit_meanc + (1 | id)
 ##    Data: ds0
@@ -115,11 +256,36 @@ fit1a<-model_1a#deviance = 4034.5#int= 2.271e-01  (i.e. mean when year=0), slope
 ## Correlation of Fixed Effects:
 ##             (Intr)
 ## ag_t_vst_mn 0.010
-fit1b <-model_1b#deviance = 4029.8#AIC= 4037.8#int= -1.454e-02  (i.e. mean when year=0), slope(yrs_in_study)= -5.208e-02 (unit decrease per increase in unit age)(0.2726 - 0.2297 ) / 0.2726 #= 15.7 % improved ## [1] 0.1573734
+```
+
+```r
+fit1b <-model_1b
+#deviance = 4029.8
+#AIC= 4037.8
+#int= -1.454e-02  (i.e. mean when year=0), slope(yrs_in_study)= -5.208e-02 (unit decrease per increase in unit age)
+(0.2726 - 0.2297 ) / 0.2726 #= 15.7 % improved 
+```
+
+```
+## [1] 0.1573734
+```
 
 
-# yi= B0j + B1j(time) + eij#B0j = gamma00 + gamme01 + U0j #int#B1j = gamma10 + gamme11 + U1j #slope#age_centeredeq_2 <- as.formula("wm ~ 1 + age_at_visit_meanc +          
-                   ( 1 + age_at_visit_meanc |id)")model_2<- lmerTest::lmer(eq_2, data=ds0, REML= FALSE) lmerTest::summary((model_2))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+```r
+# yi= B0j + B1j(time) + eij
+#B0j = gamma00 + gamme01 + U0j #int
+#B1j = gamma10 + gamme11 + U1j #slope
+
+
+#age_centered
+eq_2 <- as.formula("wm ~ 1 + age_at_visit_meanc +          
+                   ( 1 + age_at_visit_meanc |id)")
+model_2<- lmerTest::lmer(eq_2, data=ds0, REML= FALSE) 
+lmerTest::summary((model_2))
+```
+
+```
+## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
 ##   approximations to degrees of freedom [lmerMod]
 ## Formula: wm ~ 1 + age_at_visit_meanc + (1 + age_at_visit_meanc | id)
 ##    Data: ds0
@@ -148,11 +314,43 @@ fit1b <-model_1b#deviance = 4029.8#AIC= 4037.8#int= -1.454e-02  (i.e. mean when 
 ## Correlation of Fixed Effects:
 ##             (Intr)
 ## ag_t_vst_mn 0.078
-fit2<-model_2#deviance = 3731.9 #reduced with R.E of time#AIC= 3743.9#int=  0.093502 (i.e. mean when year=0), slope(yrs_in_study)= -0.051684 (unit decrease per year)#residual var =  0.177382# chisq= deviance (int) - deviance(int& slope)#df= dif in number of parameters = df4029.8 - 3731.9## [1] 297.9
+```
+
+```r
+fit2<-model_2
+#deviance = 3731.9 #reduced with R.E of time
+#AIC= 3743.9
+#int=  0.093502 (i.e. mean when year=0), slope(yrs_in_study)= -0.051684 (unit decrease per year)
+#residual var =  0.177382
+
+# chisq= deviance (int) - deviance(int& slope)
+#df= dif in number of parameters = df
+
+4029.8 - 3731.9
+```
+
+```
+## [1] 297.9
+```
+
+```r
 #297..9, df= 6-5 = 1 #significant
-#WMtest <- as.formula("wm ~ 1 +            
-                   (1  |id)")model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)lmerTest::summary((model_test))## summary from lme4 is returned
+```
+
+```r
+#WM
+test <- as.formula("wm ~ 1 +            
+                   (1  |id)")
+model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)
+lmerTest::summary((model_test))
+```
+
+```
+## summary from lme4 is returned
 ## some computational error has occurred in lmerTest
+```
+
+```
 ## Linear mixed model fit by maximum likelihood  ['lmerMod']
 ## Formula: wm ~ 1 + (1 | id)
 ##    Data: ds0
@@ -173,10 +371,32 @@ fit2<-model_2#deviance = 3731.9 #reduced with R.E of time#AIC= 3743.9#int=  0.09
 ## Fixed effects:
 ##              Estimate Std. Error t value
 ## (Intercept) -0.005032   0.043699  -0.115
-0.4719/ (0.4719  +0.2726)## [1] 0.6338482
-#63% of the variance in Working Memory is BP person#PAtest <- as.formula("physical_activity ~ 1 +            
-                   (1  |id)")model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)lmerTest::summary((model_test))## summary from lme4 is returned
+```
+
+```r
+0.4719/ (0.4719  +0.2726)
+```
+
+```
+## [1] 0.6338482
+```
+
+```r
+#63% of the variance in Working Memory is BP person
+
+#PA
+test <- as.formula("physical_activity ~ 1 +            
+                   (1  |id)")
+model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)
+lmerTest::summary((model_test))
+```
+
+```
+## summary from lme4 is returned
 ## some computational error has occurred in lmerTest
+```
+
+```
 ## Linear mixed model fit by maximum likelihood  ['lmerMod']
 ## Formula: physical_activity ~ 1 + (1 | id)
 ##    Data: ds0
@@ -197,10 +417,31 @@ fit2<-model_2#deviance = 3731.9 #reduced with R.E of time#AIC= 3743.9#int=  0.09
 ## Fixed effects:
 ##             Estimate Std. Error t value
 ## (Intercept)   2.9788     0.1456   20.46
-#ICC = 42 % between person variance4.727 / (4.727 + 6.578)## [1] 0.4181336
-#Stresstest <- as.formula("pss ~ 1 +            
-                   (1  |id)")model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)lmerTest::summary((model_test))## summary from lme4 is returned
+```
+
+```r
+#ICC = 42 % between person variance
+4.727 / (4.727 + 6.578)
+```
+
+```
+## [1] 0.4181336
+```
+
+```r
+#Stress
+test <- as.formula("pss ~ 1 +            
+                   (1  |id)")
+model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)
+lmerTest::summary((model_test))
+```
+
+```
+## summary from lme4 is returned
 ## some computational error has occurred in lmerTest
+```
+
+```
 ## Linear mixed model fit by maximum likelihood  ['lmerMod']
 ## Formula: pss ~ 1 + (1 | id)
 ##    Data: ds0
@@ -221,11 +462,36 @@ fit2<-model_2#deviance = 3731.9 #reduced with R.E of time#AIC= 3743.9#int=  0.09
 ## Fixed effects:
 ##             Estimate Std. Error t value
 ## (Intercept)  2.02501    0.02653   76.33
-0.06978/ (0.06978 + 0.20536)## [1] 0.2536163
-#25% of the varience in stress is BP
+```
 
-# yi= B0j + B1j(time) + B2j(PA) + eij#B0j = gamma00 + gamme01 + U0j #int#B1j = gamma10 + gamme11 + U1j #slope age#B2j = gamma10 + gamme11 +    #slope PA#person mean centered i.e. fluctuation (i.e. at times when people exercise more than usual)eq_3 <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_wp +
-                   ( 1 + age_at_visit_meanc  |id)")model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)lmerTest::summary((model_3))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+```r
+0.06978/ (0.06978 + 0.20536)
+```
+
+```
+## [1] 0.2536163
+```
+
+```r
+#25% of the varience in stress is BP
+```
+
+
+```r
+# yi= B0j + B1j(time) + B2j(PA) + eij
+#B0j = gamma00 + gamme01 + U0j #int
+#B1j = gamma10 + gamme11 + U1j #slope age
+#B2j = gamma10 + gamme11 +    #slope PA
+
+#person mean centered i.e. fluctuation (i.e. at times when people exercise more than usual)
+eq_3 <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_wp +
+                   ( 1 + age_at_visit_meanc  |id)")
+model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)
+lmerTest::summary((model_3))
+```
+
+```
+## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
 ##   approximations to degrees of freedom [lmerMod]
 ## Formula: 
 ## wm ~ 1 + age_at_visit_meanc + phys_wp + (1 + age_at_visit_meanc |      id)
@@ -257,10 +523,40 @@ fit2<-model_2#deviance = 3731.9 #reduced with R.E of time#AIC= 3743.9#int=  0.09
 ##             (Intr) ag_t__
 ## ag_t_vst_mn  0.091       
 ## phys_wp     -0.010  0.064
-fit3<-model_3# deviance = 3558.2#int= 8.780e-02#slope (age) = -4.757e-02#slope (phys_wp) = 3.924e-03#is does PA sig improve the model?3731.9 - 3558.2## [1] 173.7
-173.7 #df= 8-6 = 2   #sig better fit than just F.E&R.E of time, when F.E phys_BP is added## [1] 173.7
-#grand mean centered (more exercise than average)eq_3a <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_bp_mean +
-                   ( 1 + age_at_visit_meanc  |id)")model_3a<- lmerTest::lmer(eq_3a, data=ds0, REML= FALSE)lmerTest::summary((model_3a))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+```
+
+```r
+fit3<-model_3
+# deviance = 3558.2
+#int= 8.780e-02
+#slope (age) = -4.757e-02
+#slope (phys_wp) = 3.924e-03
+#is does PA sig improve the model?
+3731.9 - 3558.2
+```
+
+```
+## [1] 173.7
+```
+
+```r
+173.7 #df= 8-6 = 2   #sig better fit than just F.E&R.E of time, when F.E phys_BP is added
+```
+
+```
+## [1] 173.7
+```
+
+```r
+#grand mean centered (more exercise than average)
+eq_3a <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_bp_mean +
+                   ( 1 + age_at_visit_meanc  |id)")
+model_3a<- lmerTest::lmer(eq_3a, data=ds0, REML= FALSE)
+lmerTest::summary((model_3a))
+```
+
+```
+## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
 ##   approximations to degrees of freedom [lmerMod]
 ## Formula: 
 ## wm ~ 1 + age_at_visit_meanc + phys_bp_mean + (1 + age_at_visit_meanc |  
@@ -293,11 +589,40 @@ fit3<-model_3# deviance = 3558.2#int= 8.780e-02#slope (age) = -4.757e-02#slope (
 ##             (Intr) ag_t__
 ## ag_t_vst_mn  0.088       
 ## phys_bp_men -0.012  0.076
-fit3<-model_3a3731.9 - 3558.2## [1] 173.7
-173.7 #df= 8-6 = 2   #sig better fit than just F.E&R.E of time, when F.E phys_BP is added## [1] 173.7
+```
+
+```r
+fit3<-model_3a
+
+3731.9 - 3558.2
+```
+
+```
+## [1] 173.7
+```
+
+```r
+173.7 #df= 8-6 = 2   #sig better fit than just F.E&R.E of time, when F.E phys_BP is added
+```
+
+```
+## [1] 173.7
+```
+
+```r
 #barley changed the model
-#person mean centered eq_4 <- as.formula("wm ~ 1 + age_at_visit_meanc + pss_wp +
-                   ( 1 + age_at_visit_meanc  |id)")model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE)lmerTest::summary((model_4))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+```
+
+```r
+#person mean centered 
+eq_4 <- as.formula("wm ~ 1 + age_at_visit_meanc + pss_wp +
+                   ( 1 + age_at_visit_meanc  |id)")
+model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE)
+lmerTest::summary((model_4))
+```
+
+```
+## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
 ##   approximations to degrees of freedom [lmerMod]
 ## Formula: wm ~ 1 + age_at_visit_meanc + pss_wp + (1 + age_at_visit_meanc |  
 ##     id)
@@ -329,8 +654,20 @@ fit3<-model_3a3731.9 - 3558.2## [1] 173.7
 ##             (Intr) ag_t__
 ## ag_t_vst_mn -0.040       
 ## pss_wp      -0.006  0.026
-#deviance = 1187.0, reduces the varience, even more than PA#grand mean centeredeq_4a <- as.formula("wm ~ 1 + age_at_visit_meanc + pss_bp_meanc +
-                   ( 1 + age_at_visit_meanc  |id)")model_4a<- lmerTest::lmer(eq_4a, data=ds0, REML= FALSE)lmerTest::summary((model_4a))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+```
+
+```r
+#deviance = 1187.0, reduces the varience, even more than PA
+
+#grand mean centered
+eq_4a <- as.formula("wm ~ 1 + age_at_visit_meanc + pss_bp_meanc +
+                   ( 1 + age_at_visit_meanc  |id)")
+model_4a<- lmerTest::lmer(eq_4a, data=ds0, REML= FALSE)
+lmerTest::summary((model_4a))
+```
+
+```
+## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
 ##   approximations to degrees of freedom [lmerMod]
 ## Formula: 
 ## wm ~ 1 + age_at_visit_meanc + pss_bp_meanc + (1 + age_at_visit_meanc |  
@@ -363,8 +700,20 @@ fit3<-model_3a3731.9 - 3558.2## [1] 173.7
 ##             (Intr) ag_t__
 ## ag_t_vst_mn -0.041       
 ## pss_bp_menc  0.001  0.016
-#deviance= 1187 #raweq_4b <- as.formula("wm ~ 1 + age_at_visit_meanc + pss +
-                   ( 1 + age_at_visit_meanc  |id)")model_4b<- lmerTest::lmer(eq_4b, data=ds0, REML= FALSE)lmerTest::summary((model_4b))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+```
+
+```r
+#deviance= 1187 
+
+#raw
+eq_4b <- as.formula("wm ~ 1 + age_at_visit_meanc + pss +
+                   ( 1 + age_at_visit_meanc  |id)")
+model_4b<- lmerTest::lmer(eq_4b, data=ds0, REML= FALSE)
+lmerTest::summary((model_4b))
+```
+
+```
+## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
 ##   approximations to degrees of freedom [lmerMod]
 ## Formula: wm ~ 1 + age_at_visit_meanc + pss + (1 + age_at_visit_meanc |  
 ##     id)
@@ -396,10 +745,28 @@ fit3<-model_3a3731.9 - 3558.2## [1] 173.7
 ##             (Intr) ag_t__
 ## ag_t_vst_mn -0.036       
 ## pss         -0.824  0.016
-#deviance= 1187 3731.9- 1187 #=2544.9 # how is pss reducing deviance this much if it isnt sig ? ## [1] 2544.9
+```
 
+```r
+#deviance= 1187 
+
+
+3731.9- 1187 #=2544.9 # how is pss reducing deviance this much if it isnt sig ? 
+```
+
+```
+## [1] 2544.9
+```
+
+```r
 eq_5 <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_wp + pss_wp +
-                   ( 1 + age_at_visit_meanc  |id)")model_5<- lmerTest::lmer(eq_5, data=ds0, REML= FALSE)lmerTest::summary((model_5))## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
+                   ( 1 + age_at_visit_meanc  |id)")
+model_5<- lmerTest::lmer(eq_5, data=ds0, REML= FALSE)
+lmerTest::summary((model_5))
+```
+
+```
+## Linear mixed model fit by maximum likelihood t-tests use Satterthwaite
 ##   approximations to degrees of freedom [lmerMod]
 ## Formula: 
 ## wm ~ 1 + age_at_visit_meanc + phys_wp + pss_wp + (1 + age_at_visit_meanc |  
@@ -434,12 +801,27 @@ eq_5 <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_wp + pss_wp +
 ## ag_t_vst_mn -0.040              
 ## phys_wp      0.001  0.087       
 ## pss_wp      -0.007  0.027  0.034
-fit4<-model_5# deviance = 1184.2#int= 0.130409#slope (age) = -0.025457#slope (phys_wp) = 0.004767 #slope (pss_bp)  = -0.013344  
+```
+
+```r
+fit4<-model_5
+# deviance = 1184.2
+#int= 0.130409
+#slope (age) = -0.025457
+#slope (phys_wp) = 0.004767 
+#slope (pss_bp)  = -0.013344  
+```
 
 The R session information (including the OS info, R version and all
 packages used):
 
-sessionInfo()## R version 3.3.1 (2016-06-21)
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.3.1 (2016-06-21)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
 ## Running under: Windows 7 x64 (build 7601) Service Pack 1
 ## 
@@ -452,14 +834,14 @@ sessionInfo()## R version 3.3.1 (2016-06-21)
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] ggplot2_2.1.0   outliers_0.14   lmerTest_2.0-32 lme4_1.1-12    
-## [5] Matrix_1.2-6    magrittr_1.5   
+## [1] ggplot2_2.1.0   outliers_0.14   magrittr_1.5    lmerTest_2.0-32
+## [5] lme4_1.1-12     Matrix_1.2-6   
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.12.5         formatR_1.4         nloptr_1.0.4       
 ##  [4] RColorBrewer_1.1-2  plyr_1.8.4          tools_3.3.1        
 ##  [7] rpart_4.1-10        evaluate_0.9        tibble_1.1         
-## [10] gtable_0.2.0        nlme_3.1-128        lattice_0.20-33    
+## [10] nlme_3.1-128        gtable_0.2.0        lattice_0.20-33    
 ## [13] DBI_0.4-1           coda_0.18-1         gridExtra_2.2.1    
 ## [16] stringr_1.0.0       knitr_1.13          dplyr_0.5.0        
 ## [19] cluster_2.0.4       grid_3.3.1          nnet_7.3-12        
@@ -469,8 +851,15 @@ sessionInfo()## R version 3.3.1 (2016-06-21)
 ## [31] Hmisc_3.17-4        scales_0.4.0        MASS_7.3-45        
 ## [34] splines_3.3.1       abind_1.4-3         assertthat_0.1     
 ## [37] dichromat_2.0-0     testit_0.5          colorspace_1.2-6   
-## [40] stringi_1.1.1       acepack_1.3-3.3     lazyeval_0.2.0     
-## [43] munsell_0.4.3       markdown_0.7.7      chron_2.3-47
-Sys.time()## [1] "2016-10-30 17:27:21 PDT"
+## [40] stringi_1.1.1       acepack_1.3-3.3     munsell_0.4.3      
+## [43] markdown_0.7.7      chron_2.3-47
+```
 
+```r
+Sys.time()
+```
+
+```
+## [1] "2016-10-30 19:38:09 PDT"
+```
 
