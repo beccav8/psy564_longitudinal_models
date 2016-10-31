@@ -1,17 +1,16 @@
-# The purpose of this script is to create a data object (dto) which will hold all data and metadata.
-# Run the lines below to stitch a basic html output.
-knitr::stitch_rmd(
-  script="./manipulation/map2016/Level1_models_full_workingmem.R",
-  output="./manipulation/map2016/output/level1_models_wm_full.md"
-)
-# The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
+# # The purpose of this script is to create a data object (dto) which will hold all data and metadata.
+# # Run the lines below to stitch a basic html output.
+# knitr::stitch_rmd(
+#   script="./manipulation/map2016/Level1_models_full_workingmem.R",
+#   output="./manipulation/map2016/output/level1_models_wm_full.md"
+# )
+# # The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
+# 
 
 # ----- load-source ------
-
-# Clear memory from previous runs
-base::rm(list=base::ls(all=TRUE))
-cat("\f")
-
+  
+rm(list=ls(all=TRUE))  #Clear the variables from previous runs.
+cat("\f") # clear console
 
 # Attach these packages so their functions don't need to be qualified: http://r-pkgs.had.co.nz/namespace.html#search-path
 library(magrittr) # enables piping : %>%
@@ -70,13 +69,12 @@ model_0<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE)
 lmerTest::summary((model_0))
 fit0<-model_0
 
-#yi= B0 + ei
 
 # ----- Fixed-effects ------
 #-----------------------TIME-VARIABLES-FIXED EFFECTS ONLY --------------------------------------------------------
 # yi= B0j + B1j(time) + eij
-#B0j = gamma00 + gamme01 + U0j #int
-#B1j = gamma10 + gamme11  ---  #slope
+#B0j = gamma00 +  U0j #int
+#B1j = gamma10 +  ---  #slope
 
 #Time variable, Fixed Effects A-------------------------------
 #year in study
@@ -85,7 +83,7 @@ eq_1a <- as.formula("wm ~ 1 + year_in_study +
 model_1a<- lmerTest::lmer(eq_1a, data=ds0, REML= FALSE) 
 lmerTest::summary((model_1a))
 fit1a<-model_1a
-
+( 0.2726 - 0.2293 ) /  0.2726  #15.88 % improved from Fully UCM deviance = 4034.5
 
 #Time variable, Fixed Effects B-----------------------------
 #age at visit, mean centered 
@@ -94,14 +92,18 @@ eq_1b <- as.formula("wm ~ 1 + age_at_visit_meanc +
 model_1b<- lmerTest::lmer(eq_1b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_1b))
 fit1b <-model_1b
+( 0.2726 - 0.2297 ) /  0.2726  #15.73% improved from fully UCM, deviance =4029.8
+#ICC
+.498 / (.498 + .2297) #= 68% of the variance is due to between person differences 
+#(i.e. person average differences from the grand mean)
 
 
 # ----- fixed-and-random-effects ------
 ##-----------------------FIXED-AND-RANDOM-EFFECTS-----------------------------------------------------------
 
 # yi= B0j + B1j(time) + eij
-#B0j = gamma00 + gamme01 + U0j #int
-#B1j = gamma10 + gamme11 + U1j #slope
+#B0j = gamma00  + U0j #int
+#B1j = gamma10  + U1j #slope
 
 
 #age_centered
@@ -111,21 +113,23 @@ model_2<- lmerTest::lmer(eq_2, data=ds0, REML= FALSE)
 lmerTest::summary((model_2))
 fit2<-model_2
 
-
+( 0.2726 - 0.177382 ) /  0.2726  #= 34.9 % improved  # deviance = 3731.9  
+#F.E versus F.E and R.E of time
+4029.8 - 3731.9 #= 297.9 #df= 5-4 = 1, SIG 
 # ----- ICC ------
 #WM
 test <- as.formula("wm ~ 1 +            
                    (1  |id)")
 model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)
 lmerTest::summary((model_test))
+0.4719 / (0.4719 + 0.2726 ) # 63 % of the varience is explained at the between person level (average differences)
 
 #PA
 test <- as.formula("physical_activity ~ 1 +            
                    (1  |id)")
 model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)
 lmerTest::summary((model_test))
-
-
+4.727/ (4.727+ 6.578) # 41% of the varience is exaplined  
 
 #Stress
 test <- as.formula("pss ~ 1 +            
@@ -137,9 +141,10 @@ lmerTest::summary((model_test))
 ###-------------------------adding-PA---------------------------------------------------------------------
 
 # yi= B0j + B1j(time) + B2j(PA) + eij
-#B0j = gamma00 + gamme01 + U0j #int
-#B1j = gamma10 + gamme11 + U1j #slope age
-#B2j = gamma10 + gamme11 +    #slope PA
+#B0j = gamma00  + U0j #int
+#B1j = gamma10  + U1j #slope age
+#B2j = gamma10  +     #slope PA
+#6 parameters 
 
 #person mean centered i.e. fluctuation (i.e. at times when people exercise more than usual)
 eq_3 <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_wp +
@@ -189,6 +194,11 @@ model_5<- lmerTest::lmer(eq_5, data=ds0, REML= FALSE)
 lmerTest::summary((model_5))
 fit4<-model_5
 
+eq_6 <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_wp + pss_wp + phys_wp*pss_wp
+                   ( 1 + age_at_visit_meanc  |id)")
+model_6<- lmerTest::lmer(eq_6, data=ds0, REML= FALSE)
+lmerTest::summary((model_6))
+fit4<-model_6
 
 
 

@@ -1,0 +1,206 @@
+wm ~ 1 + (1 | id)
+
+     AIC      BIC   logLik deviance df.resid 
+  4387.2   4404.5  -2190.6   4381.2     2378 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-5.8554 -0.4796  0.0577  0.5596  3.2471 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ id       (Intercept) 0.4719   0.6869  
+ Residual             0.2726   0.5221  
+Number of obs: 2381, groups:  id, 269
+
+Fixed effects:
+             Estimate Std. Error t value
+(Intercept) -0.005032   0.043699  -0.115
+
+
+# FE time
+
+#----------------year in study
+wm ~ 1 + year_in_study + (1 | id)
+
+     AIC      BIC   logLik deviance df.resid 
+  4042.5   4065.6  -2017.3   4034.5     2377 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-5.5499 -0.5077  0.0667  0.5758  2.9940 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ id       (Intercept) 0.5146   0.7173  
+ Residual             0.2293   0.4789  
+Number of obs: 2381, groups:  id, 269
+
+Fixed effects:
+                Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)    2.271e-01  4.678e-02  3.038e+02   4.856 1.92e-06 ***
+year_in_study -5.643e-02  2.892e-03  2.176e+03 -19.511  < 2e-16 ***
+---
+Correlation of Fixed Effects:
+            (Intr)
+year_n_stdy -0.256
+
+(0.2726  - 0.2293 ) / 0.2726  
+#= 16 %
+
+#------------age meanc 
+ wm ~ 1 + age_at_visit_meanc + (1 | id)
+
+     AIC      BIC   logLik deviance df.resid 
+  4037.8   4060.9  -2014.9   4029.8     2377 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-5.5902 -0.5090  0.0684  0.5776  3.0121 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ id       (Intercept) 0.4982   0.7058  
+ Residual             0.2297   0.4792  
+Number of obs: 2381, groups:  id, 269
+
+Fixed effects:
+                     Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)        -1.454e-02  4.455e-02  2.568e+02  -0.326    0.744    
+age_at_visit_meanc -5.208e-02  2.656e-03  2.312e+03 -19.605   <2e-16 ***
+
+Correlation of Fixed Effects:
+            (Intr)
+ag_t_vst_mn 0.010 
+
+(0.2726 - 0.2297 ) / 0.2726 #= 15.7 % improved
+
+
+## FE AND RE
+##---------- 
+wm ~ 1 + age_at_visit_meanc + (1 + age_at_visit_meanc | id)
+     AIC      BIC   logLik deviance df.resid 
+  3743.9   3778.5  -1865.9   3731.9     2375 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.8324 -0.5360  0.0346  0.5714  3.8695 
+
+Random effects:
+ Groups   Name               Variance Std.Dev. Corr
+ id       (Intercept)        0.434802 0.65940      
+          age_at_visit_meanc 0.003775 0.06144  0.12
+ Residual                    0.177382 0.42117      
+Number of obs: 2381, groups:  id, 269
+
+Fixed effects:
+                     Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)          0.093502   0.044177 249.610000   2.117   0.0353 *  
+age_at_visit_meanc  -0.051684   0.004868 224.940000 -10.618   <2e-16 ***
+---
+
+
+Correlation of Fixed Effects:
+            (Intr)
+ag_t_vst_mn 0.078 
+
+> 4029.8 - 3731.9
+[1] 297.9
+
+#### ADDING PA
+wm ~ 1 + age_at_visit_meanc + phys_wp + (1 + age_at_visit_meanc |      id)
+
+     AIC      BIC   logLik deviance df.resid 
+  3572.2   3612.5  -1779.1   3558.2     2327 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.9912 -0.5357  0.0380  0.5793  3.9235 
+
+Random effects:
+ Groups   Name               Variance Std.Dev. Corr
+ id       (Intercept)        0.435869 0.66020      
+          age_at_visit_meanc 0.003265 0.05714  0.14
+ Residual                    0.169630 0.41186      
+Number of obs: 2334, groups:  id, 269
+
+Fixed effects:
+                     Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)         8.780e-02  4.403e-02  2.492e+02   1.994   0.0472 *  
+age_at_visit_meanc -4.757e-02  4.644e-03  2.215e+02 -10.245   <2e-16 ***
+phys_wp             3.924e-03  3.714e-03  2.009e+03   1.056   0.2909    
+
+Correlation of Fixed Effects:
+            (Intr) ag_t__
+ag_t_vst_mn  0.091       
+phys_wp     -0.010  0.064
+
+> 3731.9 - 3558.2
+[1] 173.7
+
+(grand mean centered 3731.9 - 3558.2 = 173.7) about the same
+
+#### ADDING STRESS 
+#person mean centered
+
+ wm ~ 1 + age_at_visit_meanc + pss_wp + (1 + age_at_visit_meanc |      id)
+
+     AIC      BIC   logLik deviance df.resid 
+  1201.0   1233.5   -593.5   1187.0      761 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.5662 -0.5293  0.0425  0.5472  3.5218 
+
+Random effects:
+ Groups   Name               Variance  Std.Dev. Corr
+ id       (Intercept)        0.3837520 0.61948      
+          age_at_visit_meanc 0.0005657 0.02378  0.25
+ Residual                    0.1533394 0.39159      
+Number of obs: 768, groups:  id, 188
+
+Fixed effects:
+                     Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)          0.130654   0.049689 179.300000   2.629   0.0093 ** 
+age_at_visit_meanc  -0.026112   0.005154 108.500000  -5.066 1.68e-06 ***
+pss_wp              -0.012833   0.037124 575.600000  -0.346   0.7297    
+
+Correlation of Fixed Effects:
+            (Intr) ag_t__
+ag_t_vst_mn -0.040       
+pss_wp      -0.006  0.026
+
+
+??? 3731.9- 1187 #=2544.9 # how is pss reducing deviance this much if it isnt sig ? 
+
+
+
+wm ~ 1 + age_at_visit_meanc + pss_bp_meanc + (1 + age_at_visit_meanc |      id)
+   Data: ds0
+
+     AIC      BIC   logLik deviance df.resid 
+  1201.1   1233.6   -593.5   1187.1      761 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.5691 -0.5236  0.0415  0.5443  3.5080 
+
+Random effects:
+ Groups   Name               Variance  Std.Dev. Corr
+ id       (Intercept)        0.3832494 0.61907      
+          age_at_visit_meanc 0.0005551 0.02356  0.25
+ Residual                    0.1535229 0.39182      
+Number of obs: 768, groups:  id, 188
+
+Fixed effects:
+                     Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)          0.130408   0.049649 178.700000   2.627  0.00937 ** 
+age_at_visit_meanc  -0.026029   0.005146 108.400000  -5.059 1.73e-06 ***
+pss_bp_meanc         0.006395   0.035647 665.200000   0.179  0.85769    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) ag_t__
+ag_t_vst_mn -0.041       
+pss_bp_menc  0.001  0.016
