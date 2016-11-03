@@ -43,25 +43,14 @@ requireNamespace("arm")  # process model objects
 getwd()
 
 # ----- specify-objects ------
-
 path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds" 
 
 # ----- load-data ------
 ds0  <- readRDS(path_input0) #total raw data  
-
 names(ds0)
 
 # ----- Fully-unconditional-model ------
-
-##-------------------------------------Fully unconditional Level 1 model/ UCM -------------------------
 #yi= B0 + ei
-
-range(ds0$wm, na.rm=TRUE)  #-3.57 to 2.34
-range(ds0$pss_bp_meanc, na.rm=TRUE)
-
-
-hist(ds0$wm) #relatively normal dist
-
 eq_0 <- as.formula("wm ~ 1 +            
                    (1  |id)")
 
@@ -69,74 +58,96 @@ model_0<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE)
 lmerTest::summary((model_0))
 fit0<-model_0
 
+# ----- Fixed-effects-time ---------------------------------------
 
-# ----- Fixed-effects ------
-#-----------------------TIME-VARIABLES-FIXED EFFECTS ONLY --------------------------------------------------------
 # yi= B0j + B1j(time) + eij
 #B0j = gamma00 +  U0j #int
 #B1j = gamma10 +  ---  #slope
 
-#Time variable, Fixed Effects A-------------------------------
-#year in study
+###########year in study
 eq_1a <- as.formula("wm ~ 1 + year_in_study +          
                     ( 1 |id)")
 model_1a<- lmerTest::lmer(eq_1a, data=ds0, REML= FALSE) 
 lmerTest::summary((model_1a))
 fit1a<-model_1a
-( 0.2726 - 0.2293 ) /  0.2726  #15.88 % improved from Fully UCM deviance = 4034.5
 
-#Time variable, Fixed Effects B-----------------------------
-#age at visit, mean centered 
+# % improved from fully UCM = UCMresid_var - model_resid_var / UCMresid_var
+(0.2534 - 0.2241) /  0.2534  #11.56 % improved from Fully UCM deviance = 4034.5
+
+
+########## age mean centered
 eq_1b <- as.formula("wm ~ 1 + age_at_visit_meanc +          
                     (1  |id)")
 model_1b<- lmerTest::lmer(eq_1b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_1b))
-fit1b <-model_1b
-( 0.2726 - 0.2297 ) /  0.2726  #15.73% improved from fully UCM, deviance =4029.8
-#ICC
-.498 / (.498 + .2297) #= 68% of the variance is due to between person differences 
-#(i.e. person average differences from the grand mean)
+(0.2534 - 0.2254) /  0.2534  #11.04% improved from fully UCM, deviance =4029.8
+
+#both are equivalent
+
+
+# ---- explore-vars-for-models ------------------------------------------
+
+range(ds0$wm, na.rm=TRUE)  #-3.57 to 2.34
+range(ds0$pss, na.rm=TRUE) # 0 - 3.75
+range(ds0$physical_activity, na.rm=TRUE) #0 to 42.75
+
+
+hist(ds0$wm) #relatively normal dist
+
+
+hist(ds0$pss)
+hist(ds0$pss_pmean) #normal dist
+
+hist(ds0$physical_activity) #skewed
+hist(ds0$phys_pmean)#positive skew, more justifiable dichotomization 
+summary(ds0$phys_pmean)
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+#0.000   1.153   2.250   2.924   3.938  25.380       6 
 
 
 # ----- fixed-and-random-effects ------
-##-----------------------FIXED-AND-RANDOM-EFFECTS-----------------------------------------------------------
 
 # yi= B0j + B1j(time) + eij
 #B0j = gamma00  + U0j #int
 #B1j = gamma10  + U1j #slope
 
-
-#age_centered
-eq_2 <- as.formula("wm ~ 1 + age_at_visit_meanc +          
-                   ( 1 + age_at_visit_meanc |id)")
-model_2<- lmerTest::lmer(eq_2, data=ds0, REML= FALSE) 
-lmerTest::summary((model_2))
-fit2<-model_2
-
-( 0.2726 - 0.177382 ) /  0.2726  #= 34.9 % improved  # deviance = 3731.9  
-#F.E versus F.E and R.E of time
-4029.8 - 3731.9 #= 297.9 #df= 5-4 = 1, SIG 
-# ----- ICC ------
 #WM
-test <- as.formula("wm ~ 1 +            
-                   (1  |id)")
-model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)
-lmerTest::summary((model_test))
-0.4719 / (0.4719 + 0.2726 ) # 63 % of the varience is explained at the between person level (average differences)
+eq_c <- as.formula("wm ~ 1 + year_in_study +          
+                   ( 1 + year_in_study |id)")
+model_c<- lmerTest::lmer(eq_c, data=ds0, REML= FALSE) 
+lmerTest::summary((model_c))
+fit2<-model_c
+#ICC
+(.527 + .0066) / (.527 + .0066 +  0.176456) # 75% is between person
+#F.E versus F.E and R.E of time
+19921.1 - 18865.4 #= 1055.7 #df= 5- 4? = 1, SIG 
+
 
 #PA
-test <- as.formula("physical_activity ~ 1 +            
-                   (1  |id)")
-model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)
-lmerTest::summary((model_test))
-4.727/ (4.727+ 6.578) # 41% of the varience is exaplined  
+eq_p <- as.formula("physical_activity ~ 1 + year_in_study +          
+                   ( 1 + year_in_study |id)")
+model_p<- lmerTest::lmer(eq_p, data=ds0, REML= FALSE) 
+lmerTest::summary((model_p))
+fit2<-model_p
+#ICC PA
+(7.42752 + 0.04915) / (6.10546 + 7.42752 + 0.04915) # 55% is between person
+#about 45 % is due to time-varying variation in the variable (WITHIN PERSON)
 
-#Stress
-test <- as.formula("pss ~ 1 +            
-                   (1  |id)")
-model_test<- lmerTest::lmer(test, data=ds0, REML= FALSE)
-lmerTest::summary((model_test))
+#is it sig? WALD TEST
+#sig residual?
+#coef/SE, df=2
+6.1/2.5 # = 2.44, df=2? #NS 
 
+
+#stress
+eq_s <- as.formula("pss ~ 1 + year_in_study +          
+                   ( 1 + year_in_study |id)")
+model_s<- lmerTest::lmer(eq_s, data=ds0, REML= FALSE) 
+lmerTest::summary((model_s))
+fit2<-model_s
+
+
+names(ds0)
 # ---- physical-activity ----
 ###-------------------------adding-PA---------------------------------------------------------------------
 
@@ -147,59 +158,21 @@ lmerTest::summary((model_test))
 #6 parameters 
 
 #person mean centered i.e. fluctuation (i.e. at times when people exercise more than usual)
-eq_3 <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_wp +
-                   ( 1 + age_at_visit_meanc  |id)")
+eq_3 <- as.formula("wm ~ 1 + year_in_study  + phys_wp +
+                   ( 1 + year_in_study  |id)")
 model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)
 lmerTest::summary((model_3))
 fit3<-model_3
 
 
-#grand mean centered (more exercise than average)
-eq_3a <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_bp_mean +
-                    ( 1 + age_at_visit_meanc  |id)")
-model_3a<- lmerTest::lmer(eq_3a, data=ds0, REML= FALSE)
-lmerTest::summary((model_3a))
-fit3<-model_3a
-
-#barley changed the model
-
 # ---- stress ----
 #person mean centered 
-eq_4 <- as.formula("wm ~ 1 + age_at_visit_meanc + pss_wp +
-                   ( 1 + age_at_visit_meanc  |id)")
+eq_4 <- as.formula("wm ~ 1 + year_in_study  + pss_wp +
+                   ( 1 + year_in_study  |id)")
 model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE)
 lmerTest::summary((model_4))
 
 
-#grand mean centered
-eq_4a <- as.formula("wm ~ 1 + age_at_visit_meanc + pss_bp_meanc +
-                    ( 1 + age_at_visit_meanc  |id)")
-model_4a<- lmerTest::lmer(eq_4a, data=ds0, REML= FALSE)
-lmerTest::summary((model_4a))
 
 
-#raw
-eq_4b <- as.formula("wm ~ 1 + age_at_visit_meanc + pss +
-                    ( 1 + age_at_visit_meanc  |id)")
-model_4b<- lmerTest::lmer(eq_4b, data=ds0, REML= FALSE)
-lmerTest::summary((model_4b))
-
-
-# ---- PA-Stress ----
-
-
-eq_5 <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_wp + pss_wp +
-                   ( 1 + age_at_visit_meanc  |id)")
-model_5<- lmerTest::lmer(eq_5, data=ds0, REML= FALSE)
-lmerTest::summary((model_5))
-fit4<-model_5
-
-eq_6 <- as.formula("wm ~ 1 + age_at_visit_meanc + phys_wp + pss_wp + phys_wp*pss_wp
-                   ( 1 + age_at_visit_meanc  |id)")
-model_6<- lmerTest::lmer(eq_6, data=ds0, REML= FALSE)
-lmerTest::summary((model_6))
-fit4<-model_6
-
-
-
-
+# add + pss_pmean and phys_mean for level 2 models (i.e. persons mean)

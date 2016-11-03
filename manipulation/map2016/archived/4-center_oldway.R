@@ -1,3 +1,4 @@
+
 # knitr::stitch_rmd(script="./___/___.R", output="./___/___/___.md")
 #These first few lines run only when the file is run in RStudio, !!NOT when an Rmd/Rnw file calls it!!
 rm(list=ls(all=TRUE))  #Clear the variables from previous runs.
@@ -28,42 +29,83 @@ head(dto)
 data<-dto
 
 
-######--------------- center PA ------------------------################
+##########################-----Center-PA-----#########################################################
+##----physical-activity-between-person---MEAN------------------------------------------------------------
+# phys_bp = the persons mean on PA across occasions - the grand mean of PA in the population  (mean=2.94)
 
-#GRAND MEAN CENTERING 
-data$phys_bp_mean <- (data$physical_activity) - (mean(data$physical_activity, na.rm=TRUE))
-
-#MEDIAN CENTER?
-data$phys_bp_median <- (data$physical_activity) - (median(data$physical_activity, na.rm=TRUE))
-
-#PERSON MEAN CENTER
-phys_pmean <- aggregate(data$physical_activity, by=list(data$id), mean, na.rm=TRUE)
-names(phys_pmean) <- c("id", "phys_pmean")
-data <- merge(data, phys_pmean, by="id")
-data$phys_wp <- data$physical_activity-data$phys_pmean
+for(i in unique(data$id)) {
+  for (j in 1:length(data$physical_activity[data$id==i])) {
+    
+    data$phys_bp_mean[data$id==i][j]<- ( (data$physical_activity[data$id==i][j]) - (mean(data$physical_activity, na.rm =TRUE)) ) 
+    
+  } }
 
 
-ids <- sample(unique(data$id),1)
+data$physical_activity[data$id==21305588]
+data$phys_bp_mean[data$id==21305588]
+ids <- sample(unique(data$id),3)
 data %>%
   dplyr::filter(id %in% ids ) %>%
   dplyr::group_by(id) %>%
-  dplyr::select(id,physical_activity, phys_pmean, phys_wp, phys_bp_mean, phys_bp_median)
+  dplyr::select(id,physical_activity,phys_bp_mean)
 
-#######------------------center stress-----------------------#################
+
+##----physical-activity-between-person---MEDIAN------------------------------------------------------------
+# phys_bp = the persons score on PA at that occasion - the grand median of the population  (median = 1.75)
+
+for(i in unique(data$id)) {
+  for (j in 1:length(data$physical_activity[data$id==i])) {
+
+    data$phys_bp_median[data$id==i][j]<- ( (data$physical_activity[data$id==i][j]) - (median(data$physical_activity, na.rm =TRUE)) )
+
+  } }
+
+data$physical_activity[data$id==21305588]
+data$phys_bp_median[data$id==21305588]
+
+
+##----physical-activity-within-person-fluctiations-MEAN-CENTERED---------------------------------------------------
+# phys_wp = that persons score at time j, minus their mean (deviations-from--own-mean)
+
+
+for(i in unique(data$id)) {
+  for (j in 1:length(data$physical_activity[data$id==i])) {
+    
+    data$phys_wp[data$id==i][j]<- (data$physical_activity[data$id==i][j]) - (mean(data$physical_activity[data$id==i], na.rm =TRUE))
+  } }
+
+mean(data$physical_activity[data$id==21305588], na.rm=TRUE)
+data$physical_activity[data$id==21305588]
+data$phys_wp[data$id==21305588]
 
 
 ##------- center-pss------------------------------------------------------
-#GRAND MEAN CENTERING 
-data$pss_bp_meanc <- (data$pss) - (mean(data$pss, na.rm=TRUE))
+ # between person
+for(i in unique(data$id)) {
+  for (j in 1:length(data$pss[data$id==i])) {
+    
+    data$pss_bp_meanc[data$id==i][j]<- ( (data$pss[data$id==i][j]) - (mean(data$pss, na.rm =TRUE)) )
+    
+  } }
 
-#PERSON MEAN CENTER
-pss_pmean <- aggregate(data$pss, by=list(data$id), mean, na.rm=TRUE)
-names(pss_pmean) <- c("id", "pss_pmean")
-data <- merge(data, pss_pmean, by="id")
-data$pss_wp <- data$pss-data$pss_pmean
+data$pss[data$id==21305588]
+data$pss_bp_meanc[data$id==21305588]
 
 
-#####---------------center-age-----------------###############
+
+  # within person
+
+for(i in unique(data$id)) {
+  for (j in 1:length(data$pss[data$id==i])) {
+    
+    data$pss_wp[data$id==i][j]<- (data$pss[data$id==i][j]) - (mean(data$pss[data$id==i], na.rm =TRUE))
+  } }
+
+data$pss[data$id==21305588]
+data$pss_wp[data$id==21305588]
+
+#######################################-center-age-#################################################
+
 #center at mean age-------------------------
 
 mean(data$age_at_visit, na.rm=TRUE) #83.15
@@ -93,8 +135,7 @@ names(data)
 myvars<- c("id","year_in_study", "dementia", "age_bl","age_at_visit","edu", "msex","race","apoe",
            "episodic","percep_speed","semantic","wm","global","dig_b","dig_f","mmse",
            "nle","pss","physical_activity", "al_count_BL","al_count_wave","al_catg_BL", "al_catg_wave", "pss_bp_meanc", "pss_wp", 
-           "social_isolation", "phys_bp_mean","phys_bp_median","phys_wp", "age_at_visit_meanc","age_at_visit65",
-           "phys_pmean", "pss_pmean")
+           "social_isolation", "phys_bp_mean","phys_bp_median","phys_wp", "age_at_visit_meanc","age_at_visit65")
 
 
 d <- data[myvars]
@@ -132,8 +173,7 @@ d$age_at_visit_meanc<-as.numeric(d$age_at_visit_meanc)
 d$age_at_visit65<-as.numeric(d$age_at_visit65)
 d$pss_wp<-as.numeric(d$pss_wp)
 d$pss_bp_meanc<-as.numeric(d$pss_bp_meanc)
-d$pss_pmean<-as.numeric(d$pss_pmean)
-d$phys_pmean <-as.numeric(d$phys_pmean)
+
 
 length(unique(d$id))  #1853 participants 
 
