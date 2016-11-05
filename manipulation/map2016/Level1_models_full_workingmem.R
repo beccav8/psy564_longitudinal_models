@@ -119,8 +119,17 @@ lmerTest::summary((model_c))
 fit2<-model_c
 #ICC
 (.527 + .0066) / (.527 + .0066 +  0.176456) # 75% is between person
-#F.E versus F.E and R.E of time
-19921.1 - 18865.4 #= 1055.7 #df= 5- 4? = 1, SIG 
+#model 0
+# lmerTest::summary((model_0)) #FUCM
+# #ICC 
+# 0.5480/ ( 0.5480+0.2534) #= 68.4%
+# 
+# #F.E versus F.E and R.E of time
+# 19921.1 - 18865.4 #= 1055.7 #df= 5- 4? = 1, SIG 
+# 
+# # SE= sd / sqrt(n), where n = # of people (not observations)
+# 0.42007/ sqrt(1843)
+# 
 
 
 #PA
@@ -133,11 +142,12 @@ fit2<-model_p
 (7.42752 + 0.04915) / (6.10546 + 7.42752 + 0.04915) # 55% is between person
 #about 45 % is due to time-varying variation in the variable (WITHIN PERSON)
 
-#is it sig? WALD TEST
-#sig residual?
-#coef/SE, df=2
-6.1/2.5 # = 2.44, df=2? #NS 
+#is there significant fluctuation from individual trajectories over time?
+#wald test of residual effects = coef/ se, but this is on a t distribution
 
+# #z distribution
+# 6.10/2.47 #= .9932
+# 1-.9932 #=.0068 the likelihood of this being due to chance is .68%, therefore its significant, p<.05
 
 #stress
 eq_s <- as.formula("pss ~ 1 + year_in_study +          
@@ -145,6 +155,15 @@ eq_s <- as.formula("pss ~ 1 + year_in_study +
 model_s<- lmerTest::lmer(eq_s, data=ds0, REML= FALSE) 
 lmerTest::summary((model_s))
 fit2<-model_s
+#ICC stress
+(0.0603227 + 0.0001316) / (0.1853645 + 0.0603227 + 0.0001316 ) # 24% is explained between person
+#76% is explained within person (i.e. deviations from their own mean trajectories)
+
+# #coef/stdeviation
+# 0.1853645/0.43054 #= .4305 = .6664
+# 1-.6664 #= 0.336 NS fluctuation over time 
+
+
 
 
 names(ds0)
