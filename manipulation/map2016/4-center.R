@@ -42,12 +42,17 @@ names(phys_pmean) <- c("id", "phys_pmean")
 data <- merge(data, phys_pmean, by="id")
 data$phys_wp <- data$physical_activity-data$phys_pmean
 
+#center person means around the mean
+data$phys_pmeanC <- data$phys_pmean - (mean(data$physical_activity, na.rm=TRUE))
 
 ids <- sample(unique(data$id),1)
 data %>%
   dplyr::filter(id %in% ids ) %>%
   dplyr::group_by(id) %>%
-  dplyr::select(id,physical_activity, phys_pmean, phys_wp, phys_bp_mean, phys_bp_median)
+  dplyr::select(id,physical_activity, phys_pmean, phys_pmeanC, phys_wp, phys_bp_mean, phys_bp_median)
+
+
+
 
 #######------------------center stress-----------------------#################
 
@@ -62,6 +67,8 @@ names(pss_pmean) <- c("id", "pss_pmean")
 data <- merge(data, pss_pmean, by="id")
 data$pss_wp <- data$pss-data$pss_pmean
 
+#center person means around the mean
+data$pss_pmeanC <- data$pss_pmean - (mean(data$pss, na.rm=TRUE))
 
 #####---------------center-age-----------------###############
 #center at mean age-------------------------
@@ -85,21 +92,41 @@ data$age_at_visit65<- (data$age_at_visit) - (75)
 data$age_at_visit[data$id==21305588]
 data$age_at_visit65[data$id==21305588]
 
+names(data)
+head(data$dementia)
+#time until dementia 
+data <- data %>% dplyr::group_by(id) %>%    # evaluate patients individually
+  dplyr::mutate(age_visit = as.integer(as.character(age_at_visit)),    # factor to integer
+         # if no dementia, NA else min age where dementia == 1
+         age_at_dx = ifelse(dementia == 0, NA, min(age_at_visit[dementia == 1]))) %>% 
+  tidyr::fill(age_at_dx) %>%    # fill in NAs after non-NA (where dx == 1, then 0 like line 9)
+  dplyr::mutate(time_since_dx = age_at_visit - age_at_dx)
+
+head(data$time_since_dx)
+
+ids <- sample(unique(data$id),1)
+data %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id,time_since_dx, dementia, age_at_visit,age_at_dx)
+
+
+
 
 ##-- select only the variables I want (i.e. further refine)
 
 names(data)
 
-myvars<- c("id","year_in_study", "dementia", "age_bl","age_at_visit","edu", "msex","race","apoe",
+myvars<- c("id","year_in_study", "dementia", "age_bl","age_at_visit", "time_since_dx", "edu", "msex","race","apoe",
            "episodic","percep_speed","semantic","wm","global","dig_b","dig_f","mmse",
            "nle","pss","physical_activity", "al_count_BL","al_count_wave","al_catg_BL", "al_catg_wave", "pss_bp_meanc", "pss_wp", 
            "social_isolation", "phys_bp_mean","phys_bp_median","phys_wp", "age_at_visit_meanc","age_at_visit65",
-           "phys_pmean", "pss_pmean")
+           "phys_pmean", "pss_pmean", "pss_pmeanC", "phys_pmeanC")
 
 
 d <- data[myvars]
 
-
+str(d)
 d$id<-as.numeric(d$id)
 d$year_in_study<-as.numeric(d$year_in_study)
 d$dementia<-as.numeric(d$dementia)
@@ -140,5 +167,5 @@ length(unique(d$id))  #1853 participants
 
 saveRDS(d, "./data/unshared/derived/map2016/map_full_bio_centered.rds")
 
-write.table(d, file="./data/unshared/derived/map2016/map_full_bio_centered", row.names=FALSE, sep="\t", quote=FALSE)
+write.table(d, file="./data/unshared/derived/map2016/map_full_bio_centered.dat", row.names=FALSE, sep="\t", quote=FALSE)
 

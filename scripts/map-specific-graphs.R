@@ -3,18 +3,19 @@ raw_smooth_lines_map <- function(
   variable_name,
   line_size=.5, 
   line_alpha=.5,
-  
-#   top_y = max(ds[,variable_name], na.rm=T),
-#   bottom_y = min(ds[,variable_name],na.rm=T),
-#   by_y = round(top_y/10,0),
-  
+
+ top_y = max(ds[,variable_name], na.rm=T),
+ bottom_y = min(ds[,variable_name],na.rm=T),
+by_y = round(top_y/10,0),
+
   bottom_age = 55,
-  top_age = 110,
-  by_age = 5, 
+   top_age = 110,
+   by_age = 5,
   
-  bottom_time = 0,
-  top_time = 16,
-  by_time = 1
+   bottom_time = 0,
+   top_time = 16,
+   by_time = 1
+
 ){
   # d <- dto[["unitData"]]
   d <- ds

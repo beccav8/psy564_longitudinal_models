@@ -1,0 +1,45 @@
+ Group      1634158 not in level-2 file.
+ Group      9687331 not in level-2 file.
+ Group     33416479 not in level-2 file.
+ Group     41871523 not in level-2 file.
+ Group     50502156 not in level-2 file.
+ Group     80333458 not in level-2 file.
+ Group     90214403 not in level-2 file.
+ Group     95919181 not in level-2 file.
+
+                      LEVEL-1 DESCRIPTIVE STATISTICS
+
+ VARIABLE NAME       N       MEAN         SD         MINIMUM      MAXIMUM
+   YEAR_IN         11662       4.07       3.57         0.00        18.00
+  DEMENTIA         11320       0.12       0.32         0.00         1.00
+  AGE_AT_V         11554      83.16       7.68        53.35       107.86
+  EPISODIC         10991       0.05       0.94        -3.70         1.92
+  PERCEP_S         10589      -0.11       0.92        -3.08         2.61
+  SEMANTIC         10872      -0.00       0.84        -5.59         3.29
+    GLOBAL         11240      -0.04       0.79        -3.93         1.78
+     DIG_B         11241       5.92       2.18         0.00        12.00
+     DIG_F         11271       7.99       2.19         0.00        12.00
+      MMSE         11318      26.42       5.14         0.00        30.00
+       NLE         11318      26.42       5.14         0.00        30.00
+       PSS          3327       2.02       0.51         0.00         3.75
+  PHYSICAL         11228       2.94       3.50         0.00        43.75
+  AL_COUNT         11662       1.23       1.40         0.00         7.00
+  PSS_BP_M          3327      -0.00       0.51        -2.02         1.73
+    PSS_WP          3327      -0.00       0.36        -1.89         2.16
+   PHYS_BP         11228      -0.00       3.50        -2.94        40.81
+     V22_A         11228       0.94       3.50        -2.00        41.75
+   PHYS_WP         11228       0.00       2.37       -13.85        27.56
+     V24_A         11554       0.01       7.68       -29.81        24.71
+     V25_A         11554       8.16       7.68       -21.65        32.86
+
+
+                      LEVEL-2 DESCRIPTIVE STATISTICS
+
+ VARIABLE NAME       N       MEAN         SD         MINIMUM      MAXIMUM
+    AGE_BL          1845      79.95       7.60        53.35       100.47
+       EDU          1845      14.61       3.29         0.00        28.00
+      MSEX          1845       0.26       0.44         0.00         1.00
+      RACE          1845       1.09       0.45         1.00         6.00
+  AL_COUNT          1845       1.51       1.46         0.00         7.00
+  PHYS_PME          1845       2.93       2.79         0.00        25.38
+     V12_A          1845      -0.02       2.79        -2.94        22.43

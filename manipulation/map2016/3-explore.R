@@ -29,6 +29,36 @@ head(dto)
 data<-dto
 
 
+pathFileBL       <- file.path("./data/unshared/raw/map/dataset_484_basic_2016-09-09.csv")
+
+# 
+# pathFileBL       <- file.path("./data-unshared/raw/dataset_484_basic_2016-09-09.csv")
+# pathFileLong     <- file.path("./data-unshared/raw/dataset_484_long_2016-09-09.csv")
+# pathBaselineDate <- file.path("./data-unshared/raw/baseline-date-2015-11.csv")
+
+
+# check if the files exist
+testit::assert("File does not exist", base::file.exists(pathFileBL))
+testit::assert("File does not exist", base::file.exists(pathFileLong))
+testit::assert("File does not exist", base::file.exists(pathBaselineDate))
+
+# ---- load-data ------------------------------------------------
+# load data objects
+str(BL_raw)
+
+# Baseline measures
+BL_raw   <- read.csv(pathFileBL, stringsAsFactors = FALSE) %>% # baseline measure
+  # dplyr::rename(id = projid)%>% 
+  dplyr::select(-dplyr::ends_with(".1")) # remove duplicated variables
+# longitudinal observations
+
+table(BL_raw$msex)
+
+
+mean(data$edu, na.rm=TRUE)
+range(data$edu, na.rm=TRUE)
+sd(data$edu, na.rm=TRUE)
+
 #year in study--------------------------
 
 range(data$year_in_study, na.rm=TRUE)  # 0 to 18
