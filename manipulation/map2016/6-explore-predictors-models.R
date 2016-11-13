@@ -54,7 +54,7 @@ length(unique(ds0$id))
 str(ds0)
 
 
-length(unique(ds0$id))
+length(unique(ds0$id))  #1853 participants 
 
 mean(ds0$age_at_visit, na.rm=TRUE)
 summary(ds0$age_at_visit)
@@ -65,35 +65,33 @@ mean(ds0$year_in_study, na.rm=TRUE)
 sd(ds0$year_in_study, na.rm=TRUE)
 
 
+# --- outcomes -------
+
+#WM
+
+hist(ds0$wm) #relatively normal dist
+sd(ds0$wm, na.rm=TRUE) #.83
+
+describe(ds0$wm)
+#vars     n  mean   sd median trimmed  mad   min  max  range  skew kurtosis   se
+ # 1   11254 -0.07 0.87  -0.02   -0.04 0.75 -3.57 2.69  6.26 -0.47     1.06 0.01
 
 # --- predictors ---------
 
+#Physical Activity ------
+hist(ds0$physical_activity) #skewed
 
-range(ds0$wm, na.rm=TRUE)  #-3.57 to 2.34
-range(ds0$pss, na.rm=TRUE) # 0 - 3.75
-range(ds0$physical_activity, na.rm=TRUE) #0 to 42.75
+
+summary(ds0$physical_activity)
 sd(ds0$physical_activity, na.rm=TRUE)
 
-table(ds0$pss)
+describe(ds0$physical_activity)
+#vars     n mean  sd median trimmed   mad   min    max   range  skew kurtosis   se
+# 1   11233 2.94  3.5      2    2.32  2.72   0    43.75  43.75  2.62    11.9   0.03
 
-hist(ds0$wm) #relatively normal dist
-summary(ds0$pss_wp)
+describeBy(ds0$physical_activity, group=ds0$year_in_study)
+#data decreases linearly over time
 
-hist(ds0$pss)
-hist(ds0$pss_pmean) #normal dist
-
-hist(ds0$physical_activity) #skewed
-mean(ds0$physical_activity, na.rm=TRUE)
-summary(ds0$physical_activity)
-hist(ds0$phys_pmean)#positive skew, more justifiable dichotomization 
-summary(ds0$phys_pmean)
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
-#0.000   1.153   2.250   2.924   3.938  25.380       6 
-
-
-
-##--- explore predictors
-#PA
 eq_p <- as.formula("physical_activity ~ 1 +          
                    ( 1 |id)")
 model_p<- lmerTest::lmer(eq_p, data=ds0, REML= FALSE) 
@@ -111,15 +109,18 @@ fit2<-model_p
 (7.42752 + 0.04915) / (6.10546 + 7.42752 + 0.04915) # 55% is between person
 #about 45 % is due to time-varying variation in the variable (WITHIN PERSON)
 
-#is there significant fluctuation from individual trajectories over time?
-#wald test of residual effects = coef/ se, but this is on a t distribution
-
-# #z distribution
-# 6.10/2.47 #= .9932
-# 1-.9932 #=.0068 the likelihood of this being due to chance is .68%, therefore its significant, p<.05
 
 
-#stress
+
+#stress ----
+
+sd(ds0$pss, na.rm=TRUE)
+summary(ds0$pss_wp)
+
+hist(ds0$pss)
+
+describeBy(ds0$pss, group=ds0$year_in_study)
+#majority of data is between wave 2 and 9
 
 table(ds0$pss_wp, na.rm=FALSE)
 eq_s <- as.formula("pss ~ 1 +          
@@ -129,24 +130,13 @@ lmerTest::summary((model_s))
 fit2<-model_s
 0.07515/ (0.07515+0.18618)
 
-#stress
-eq_s <- as.formula("pss ~ 1 + year_in_study +          
-                   ( 1 + year_in_study |id)")
-model_s<- lmerTest::lmer(eq_s, data=ds0, REML= FALSE) 
-lmerTest::summary((model_s))
-fit2<-model_s
-#ICC stress
-(0.0603227 + 0.0001316) / (0.1853645 + 0.0603227 + 0.0001316 ) # 24% is explained between person
-#76% is explained within person (i.e. deviations from their own mean trajectories)
+# #stress
+# eq_s <- as.formula("pss ~ 1 + year_in_study +          
+#                    ( 1 + year_in_study |id)")
+# model_s<- lmerTest::lmer(eq_s, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_s))
+# fit2<-model_s
+# #ICC stress
+# (0.0603227 + 0.0001316) / (0.1853645 + 0.0603227 + 0.0001316 ) # 24% is explained between person
+# #76% is explained within person (i.e. deviations from their own mean trajectories)
 
-
-#SE=
-.4305/ sqrt(3327)
-.1853/.00746
-
-.4305/ sqrt(1006)
-.1853/.013573
-
-# #coef/stdeviation
-# 0.1853645/0.43054 #= .4305 = .6664
-# 1-.6664 #= 0.336 NS fluctuation over time 
