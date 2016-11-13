@@ -50,6 +50,7 @@ path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds"
 # ----- load-data ------
 ds0  <- readRDS(path_input0) #total raw data  
 names(ds0)
+# str(ds0)
 
 #1853
 
@@ -82,13 +83,18 @@ lmerTest::summary((model_ucm))
 0.5480 / (0.5480 + 0.2534)
 # 68% BP and 32 % WP (i.e makes sense, people are likely to differ from others more than themselves)
 
+#SE = SD/ sqrt(n)
+#int
+0.5034 / sqrt(11254)
+#resid
+0.7403/ sqrt(11254)
 
 1.96*sqrt(0.5480)
 -0.12210 + (1.96*sqrt(0.5480))
 -0.12210 - (1.96*sqrt(0.5480)) 
-#CI -1.57 - 1.45
+#CI -1.57 - 1.32
 
-#residual chi square test or walk test to determine if there is significant variability in outcome
+#residual chi square test or wald test to determine if there is significant variability in outcome
 #HLM
 
 set.seed(1)
@@ -110,15 +116,30 @@ eq_1a <- as.formula("wm ~ 1 + year_in_study +
 model_1<- lmerTest::lmer(eq_1a, data=ds0, REML= FALSE) 
 lmerTest::summary((model_1))
 
-
 # % improved from fully UCM = UCMresid_var - model_resid_var / UCMresid_var
 (0.2534 - 0.2241) /  0.2534  #11.56 % improved from Fully UCM deviance = 4034.5
-
 
 #chi sq
 #df
 11251 - 11250 
 20991.3 - 19921.1
+
+#SE = SD/ sqrt(n)
+#int
+0.7647   / sqrt(11254)
+#resid
+0.4734  / sqrt(11254)
+
+
+# ----------------------------
+# 
+# eq_1c <- as.formula("wm ~ 1 + time_since_dx +
+#                     ( 1 |id)")
+# model_1c<- lmerTest::lmer(eq_1c, data=ds0, REML= FALSE)
+# lmerTest::summary((model_1c))
+# 
+# (0.2534 - 0.3557) / .2534
+
 
 
 ########## age mean centered
@@ -129,6 +150,26 @@ lmerTest::summary((model_1b))
 (0.2534 - 0.2254) /  0.2534  #11.04% improved from fully UCM, deviance =4029.8
 
 #both are equivalent
+
+#SE = SD/ sqrt(n)
+#int
+0.7676   / sqrt(11254)
+#resid
+0.4748  / sqrt(11254)
+
+
+
+
+# ds0$age_wp<- ds0$age_at_visit - ds0$age_bl 
+# 
+# eq_1b <- as.formula("wm ~ 1 + age_bl + age_wp +          
+#                     (1  |id)")
+# model_1b<- lmerTest::lmer(eq_1b, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_1b))
+
+#age_bl and change since baseline are sig, therfore, older individuals
+#perform worse, and performance decreases over time
+
 
 
 # ----- fixed-and-random-effects ------
@@ -159,12 +200,32 @@ lmerTest::summary((model_2))
 
 
 
+#SE = SD/ sqrt(n)
+#int
+0.72637   / sqrt(11254)
+#year in study
+0.08104/ sqrt(11254)
+#resid
+0.42007  / sqrt(11254)
+
+
+
 # 
 # # SE= sd / sqrt(n), where n = # of people (not observations)
 # 0.42007/ sqrt(1843)
-# 
 
+
+
+#pss/phys _pmean = persons mean (TINVC) (BP)
+#pss/phys _pmeanC = persons mean - grand mean (BP)
+
+#pss/phys _gmc =person score at that occasion - the grand mean (WP) (Experimental)
+#pss/phys _gmc = person score - their mean (WP)*
+
+# add + pss_pmean and phys_mean for level 2 models (i.e. persons mean)
 names(ds0)
+
+
 # ---- physical-activity ----
 ###-------------------------adding-PA-FE---------------------------------------------------------------------
 
@@ -180,84 +241,76 @@ eq_3 <- as.formula("wm ~ 1 + year_in_study  + phys_wp +
 model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)
 lmerTest::summary((model_3))   #df resid 11057
 fit3<-model_3
-lmerTest::summary((model_c))  #df resid 11248
 
 11248 - 11057 #= 191
 
 18865.4 - 18227.9  #=  637.5
 
+#SE = SD/ sqrt(n)
+#int
+0.7253  / sqrt(11064)
+#year in study
+0.0728/ sqrt(11064)
+#resid
+0.4151  / sqrt(11064)
 
-names(ds0)
 
-eq_3a <- as.formula("wm ~ 1 + year_in_study  + phys_bp_mean +
+
+# eq_3 <- as.formula("wm ~ 1 + year_in_study  + phys_wp + year_in_study*phys_wp+
+#                    ( 1 + year_in_study + phys_wp  |id)")
+# model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)
+# lmerTest::summary((model_3))   #df resid 11057
+# fit3<-model_3
+
+
+eq_3a <- as.formula("wm ~ 1 + year_in_study  + phys_gmc +
                    ( 1 + year_in_study  |id)")
 model_3a<- lmerTest::lmer(eq_3a, data=ds0, REML= FALSE)
 lmerTest::summary((model_3a))   #df resid 11057
 
-# eq_3a <- as.formula("wm ~ 1 + year_in_study  + age_at_visit*phys_bp_mean + phys_bp_mean +
+# eq_3b <- as.formula("wm ~ 1 + year_in_study  + age_at_visit65*phys_gmc + phys_gmc +
 #                    ( 1 + year_in_study  |id)")
-# model_3a<- lmerTest::lmer(eq_3a, data=ds0, REML= FALSE)
-# lmerTest::summary((model_3a))   #df resid 11057
+# model_3b<- lmerTest::lmer(eq_3b, data=ds0, REML= FALSE)
+# lmerTest::summary((model_3b))   #df resid 11055
 # 
 
+
+
 # ---- stress ----
+
 #person mean centered 
 eq_4 <- as.formula("wm ~ 1 + year_in_study  + pss_wp +
                    ( 1 + year_in_study  |id)")
 model_4<- lmerTest::lmer(eq_4, data=ds0, REML= FALSE)
 lmerTest::summary((model_4))
-lmerTest::summary((model_2))
+# lmerTest::summary((model_2))
 
-11248 - 5478.7 #= 5768.3
-18865.4 - 3295 #=15 570
+18865.4 - 5478.7 #=5768.3 
+11248  - 3295 #=15 570
 
+summary(ds0$pss_wp) #8346 missing values 
+length(ds0$pss_wp)
 
-
-#person mean centered 
-eq_5 <- as.formula("wm ~ 1 + year_in_study  + pss_wp*phys_wp +
-                   ( 1 + year_in_study  |id)")
-model_5<- lmerTest::lmer(eq_5, data=ds0, REML= FALSE)
-lmerTest::summary((model_5))
-lmerTest::summary((model_2))
+8346/ 11673  #71% missing data 
 
 
+#nle------------
 
-#pss/phys _mean = persons mean (TINVC) (BP)
-#pss/phys _meanC = persons mean - grand mean (BP)
+summary(ds0$nle_gmc)
+#8834 NA
+range(ds0$nle, na.rm=TRUE)  
 
-#pss/phys _bp =person score at that occasion - the grand mean (WP) (Experimental)
-#pss/phys _wp = person score - their mean (WP)*
+# 
+# #### ----- level 2
+# eq_1b <- as.formula("wm ~ 1 + age_bl + year_in_study + age_bl* year_in_study +        
+#                     (1  |id)")
+# model_1b<- lmerTest::lmer(eq_1b, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_1b))
 
-# add + pss_pmean and phys_mean for level 2 models (i.e. persons mean)
-names(ds0)
-
-#person mean centered i.e. fluctuation (i.e. at times when people exercise more than usual)
-eq_3 <- as.formula("wm ~ 1 + year_in_study  + phys_pmean + phys_wp +
-                   ( 1 + year_in_study  |id)")
-model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)
-lmerTest::summary((model_3))   #df resid 11057
+#the interaction is sig, indicating that older indivudals decline faster
 
 
 
-eq_3 <- as.formula("wm ~ 1 + year_in_study  + phys_pmeanC + 
-                   ( 1 + year_in_study  |id)")
-model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)
-lmerTest::summary((model_3))   #df resid 11057
-
-
-
-#person mean centered i.e. fluctuation (i.e. at times when people exercise more than usual)
-eq_3 <- as.formula("wm ~ 1 + year_in_study  + pss_pmean + pss_wp +
-                   ( 1 + year_in_study  |id)")
-model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)
-lmerTest::summary((model_3))   #df resid 11057
-
-
-#person mean centered i.e. fluctuation (i.e. at times when people exercise more than usual)
-eq_3 <- as.formula("wm ~ 1 + year_in_study  + pss_pmeanC +
-                   ( 1 + year_in_study  |id)")
-model_3<- lmerTest::lmer(eq_3, data=ds0, REML= FALSE)
-lmerTest::summary((model_3))   #df resid 11057
 
 
 

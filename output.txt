@@ -1,0 +1,248 @@
+
+ ------------UCM------------------------- MODEL 0
+Formula: wm ~ 1 + (1 | id)
+
+     AIC      BIC   logLik deviance df.resid 
+ 20997.3  21019.3 -10495.7  20991.3    11251 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-6.3576 -0.4920  0.0290  0.5469  4.0470 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ id       (Intercept) 0.5480   0.7403  
+ Residual             0.2534   0.5034  
+Number of obs: 11254, groups:  id, 1843
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept) -0.12210    0.01829  -6.674
+
+> #ICC
+0.5480 / (0.5480 + 0.2534)
+0.6838033
+
+> #SE = SD/ sqrt(n)
+#int
+> 0.5034 / sqrt(11254) = 0.004745257
+> #resid
+0.7403/ sqrt(11254) =0.006978375
+
+> -0.12210 + (1.96*sqrt(0.5480))
+[1] 1.32883
+> -0.12210 - (1.96*sqrt(0.5480)) 
+[1] -1.57303
+> #CI -1.57 - 1.32
+
+  FIXED EFFECTS OF TIME----------------------- MODEL 1
+  ----------age 
+  
+  wm ~ 1 + age_at_visit_meanc + (1 | id)
+   Data: ds0
+
+     AIC      BIC   logLik deviance df.resid 
+ 19996.1  20025.4  -9994.0  19988.1    11250 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-6.2833 -0.5067  0.0305  0.5646  4.1232 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ id       (Intercept) 0.5892   0.7676   *** based on my calc.
+ Residual             0.2254   0.4748   *** based on my calc.
+Number of obs: 11254, groups:  id, 1843
+
+Fixed effects:
+                     Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)        -1.453e-01  1.881e-02  1.725e+03  -7.725 1.87e-14 ***
+age_at_visit_meanc -4.342e-02  1.326e-03  1.028e+04 -32.749  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr)
+ag_t_vst_mn 0.036 
+> (0.2534 - 0.2254) /  0.2534  #11.04% improved from fully UCM, deviance =4029.8
+[1] 0.1104972
+
+> #SE = SD/ sqrt(n)
+ #int
+> 0.7676   / sqrt(11254)
+[1] 0.007235716
+ #resid
+> 0.4748  / sqrt(11254)
+[1] 0.004475662
+
+
+-----year-----------------------------------------------------------------------
+  
+  Formula: wm ~ 1 + year_in_study + (1 | id)
+   Data: ds0
+
+     AIC      BIC   logLik deviance df.resid 
+ 19929.1  19958.4  -9960.6  19921.1    11250 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-6.2506 -0.5123  0.0307  0.5589  4.0701 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ id       (Intercept) 0.5847   0.7647  ***based on my calc.
+ Residual             0.2241   0.4734  *** based on my calc
+Number of obs: 11254, groups:  id, 1843
+
+Fixed effects:
+                Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)    2.245e-02  1.922e-02  1.998e+03   1.168    0.243    
+year_in_study -5.203e-02  1.537e-03  9.892e+03 -33.847   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+> # % improved from fully UCM = UCMresid_var - model_resid_var / UCMresid_var
+> (0.2534 - 0.2241) /  0.2534  #11.56 % improved from Fully UCM deviance = 4034.5
+[1] 0.1156275
+> 
+
+#improvement -2LL test
+> 20991.3 - 19921.1
+[1] 1070.2
+
+#SE = SD/ sqrt(n)
+ #int
+> 0.7647   / sqrt(11254)
+[1] 0.007208379
+ #resid
+> 0.4734  / sqrt(11254)
+[1] 0.004462465
+
+ #----------------- FE and RE of time------------MODEL 2
+wm ~ 1 + year_in_study + (1 + year_in_study | id)
+
+     AIC      BIC   logLik deviance df.resid 
+ 18877.4  18921.4  -9432.7  18865.4    11248 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-6.9120 -0.5370  0.0178  0.5534  3.9555 
+
+Random effects:
+ Groups   Name          Variance Std.Dev. Corr
+ id       (Intercept)   0.527610 0.72637        *** based on my calc
+          year_in_study 0.006567 0.08104  0.11  *** based on my calc
+ Residual               0.176456 0.42007        *** based on my calc
+Number of obs: 11254, groups:  id, 1843
+
+Fixed effects:
+                Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)    3.903e-02  1.825e-02  1.793e+03   2.138   0.0326 *  
+year_in_study -6.358e-02  3.007e-03  8.554e+02 -21.143   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr)
+year_n_stdy -0.100
+ 
+
+> # #F.E versus F.E and R.E of time
+> 19921.1 - 18865.4 #= 1055.7 
+[1] 1055.7
+> #df= 
+> 11250 - 11248
+[1] 2
+
+> #SE = SD/ sqrt(n)
+ #int
+> 0.72637   / sqrt(11254)
+[1] 0.006847065
+ #year in study
+> 0.08104/ sqrt(11254)
+[1] 0.0007639167
+ #resid
+> 0.42007  / sqrt(11254)
+[1] 0.003959754
+
+---------------- PA------------------- MODEL 3
+
+wm ~ 1 + year_in_study + phys_wp + (1 + year_in_study | id)
+   Data: ds0
+
+     AIC      BIC   logLik deviance df.resid 
+ 18241.9  18293.1  -9114.0  18227.9    11057 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-7.0009 -0.5344  0.0171  0.5562  3.9671 
+
+Random effects:
+ Groups   Name          Variance Std.Dev. Corr
+ id       (Intercept)   0.5261   0.7253         ***
+          year_in_study 0.0053   0.0728   0.11  ***
+ Residual               0.1723   0.4151         ***
+Number of obs: 11064, groups:  id, 1840
+
+Fixed effects:
+                Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)    3.306e-02  1.822e-02  1.793e+03   1.814   0.0699 .  
+year_in_study -5.762e-02  2.831e-03  8.020e+02 -20.351   <2e-16 ***
+phys_wp        3.026e-03  1.785e-03  9.070e+03   1.695   0.0902 .  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) yr_n_s
+year_n_stdy -0.107       
+phys_wp     -0.035  0.084
+
+ 
+> 11248 - 11057 #= 191
+
+> 18865.4 - 18227.9  #=  637.5
+
+> #SE = SD/ sqrt(n)
+ #int
+> 0.7253  / sqrt(11064)
+[1] 0.006895434
+#year in study
+> 0.0728/ sqrt(11064)
+[1] 0.0006921103
+ #resid
+> 0.4151  / sqrt(11064)
+[1] 0.00394636
+
+------------ grand mean centered 
+m ~ 1 + year_in_study + phys_gmc + (1 + year_in_study | id)
+   Data: ds0
+
+     AIC      BIC   logLik deviance df.resid 
+ 18240.7  18291.8  -9113.3  18226.7    11057 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-6.9989 -0.5344  0.0166  0.5562  3.9641 
+
+Random effects:
+ Groups   Name          Variance Std.Dev. Corr
+ id       (Intercept)   0.525916 0.72520      
+          year_in_study 0.005292 0.07275  0.11
+ Residual               0.172336 0.41513      
+Number of obs: 11064, groups:  id, 1840
+
+Fixed effects:
+                Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)    3.290e-02  1.822e-02  1.792e+03   1.806   0.0712 .  
+year_in_study -5.751e-02  2.830e-03  8.010e+02 -20.324   <2e-16 ***
+phys_gmc       3.497e-03  1.719e-03  1.010e+04   2.035   0.0419 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) yr_n_s
+year_n_stdy -0.109       
+phys_gmc    -0.033  0.082
+
+
+

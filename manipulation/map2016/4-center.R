@@ -27,14 +27,18 @@ names(dto)
 head(dto)
 data<-dto
 
+summary(data$pss)
+hist(data$pss)
+summary(data$nle)
+hist(data$nle)
 
 ######--------------- center PA ------------------------################
 
 #GRAND MEAN CENTERING 
-data$phys_bp_mean <- (data$physical_activity) - (mean(data$physical_activity, na.rm=TRUE))
+data$phys_gmc <- (data$physical_activity) - (mean(data$physical_activity, na.rm=TRUE))
 
 #MEDIAN CENTER?
-data$phys_bp_median <- (data$physical_activity) - (median(data$physical_activity, na.rm=TRUE))
+data$phys_gmedc <- (data$physical_activity) - (median(data$physical_activity, na.rm=TRUE))
 
 #PERSON MEAN CENTER
 phys_pmean <- aggregate(data$physical_activity, by=list(data$id), mean, na.rm=TRUE)
@@ -49,7 +53,7 @@ ids <- sample(unique(data$id),1)
 data %>%
   dplyr::filter(id %in% ids ) %>%
   dplyr::group_by(id) %>%
-  dplyr::select(id,physical_activity, phys_pmean, phys_pmeanC, phys_wp, phys_bp_mean, phys_bp_median)
+  dplyr::select(id,physical_activity, phys_pmean, phys_pmeanC, phys_wp, phys_gmc, phys_gmedc)
 
 
 
@@ -59,7 +63,7 @@ data %>%
 
 ##------- center-pss------------------------------------------------------
 #GRAND MEAN CENTERING 
-data$pss_bp_meanc <- (data$pss) - (mean(data$pss, na.rm=TRUE))
+data$pss_gmc <- (data$pss) - (mean(data$pss, na.rm=TRUE))
 
 #PERSON MEAN CENTER
 pss_pmean <- aggregate(data$pss, by=list(data$id), mean, na.rm=TRUE)
@@ -69,6 +73,41 @@ data$pss_wp <- data$pss-data$pss_pmean
 
 #center person means around the mean
 data$pss_pmeanC <- data$pss_pmean - (mean(data$pss, na.rm=TRUE))
+
+ids <- sample(unique(data$id),1)
+data %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id,pss, pss_pmean, pss_wp, pss_gmc, pss_pmeanC)
+
+
+
+##------- center-nle------------------------------------------------------
+summary(data$nle)
+
+8334/11673
+#GRAND MEAN CENTERING 
+data$nle_gmc <- (data$nle) - (mean(data$nle, na.rm=TRUE))
+
+#PERSON MEAN CENTER
+nle_pmean <- aggregate(data$nle, by=list(data$id), mean, na.rm=TRUE)
+names(nle_pmean) <- c("id", "nle_pmean")
+data <- merge(data, nle_pmean, by="id")
+data$nle_wp <- data$nle-data$nle_pmean
+
+
+#center person means around the mean
+data$nle_pmeanC <- data$nle_pmean - (mean(data$nle, na.rm=TRUE))
+
+ids <- sample(unique(data$id),1)
+data %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id,nle, nle_pmean, nle_wp, nle_gmc, nle_pmeanC)
+
+summary(data$nle)
+summary(data$nle_gmc)
+
 
 #####---------------center-age-----------------###############
 #center at mean age-------------------------
@@ -117,11 +156,14 @@ data %>%
 
 names(data)
 
-myvars<- c("id","year_in_study", "dementia", "age_bl","age_at_visit", "time_since_dx", "edu", "msex","race","apoe",
+myvars<- c("id","year_in_study","age_bl","age_at_visit", "time_since_dx","age_at_visit_meanc","age_at_visit65",
+           "dementia",  "edu", "msex","race","apoe", "social_isolation",
            "episodic","percep_speed","semantic","wm","global","dig_b","dig_f","mmse",
-           "nle","pss","physical_activity", "al_count_BL","al_count_wave","al_catg_BL", "al_catg_wave", "pss_bp_meanc", "pss_wp", 
-           "social_isolation", "phys_bp_mean","phys_bp_median","phys_wp", "age_at_visit_meanc","age_at_visit65",
-           "phys_pmean", "pss_pmean", "pss_pmeanC", "phys_pmeanC")
+           "nle", "nle_wp", "nle_pmean", "nle_pmeanC", "nle_gmc",
+           "pss", "pss_pmean", "pss_pmeanC", "pss_gmc", "pss_wp", 
+           "al_count_BL","al_count_wave","al_catg_BL", "al_catg_wave", 
+           "physical_activity","phys_gmc","phys_gmedc","phys_wp", 
+           "phys_pmean",  "phys_pmeanC")
 
 
 d <- data[myvars]
@@ -144,7 +186,7 @@ d$global<-as.numeric(d$global)
 d$dig_b<-as.numeric(d$dig_b)
 d$dig_f<-as.numeric(d$dig_f)
 d$mmse<-as.numeric(d$mmse)
-d$nle<-as.numeric(d$mmse)
+d$nle<-as.numeric(d$nle)
 d$pss<-as.numeric(d$pss)
 d$physical_activity<-as.numeric(d$physical_activity)
 d$al_count_BL<-as.numeric(d$al_count_BL)
@@ -152,15 +194,21 @@ d$al_count_wave<-as.numeric(d$al_count_wave)
 d$al_catg_BL<-as.numeric(d$al_catg_BL)
 d$al_catg_wave<-as.numeric(d$al_catg_wave)
 d$social_isolation<-as.numeric(d$social_isolation)
-d$phys_bp_mean<-as.numeric(d$phys_bp_mean)
-d$phys_bp_median<-as.numeric(d$phys_bp_median)
+d$phys_gmc<-as.numeric(d$phys_gmc)
+d$phys_gmedc<-as.numeric(d$phys_gmedc)
 d$phys_wp<-as.numeric(d$phys_wp)
 d$age_at_visit_meanc<-as.numeric(d$age_at_visit_meanc)
 d$age_at_visit65<-as.numeric(d$age_at_visit65)
 d$pss_wp<-as.numeric(d$pss_wp)
-d$pss_bp_meanc<-as.numeric(d$pss_bp_meanc)
+d$pss_gmc<-as.numeric(d$pss_gmc)
 d$pss_pmean<-as.numeric(d$pss_pmean)
 d$phys_pmean <-as.numeric(d$phys_pmean)
+d$nle <- as.numeric(d$nle)
+d$nle_gmc <- as.numeric(d$nle_gmc)
+d$nle_wp <- as.numeric(d$nle_wp)
+
+str(d)
+
 
 length(unique(d$id))  #1853 participants 
 
@@ -168,4 +216,12 @@ length(unique(d$id))  #1853 participants
 saveRDS(d, "./data/unshared/derived/map2016/map_full_bio_centered.rds")
 
 write.table(d, file="./data/unshared/derived/map2016/map_full_bio_centered.dat", row.names=FALSE, sep="\t", quote=FALSE)
+
+
+ids <- sample(unique(data$id),1)
+data %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id,nle, nle_pmean, nle_wp, nle_gmc, nle_pmeanC)
+
 

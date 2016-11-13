@@ -65,21 +65,26 @@ mean(ds0$year_in_study, na.rm=TRUE)
 sd(ds0$year_in_study, na.rm=TRUE)
 
 
+
 # --- predictors ---------
 
 
 range(ds0$wm, na.rm=TRUE)  #-3.57 to 2.34
 range(ds0$pss, na.rm=TRUE) # 0 - 3.75
 range(ds0$physical_activity, na.rm=TRUE) #0 to 42.75
+sd(ds0$physical_activity, na.rm=TRUE)
 
+table(ds0$pss)
 
 hist(ds0$wm) #relatively normal dist
-
+summary(ds0$pss_wp)
 
 hist(ds0$pss)
 hist(ds0$pss_pmean) #normal dist
 
 hist(ds0$physical_activity) #skewed
+mean(ds0$physical_activity, na.rm=TRUE)
+summary(ds0$physical_activity)
 hist(ds0$phys_pmean)#positive skew, more justifiable dichotomization 
 summary(ds0$phys_pmean)
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
@@ -115,6 +120,8 @@ fit2<-model_p
 
 
 #stress
+
+table(ds0$pss_wp, na.rm=FALSE)
 eq_s <- as.formula("pss ~ 1 +          
                    ( 1 |id)")
 model_s<- lmerTest::lmer(eq_s, data=ds0, REML= FALSE) 
