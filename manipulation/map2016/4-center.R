@@ -150,6 +150,11 @@ data %>%
   dplyr::select(id,time_since_dx, dementia, age_at_visit,age_at_dx)
 
 
+#-- center age at bl
+
+data$age_bl_gmc<- (data$age_bl) - (mean(data$age_bl, na.rm=TRUE))
+
+
 
 
 ##-- select only the variables I want (i.e. further refine)
@@ -163,7 +168,7 @@ myvars<- c("id","year_in_study","age_bl","age_at_visit", "time_since_dx","age_at
            "pss", "pss_pmean", "pss_pmeanC", "pss_gmc", "pss_wp", 
            "al_count_BL","al_count_wave","al_catg_BL", "al_catg_wave", 
            "physical_activity","phys_gmc","phys_gmedc","phys_wp", 
-           "phys_pmean",  "phys_pmeanC")
+           "phys_pmean",  "phys_pmeanC", "age_bl_gmc")
 
 
 d <- data[myvars]

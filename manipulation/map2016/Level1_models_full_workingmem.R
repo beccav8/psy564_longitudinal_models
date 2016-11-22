@@ -51,7 +51,6 @@ path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds"
 ds0  <- readRDS(path_input0) #total raw data  
 names(ds0)
 # str(ds0)
-
 #1853
 
 # str(ds0)
@@ -309,6 +308,23 @@ range(ds0$nle, na.rm=TRUE)
 
 #the interaction is sig, indicating that older indivudals decline faster
 
+
+# $phys_pmeanC: the effect of mean PA on intercept 
+                                        
+et <- as.formula("wm ~ 1 + year_in_study*age_bl  + phys_pmeanC  + msex + phys_wp*age_bl +
+                   ( 1 + year_in_study  |id)")
+etmod<- lmerTest::lmer(et, data=ds0, REML= FALSE)
+lmerTest::summary((etmod))   #df resid 11057
+
+
+
+
+
+
+et <- as.formula("wm ~ 1 + year_in_study*age_bl  + pss_pmeanC  + msex + pss_wp*age_bl +
+                 ( 1 + year_in_study  |id)")
+etmod<- lmerTest::lmer(et, data=ds0, REML= FALSE)
+lmerTest::summary((etmod))   #df resid 11057
 
 
 

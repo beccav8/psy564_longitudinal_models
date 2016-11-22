@@ -30,11 +30,11 @@
     </tr>
     <tr>
       <td width="25%">Date:</td>
-      <td width="75%" align="right">27 October 2016, Thursday</td>
+      <td width="75%" align="right">15 November 2016, Tuesday</td>
     </tr>
     <tr>
       <td width="25%">Time:</td>
-      <td width="75%" align="right">10:57:28</td>
+      <td width="75%" align="right"> 9: 9:40</td>
     </tr>
   </table>
   <hr />
@@ -55,110 +55,21 @@
   The outcome variable is      TOL    <br>
 <h3>Summary of the model specified</h3>
 <h4>Level-1 Model</h4>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>TOL</i><sub><small><i>mj</i></small></sub> = <i>&psi;</i><sub><small><i>0j</i></small></sub> + <i>&psi;</i><sub><small><i>1j</i></small></sub>*(<i>AGE11</i><sub><small><i>mj</i></small></sub>) + <i>e</i><sub><small><i>mj</i></small></sub>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>TOL</i><sub><small><i>mj</i></small></sub> = <i>&psi;</i><sub><small><i>0j</i></small></sub> + <i>&psi;</i><sub><small><i>1j</i></small></sub>*(<i>INDEX1</i><sub><small><i>mj</i></small></sub>) + <i>&psi;</i><sub><small><i>2j</i></small></sub>*(<i>AGE11</i><sub><small><i>mj</i></small></sub>) + <i>e</i><sub><small><i>mj</i></small></sub>
 <br>
 <h4>Level-2 Model</h4>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>&psi;</i><sub><small><i>0j</i></small></sub> = <i>&gamma;</i><sub><small><i>00</i></small></sub> + <i>u</i><sub><small><i>0j</i></small></sub><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>&psi;</i><sub><small><i>1j</i></small></sub> = <i>&gamma;</i><sub><small><i>10</i></small></sub> + <i>u</i><sub><small><i>1j</i></small></sub><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>&psi;</i><sub><small><i>0j</i></small></sub> = <i>&gamma;</i><sub><small><i>00</i></small></sub> + <i>&gamma;</i><sub><small><i>01</i></small></sub>*(<i>MALE</i><sub><small><i>j</i></small></sub>) + <i>u</i><sub><small><i>0j</i></small></sub><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>&psi;</i><sub><small><i>1j</i></small></sub> = <i>&gamma;</i><sub><small><i>10</i></small></sub> <br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>&psi;</i><sub><small><i>2j</i></small></sub> = <i>&gamma;</i><sub><small><i>20</i></small></sub> <br>
+<br>
+INDEX1 has been centered around the group mean.<br>
 <h4>Mixed Model</h4>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>TOL</i><sub><small><i>mj</i></small></sub> = <i>&gamma;</i><sub><small><i>00</i></small></sub>&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;+ <i>&gamma;</i><sub><small><i>10</i></small></sub>*<i>AGE11</i><sub><small><i>mj</i></small></sub>&nbsp; + <i>u</i><sub><small><i>0j</i></small></sub> + <i>u</i><sub><small><i>1j</i></small></sub>*<i>AGE11</i><sub><small><i>mj</i></small></sub>&nbsp;+ <i>e</i><sub><small><i>mj</i></small></sub><br>
-</tbody></table>
-<h2>Final Results - Iteration 2</h2><b>Iterations stopped due to small change in likelihood function</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>TOL</i><sub><small><i>mj</i></small></sub> = <i>&gamma;</i><sub><small><i>00</i></small></sub>&nbsp;+ <i>&gamma;</i><sub><small><i>01</i></small></sub>*<i>MALE</i><sub><small><i>j</i></small></sub>&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <i>&gamma;</i><sub><small><i>10</i></small></sub>*<i>INDEX1</i><sub><small><i>mj</i></small></sub>&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <i>&gamma;</i><sub><small><i>20</i></small></sub>*<i>AGE11</i><sub><small><i>mj</i></small></sub>&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; + <i>u</i><sub><small><i>0j</i></small></sub>+ <i>e</i><sub><small><i>mj</i></small></sub><br>
 <br>
- &sigma;<sup>2</sup><sub>&epsilon;</sub> =      0.07412<br>
-<br>
- Standard error of &sigma;<sup>2</sup><sub>&epsilon;</sub> =      0.01513<br>
-<br>
-&tau;<table border=0 cellpadding=0><tbody><tr><td>INTRCPT1,<i>&psi;</i><sub><small><i>0</i></small></sub>&nbsp;&nbsp;</td><td align=right>&nbsp;&nbsp;     0.03866</td><td align=right>&nbsp;&nbsp;    -0.00673</td></tr><tr><td>   AGE11,<i>&psi;</i><sub><small><i>1</i></small></sub>&nbsp;&nbsp;</td><td align=right>&nbsp;&nbsp;    -0.00673</td><td align=right>&nbsp;&nbsp;     0.02042</td></tr></tbody></table>
-<br>
-Standard errors of &tau;<table border=0 cellpadding=0><tbody><tr><td>INTRCPT1,<i>&psi;</i><sub><small><i>0</i></small></sub>&nbsp;&nbsp;</td><td align=right>&nbsp;&nbsp;     0.03076</td><td align=right>&nbsp;&nbsp;     0.01352</td></tr><tr><td>   AGE11,<i>&psi;</i><sub><small><i>1</i></small></sub>&nbsp;&nbsp;</td><td align=right>&nbsp;&nbsp;     0.01352</td><td align=right>&nbsp;&nbsp;     0.00996</td></tr></tbody></table>
-<br>
-&tau; (as correlations)<table border=0 cellpadding=0><tbody><tr><td>INTRCPT1,<i>&psi;</i><sub><small><i>0</i></small></sub>&nbsp;&nbsp;</td><td align=right>&nbsp;&nbsp; 1.000</td><td align=right>&nbsp;&nbsp;-0.240</td></tr><tr><td>   AGE11,<i>&psi;</i><sub><small><i>1</i></small></sub>&nbsp;&nbsp;</td><td align=right>&nbsp;&nbsp;-0.240</td><td align=right>&nbsp;&nbsp; 1.000</td></tr></tbody></table><br>
-<table border=1 cellpadding=3 style='border-collapse:collapse;border:none'>
-<tr>
-<td align=left style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>Random level-1 coefficient</td>
-<td style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;&nbsp;Reliability estimate</td>
-<tbody>
-<tr><td style='border:none;padding:0in 5.4pt 0in 5.4pt'> INTRCPT1,<i>&psi;</i><sub><small><i>0</i></sub></small><td align=center style='border:none;padding:0in 5.4pt 0in 5.4pt'>0.465</td></tr>
-<tr><td style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>    AGE11,<i>&psi;</i><sub><small><i>1</i></sub></small><td align=center style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>0.734</td></tr>
-</tbody></table>
-The value of the log-likelihood function at iteration 2 = -3.201537E+001<br>
-<h4> Final estimation of fixed effects:<br>
-</h4><table border=1 cellpadding=3 style='border-collapse:collapse;border:none'>
-<tr>
-<td align=left style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>Fixed Effect</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;Coefficient</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;Standard<br> error</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;<i>t</i>-ratio</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;Approx.<br><i>d.f.</i></td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;<i>p</i>-value</td>
-</tr>
-<tbody>
-<tr><td align=left colspan=6 style='border:none;padding:0in 5.4pt 0in 5.4pt'> For       INTRCPT1, <i>&psi;</i><sub><small><i>0</i></small></sub>
-</td></tr>
-<tr><td style='border:none;padding:0in 5.4pt 0in 5.4pt'>&nbsp;&nbsp;&nbsp;&nbsp;INTRCPT2, <i>&gamma;</i><sub><small><i>00</i></small></sub> </td><td align=right valign=bottom style='border:none;padding:0in 5.4pt 0in 5.4pt'>     1.357750</td>
-<td align=right valign=bottom style='border:none;padding:0in 5.4pt 0in 5.4pt'>  0.072081</td>
-<td align=right valign=bottom style='border:none;padding:0in 5.4pt 0in 5.4pt'>  18.836</td>
-<td align=right valign=bottom style='border:none;padding:0in 5.4pt 0in 5.4pt'>15</td>
-<td align=right valign=bottom style='border:none;padding:0in 5.4pt 0in 5.4pt'><0.001</td>
-</tr><tr><td align=left colspan=6 style='border:none;padding:0in 5.4pt 0in 5.4pt'> For    AGE11 slope, <i>&psi;</i><sub><small><i>1</i></small></sub>
-</td></tr>
-<tr><td style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;&nbsp;&nbsp;&nbsp;INTRCPT2, <i>&gamma;</i><sub><small><i>10</i></small></sub> </td><td align=right valign=bottom style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>     0.130812</td>
-<td align=right valign=bottom style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>  0.041706</td>
-<td align=right valign=bottom style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>   3.137</td>
-<td align=right valign=bottom style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>15</td>
-<td align=right valign=bottom style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>0.007</td>
-</tr></tbody></table>
-<br>
-<h4> Final estimation of fixed effects<br>
- (with robust standard errors)
-</h4><table border=1 cellpadding=3 style='border-collapse:collapse;border:none'>
-<tr>
-<td align=left style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>Fixed Effect</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;Coefficient</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;Standard<br> error</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;<i>t</i>-ratio</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;Approx.<br><i>d.f.</i></td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;<i>p</i>-value</td>
-</tr>
-<tbody>
-<tr><td align=left colspan=6 style='border:none;padding:0in 5.4pt 0in 5.4pt'> For       INTRCPT1, <i>&psi;</i><sub><small><i>0</i></small></sub>
-</td></tr>
-<tr><td style='border:none;padding:0in 5.4pt 0in 5.4pt'>&nbsp;&nbsp;&nbsp;&nbsp;INTRCPT2, <i>&gamma;</i><sub><small><i>00</i></small></sub> </td><td align=right valign=bottom style='border:none;padding:0in 5.4pt 0in 5.4pt'>     1.357750</td>
-<td align=right valign=bottom style='border:none;padding:0in 5.4pt 0in 5.4pt'>  0.072081</td>
-<td align=right valign=bottom style='border:none;padding:0in 5.4pt 0in 5.4pt'>  18.836</td>
-<td align=right valign=bottom style='border:none;padding:0in 5.4pt 0in 5.4pt'>15</td>
-<td align=right valign=bottom style='border:none;padding:0in 5.4pt 0in 5.4pt'><0.001</td>
-</tr><tr><td align=left colspan=6 style='border:none;padding:0in 5.4pt 0in 5.4pt'> For    AGE11 slope, <i>&psi;</i><sub><small><i>1</i></small></sub>
-</td></tr>
-<tr><td style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;&nbsp;&nbsp;&nbsp;INTRCPT2, <i>&gamma;</i><sub><small><i>10</i></small></sub> </td><td align=right valign=bottom style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>     0.130812</td>
-<td align=right valign=bottom style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>  0.041706</td>
-<td align=right valign=bottom style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>   3.137</td>
-<td align=right valign=bottom style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>15</td>
-<td align=right valign=bottom style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>0.007</td>
-</tr></tbody></table>
-<br>
-<br>
-<b>The robust standard errors are appropriate for datasets having a moderate to<br>
-large number of level 2 units.  These data do not meet this criterion.</b><br>
-
-<h4>Final estimation of variance components</h4>
-<table border=1 cellpadding=3 style='border-collapse:collapse;border:none'>
-<tr>
-<td align=left style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>Random Effect</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>Standard<br>&nbsp;Deviation</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>Variance<br>&nbsp;Component</td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;&nbsp;<i>d.f.</i></td>
-<td align=center style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&chi;<sup><small>2</small></sup></td>
-<td align=right style='border:none;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'><i>p</i>-value</td>
-</tr>
-<tbody>
-<tr><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'> INTRCPT1, <i>u</i><sub><small><i>0</i></small></sub></td><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'>     0.19662</td><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'>     0.03866</td><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'>  15</td><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'>    29.91001</td><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'>0.012</td></tr>
-<tr><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'>    AGE11 slope, <i>u</i><sub><small><i>1</i></small></sub></td><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'>     0.14289</td><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'>     0.02042</td><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'>  15</td><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'>    60.07990</td><td align=right style='border:none;padding:0in 5.4pt 0in 5.4pt'><0.001</td></tr>
-<tr><td align=right style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>level-1, <i>e</i></td><td align=right style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>     0.27224</td><td align=right style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>     0.07412</td><td style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;</td><td style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;</td><td style='border:none;border-bottom:solid windowtext 1.5pt;padding:0in 5.4pt 0in 5.4pt'>&nbsp;</td></tr>
-</tbody></table>
-<h4>Statistics for the current model</h4>
- Deviance                       = 64.030738<br>
- Number of estimated parameters = 6<br>
-</body></html>
+There is a problem in the fixed portion of the model.  A near singularity is<br>
+likely.  Possible sources are a collinearity or multicollinearity among the<br>
+predictors.  We suggest that you examine a correlation matrix among the fixed<br>
+effect predictors.<br>

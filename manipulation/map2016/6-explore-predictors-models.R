@@ -5,7 +5,7 @@
 #   output="./manipulation/map2016/output/level1_models_wm_full.md"
 # )
 # # The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
-# 
+#
 
 # ----- load-source ------
 
@@ -43,18 +43,35 @@ requireNamespace("arm")  # process model objects
 getwd()
 
 # ----- specify-objects ------
-path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds" 
+path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds"
 
 # ----- load-data ------
-ds0  <- readRDS(path_input0) #total raw data  
+ds0  <- readRDS(path_input0) #total raw data
 names(ds0)
-
-length(unique(ds0$id))
-#1853
 str(ds0)
 
+#demographics--------
 
-length(unique(ds0$id))  #1853 participants 
+pathFileBL       <- file.path("./data/unshared/raw/map/dataset_484_basic_2016-09-09.csv")
+
+# check if the files exist
+testit::assert("File does not exist", base::file.exists(pathFileBL))
+
+BL_raw   <- read.csv(pathFileBL, stringsAsFactors = FALSE) %>% # baseline measure
+  # dplyr::rename(id = projid)%>%
+  dplyr::select(-dplyr::ends_with(".1")) # remove duplicated variables
+# longitudinal observations
+table(BL_raw$msex)
+
+mean(data$edu, na.rm=TRUE)
+range(data$edu, na.rm=TRUE)
+sd(data$edu, na.rm=TRUE)
+
+
+length(unique(ds0$id))  #1853 participants
+
+
+#time metric---------
 
 mean(ds0$age_at_visit, na.rm=TRUE)
 summary(ds0$age_at_visit)
@@ -92,17 +109,17 @@ describe(ds0$physical_activity)
 describeBy(ds0$physical_activity, group=ds0$year_in_study)
 #data decreases linearly over time
 
-eq_p <- as.formula("physical_activity ~ 1 +          
+eq_p <- as.formula("physical_activity ~ 1 +
                    ( 1 |id)")
-model_p<- lmerTest::lmer(eq_p, data=ds0, REML= FALSE) 
+model_p<- lmerTest::lmer(eq_p, data=ds0, REML= FALSE)
 lmerTest::summary((model_p))
 fit2<-model_p
 #ICC PA
 (5.627) / (5.627 + 6.741) # 45% is between person
 
-eq_p <- as.formula("physical_activity ~ 1 + year_in_study +          
+eq_p <- as.formula("physical_activity ~ 1 + year_in_study +
                    ( 1 + year_in_study |id)")
-model_p<- lmerTest::lmer(eq_p, data=ds0, REML= FALSE) 
+model_p<- lmerTest::lmer(eq_p, data=ds0, REML= FALSE)
 lmerTest::summary((model_p))
 fit2<-model_p
 #ICC PA
@@ -123,17 +140,17 @@ describeBy(ds0$pss, group=ds0$year_in_study)
 #majority of data is between wave 2 and 9
 
 table(ds0$pss_wp, na.rm=FALSE)
-eq_s <- as.formula("pss ~ 1 +          
+eq_s <- as.formula("pss ~ 1 +
                    ( 1 |id)")
-model_s<- lmerTest::lmer(eq_s, data=ds0, REML= FALSE) 
+model_s<- lmerTest::lmer(eq_s, data=ds0, REML= FALSE)
 lmerTest::summary((model_s))
 fit2<-model_s
 0.07515/ (0.07515+0.18618)
 
 # #stress
-# eq_s <- as.formula("pss ~ 1 + year_in_study +          
+# eq_s <- as.formula("pss ~ 1 + year_in_study +
 #                    ( 1 + year_in_study |id)")
-# model_s<- lmerTest::lmer(eq_s, data=ds0, REML= FALSE) 
+# model_s<- lmerTest::lmer(eq_s, data=ds0, REML= FALSE)
 # lmerTest::summary((model_s))
 # fit2<-model_s
 # #ICC stress
