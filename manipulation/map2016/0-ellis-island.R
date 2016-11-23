@@ -30,9 +30,9 @@ requireNamespace("dplyr") # f() names conflict with other packages (esp. base, s
 requireNamespace("testit") # for asserting conditions meet expected patterns.
 
 # ---- declare-globals ----------------------------------------------
-pathFileBL       <- file.path("./data/unshared/raw/map/dataset_484_basic_2016-09-09.csv")
-pathFileLong     <- file.path("./data/unshared/raw/map/dataset_484_long_2016-09-09.csv")
-pathBaselineDate <- file.path("./data/unshared/raw/map/baseline-date-2015-11.csv")
+pathFileBL       <- file.path("./data/unshared/raw/dataset_484_basic_2016-09-09.csv")
+pathFileLong     <- file.path("./data/unshared/raw/dataset_484_long_2016-09-09.csv")
+pathBaselineDate <- file.path("./data/unshared/raw/baseline-date-2015-11.csv")
 # 
 # pathFileBL       <- file.path("./data-unshared/raw/dataset_484_basic_2016-09-09.csv")
 # pathFileLong     <- file.path("./data-unshared/raw/dataset_484_long_2016-09-09.csv")
