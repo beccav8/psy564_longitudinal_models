@@ -266,14 +266,14 @@ lmerTest::summary((model_4))
 
 #SE = SD/ sqrt(n)
 #int
-#0.468773
-0.6847   / sqrt(9694)
+#0.461912
+0.67964   / sqrt(11254)
 #year in study
-# 0.005027
-0.0709 / sqrt(9694)
+#0.005933 
+0.07703  / sqrt(11254)
 #resid 
-# 0.171970
-0.4147 / sqrt(9694)
+#    0.176647
+0.42029 / sqrt(11254)
 
 
 #Physical Activity --------------
@@ -283,19 +283,19 @@ model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE)
 lmerTest::summary((model_5))
 #chi sq
 #df
-9682 - 9680
-16182.9  - 16156.7 
+11242 - 11050
+18577.5 - 17944.9 
 
 #SE = SD/ sqrt(n)
 #int
-#0.468612
-0.6846   / sqrt(9694)
+#0.460072
+0.67829   / sqrt(11064)
 #year in study
-# 0.004956
-0.0704 / sqrt(9694)
+# 0.004795
+0.06925  / sqrt(11064)
 #resid 
-#  0.171644
-0.4143 / sqrt(9694)
+#  0.172506
+0.41534 / sqrt(11064)
 
 
 
@@ -309,47 +309,39 @@ lmerTest::summary((model_6))
 
 #chi sq
 #df
-9680 - 9678  
-16156.7 - 16156.1
+11050 - 11048 
+17944.9 - 17944.2
 #NS
 
 #SE = SD/ sqrt(n)
 #int
-#0.468498
-0.68447  / sqrt(9678)
+#0.460015
+0.67824  / sqrt(11064)
 #year in study
-# 0.004954
-0.07039/ sqrt(9678)
+#  0.004797
+0.06926 / sqrt(11064)
 #resid 
-# 0.171646
-0.41430 / sqrt(9678)
+#  0.172493 
+0.41532 / sqrt(11064)
 
 
 #---- PSS and interaction
 
-
-
 #Physical Activity --------------
-eq7 <- as.formula("wm ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu + phys_pmeanC + pss_pmeanC + phys_wp*pss_pmeanC +
+eq7 <- as.formula("wm ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu + phys_pmeanC + phys_wp*pss_pmeanC +
                     ( 1 + year_in_study |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
 #chi sq
 #df
 #df from model 5 versus 7
-9680 - 7095  #2585
-16156.7 - 10813.6  #5343.1
 
-#SE = SD/ sqrt(n)
-#int
-#0.364853
-0.60403   / sqrt(7111)
-#year in study
-# 0.003923
-0.06263 / sqrt(7111)
-#resid 
-#0.162825
-0.40352 / sqrt(7111)
+
+
+
+
+
+
 
 
 
