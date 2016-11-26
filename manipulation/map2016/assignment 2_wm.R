@@ -335,7 +335,7 @@ lmerTest::summary((model_5))
 
 #Physical Activity --------------
 eq7 <- as.formula("wm ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
-phys_pmeanC + phys_wp + phys_wp*pss_pmeanC +
+phys_pmeanC + phys_wp*pss_pmeanC +
                     ( 1 + year_in_study |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))

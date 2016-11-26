@@ -103,8 +103,15 @@ eq <- as.formula("percep_speed ~ 1 + year_in_study +
                  ( 1 + year_in_study |id)")
 model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
 lmerTest::summary((model))
-#df= 11248 
-#dev =  18865.4
+#df= 10588  
+#dev =  14211.8
+
+#int 0.692494
+.832/ (sqrt(10594))
+#year 0.008501
+0.0922/ (sqrt(10594))
+#resid 0.104101
+0.3226/ (sqrt(10594))
 ##---------------------------------
 
 #AGE BL-------------
@@ -123,20 +130,18 @@ lmerTest::summary((model_2))
 
 #chi sq
 #df
-11248 - 11246 # (2)
-18865.4- 18771.6
+#df= 
+10588 -  10586 
+#dev =  
+14211.8- 13871.8 
 
-#SE = SD/ sqrt(n)
-#int
-#0.519149
-(0.72052   / sqrt(11254))
 
-#year in study
-#0.005981
-(0.07734 / sqrt(11254))
-#resid 
-# 0.176600 
-(0.42024  / sqrt(11254))
+#int 0.611856
+0.78221/ (sqrt(10594))
+#year 0.006888
+0.08299/ (sqrt(10594))
+#resid 0.104434
+0.3226/ (sqrt(10594))
 
 ################ + gender
 
@@ -145,31 +150,24 @@ eq3 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*m
 model_3<- lmerTest::lmer(eq3, data=ds0, REML= FALSE) 
 lmerTest::summary((model_3))
 
-
 #msex - y02 = y00 (is now the int for sex = 0/female), thus y02 is the effect of sex on intercept for a 1 unit 
 #increase in sex (male). males have an intercept of 
-.0654 - .056  #=.0094 is the mean for males at baseline 
+
 #year X msex = y10 (is now the slope for females)
 #y12 (is the effect of sex on female slope, that is, males decline less than females, NS)
--.066 + .0095 #= 0.057
+
+#df= 
+10588 -   10584
+#dev =  
+ 13871.8 - 13858.7
 
 
-#chi sq
-
-18771.6-18768.3
-#df 
-11246 - 11244 
-
-#SE = SD/ sqrt(n)
-#int
-#0.518444
-0.72003    / sqrt(11254)
-#year in study
-#0.005958
-0.07718/ sqrt(11254)
-#resid 
-#0.176624
-0.42027 / sqrt(11254)
+#int 0.606840
+ 0.77900/ (sqrt(10594))
+#year 0.006888
+0.08299/ (sqrt(10594))
+#resid 0.104434
+0.3226/ (sqrt(10594))
 
 
 
@@ -181,21 +179,20 @@ eq4 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*m
 model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
 lmerTest::summary((model_4))
 
-#chi sq
-#df
-11244-11242
-18768.3 - 18577.5
+#df= 
+10584 - 10582 
+#dev =  
+13858.7 -13699.1
 
-#SE = SD/ sqrt(n)
-#int
-#0.461912
-0.67964   / sqrt(11254)
-#year in study
-#0.005933 
-0.07703  / sqrt(11254)
-#resid 
-#    0.176647
-0.42029 / sqrt(11254)
+
+#int 0.550555
+0.74199 / (sqrt(10594))
+#year  0.006923
+0.08321/ (sqrt(10594))
+#resid 0.104424 
+0.32315/ (sqrt(10594))
+
+
 
 
 #Physical Activity --------------
@@ -204,51 +201,46 @@ eq5 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*m
                   ( 1 + year_in_study |id)")
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
 lmerTest::summary((model_5))
-#chi sq
-#df
-11242 - 11050
-18577.5 - 17944.9 
 
-#SE = SD/ sqrt(n)
-#int
-#0.460072
-0.67829   / sqrt(11064)
-#year in study
-# 0.004795
-0.06925  / sqrt(11064)
-#resid 
-#  0.172506
-0.41534 / sqrt(11064)
+#df= 
+10582 - 10478
+#dev =  
+13699.1 -13472.9 
+
+
+#int           0.54
+0.73512 / (sqrt( 10492))
+#year          0.0065
+0.08122/ (sqrt( 10492))
+#resid         0.1037
+0.32204/ (sqrt( 10492))
 
 
 
 
-# # gender X PA 
-# eq6 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
-#                   phys_pmeanC*msex + phys_wp*msex +
-#                   ( 1 + year_in_study |id)")
-# model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_6))  
-# 
-# 
-# #chi sq
-# #df
-# 11050 - 11048 
-# 17944.9 - 17944.2
-# #NS
-# 
-# #SE = SD/ sqrt(n)
-# #int
-# #0.460015
-# 0.67824  / sqrt(11064)
-# #year in study
-# #  0.004797
-# 0.06926 / sqrt(11064)
-# #resid 
-# #  0.172493 
-# 0.41532 / sqrt(11064)
+
+ # gender X PA
+ eq6 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+                   phys_pmeanC*msex + phys_wp*msex +
+                   ( 1 + year_in_study |id)")
+ model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
+ lmerTest::summary((model_6))
 
 
+ #df= 
+10478 - 10476 
+ #dev =  
+ 13472.9 - 13472.8
+ 
+ 
+ #int           0.54
+ 0.73512 / (sqrt( 10492))
+ #year          0.0065
+ 0.08122/ (sqrt( 10492))
+ #resid         0.1037
+ 0.32204/ (sqrt( 10492))
+ 
+ 
 
 
 ################# interaction with stress 
@@ -256,13 +248,26 @@ lmerTest::summary((model_5))
 
 #Physical Activity --------------
 eq7 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
-                  phys_pmeanC + phys_wp + phys_wp*pss_pmeanC +
+                  phys_pmeanC  + phys_wp*pss_pmeanC +
                   ( 1 + year_in_study |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
-#chi sq
-#df
-#df from model 5 versus 7
+#df= 
+10476 -7820 
+#dev =  
+13472.8 - 8868.3 
+
+
+#int           0.38644
+0.62165  / (sqrt( 7836))
+#year          0.00525
+0.07246/ (sqrt( 7836))
+#resid         0.10121
+0.31813/ (sqrt( 7836))
+
+
+
+
 
 
 # #Physical Activity --------------
