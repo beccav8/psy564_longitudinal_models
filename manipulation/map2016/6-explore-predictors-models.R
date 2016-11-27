@@ -93,6 +93,11 @@ describe(ds0$wm)
 #vars     n  mean   sd median trimmed  mad   min  max  range  skew kurtosis   se
  # 1   11254 -0.07 0.87  -0.02   -0.04 0.75 -3.57 2.69  6.26 -0.47     1.06 0.01
 
+
+hist(ds0$percep_speed) #relatively normal dist
+sd(ds0$percep_speed, na.rm=TRUE) #.83
+
+describe(ds0$percep_speed)
 # --- predictors ---------
 
 #Physical Activity ------

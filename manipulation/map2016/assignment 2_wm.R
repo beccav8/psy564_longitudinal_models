@@ -175,7 +175,9 @@ g7
 
 
 #--models
-
+range(ds0$year_in_study, na.rm=TRUE)
+range(ds0$percep_speed, na.rm=TRUE)
+mean(ds0$percep_speed, na.rm=TRUE)
 
 #WM
 eq <- as.formula("wm ~ 1 + year_in_study +          
@@ -184,6 +186,12 @@ model<- lmerTest::lmer(eq, data=ds0, REML= FALSE)
 lmerTest::summary((model))
 #df= 11248 
 #dev =  18865.4
+
+(0.0066 / ( 0.081 / sqrt (11254)))
+
+(0.527 + 0.006) / (0.527 + 0.006 + 0.176)
+
+
 ##---------------------------------
 
 #AGE BL-------------
@@ -302,30 +310,30 @@ lmerTest::summary((model_5))
 
 
 
-# # gender X PA 
-# eq6 <- as.formula("wm ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
-# phys_pmeanC*msex + phys_wp*msex +
-#                     ( 1 + year_in_study |id)")
-# model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_6))  
-# 
-# 
-# #chi sq
-# #df
-# 11050 - 11048 
-# 17944.9 - 17944.2
-# #NS
-# 
-# #SE = SD/ sqrt(n)
-# #int
-# #0.460015
-# 0.67824  / sqrt(11064)
-# #year in study
-# #  0.004797
-# 0.06926 / sqrt(11064)
-# #resid 
-# #  0.172493 
-# 0.41532 / sqrt(11064)
+# gender X PA
+eq6 <- as.formula("wm ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+phys_pmeanC*msex + phys_wp*msex +
+                    ( 1 + year_in_study |id)")
+model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
+lmerTest::summary((model_6))
+
+
+#chi sq
+#df
+11050 - 11048
+17944.9 - 17944.2
+#NS
+
+#SE = SD/ sqrt(n)
+#int
+#0.460015
+0.67824  / sqrt(11064)
+#year in study
+#  0.004797
+0.06926 / sqrt(11064)
+#resid
+#  0.172493
+0.41532 / sqrt(11064)
 
 
 
@@ -339,8 +347,27 @@ phys_pmeanC + phys_wp*pss_pmeanC +
                     ( 1 + year_in_study |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
-#chi sq
+
+
 #df
+11050 - 8137
+11050 - 3200 #when i include within person PSS
+17944.9 - 12098.9
+#NS
+
+#SE = SD/ sqrt(n)
+#int
+#0.460015
+0.67824  / sqrt(11064)
+#year in study
+#  0.004797
+0.06926 / sqrt(11064)
+#resid
+#  0.172493
+0.41532 / sqrt(11064)
+
+
+
 #df from model 5 versus 7
 
 # 

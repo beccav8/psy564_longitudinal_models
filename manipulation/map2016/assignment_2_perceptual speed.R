@@ -70,7 +70,19 @@ indwm + facet_wrap(~id, nrow=4) +
   stat_smooth(method=lm, se=TRUE)+
   theme1
 
+ds0$msexg <- ifelse(ds0$msexg >=1, 
+                    c("Male"), c("Female")) 
+library(reshape)
+ds0 <- rename(ds0, c(msexg="Sex"))
 
+g5<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y="percep_speed", linetype="Sex")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g5 <- g5 + labs(list(
+  # title= "Person centered Perceived Stress Over Time",
+  x="Time", y="Person mean centered Percevied Stress"))
+g5
 ##### average over time
 
 source("./scripts/multiplot-function.R")
@@ -98,7 +110,7 @@ g1
 #--models
 
 
-#WM
+#PS
 eq <- as.formula("percep_speed ~ 1 + year_in_study +          
                  ( 1 + year_in_study |id)")
 model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
@@ -109,9 +121,13 @@ lmerTest::summary((model))
 #int 0.692494
 .832/ (sqrt(10594))
 #year 0.008501
-0.0922/ (sqrt(10594))
+se<- 0.0922/ (sqrt(10594))
+0.0085/ (se)
 #resid 0.104101
 0.3226/ (sqrt(10594))
+
+#icc:
+.69 + 0.008/ (.69 + 0.008 +.104)
 ##---------------------------------
 
 #AGE BL-------------
