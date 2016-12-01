@@ -6,7 +6,7 @@
 # )
 # # The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
 # 
-options(scipen=20)
+
 # ----- load-source ------
 
 rm(list=ls(all=TRUE))  #Clear the variables from previous runs.
@@ -54,12 +54,24 @@ ds0  <- readRDS(path_input0) #total raw data
 names(ds0)
 # str(ds0)
 
+options(scipen=20)
+
+#UCMS---
 eq_0 <- as.formula("pss ~ 1 +            
                    (1  |id)")
 0.07515 / (  0.07515 + 0.18618)
 model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
 lmerTest::summary((model_ucm))
-
+eq_0 <- as.formula("physical_activity ~ 1 +            
+                   (1  |id)")
+0.07515 / (  0.07515 + 0.18618)
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
+eq_0 <- as.formula("percep_speed ~ 1 +            
+                   (1  |id)")
+0.07515 / (  0.07515 + 0.18618)
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
 
 
 
@@ -302,6 +314,7 @@ lmerTest::summary((model_5))
  model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
  lmerTest::summary((model_5b))
  
+ 0.003985 / (0.06313/ sqrt(3223))
  
  
  eq5b <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
@@ -343,6 +356,18 @@ model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE)
 lmerTest::summary((model_7a))
 
 
+eq7a <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
+                  phys_pmeanC*pss_wp +  pss_pmeanC*phys_wp +
+                  ( 1 + year_in_study + phys_wp + pss_wp |id)")
+model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_7a))
+
+describe(ds0$physical_activity)
+2.63/0.03
+#higher than 1.96, very significant
+
+library(moments)
+agostino.test(ds0$physical_activity)
 
 # #Physical Activity --------------
 # eq8 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
