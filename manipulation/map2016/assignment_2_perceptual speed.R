@@ -6,7 +6,7 @@
 # )
 # # The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
 # 
-
+options(scipen=20)
 # ----- load-source ------
 
 rm(list=ls(all=TRUE))  #Clear the variables from previous runs.
@@ -53,6 +53,15 @@ path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds"
 ds0  <- readRDS(path_input0) #total raw data  
 names(ds0)
 # str(ds0)
+
+eq_0 <- as.formula("pss ~ 1 +            
+                   (1  |id)")
+0.07515 / (  0.07515 + 0.18618)
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
+
+
+
 
 ds0$msexg<-as.character(ds0$msex)
 
@@ -103,6 +112,38 @@ g1<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y="percep_speed", linet
 g1 <- g1 + labs(list(
   # title= "Changes in Working Memory Over Time, by Gender",
   x="Year in Study", y="Working Memory"))
+g1
+
+
+
+g1<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="percep_speed")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g1 <- g1 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="Within Person (more than usual) PA", y="perceptual speed"))
+g1
+
+
+g1<- ggplot2::ggplot(ds0, aes_string(x= "phys_pmeanC", y="percep_speed")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g1 <- g1 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="Average Physical Activity", y="Perceptual Speed"))
+g1
+
+
+
+g1<- ggplot2::ggplot(ds0, aes_string(x= "pss_pmeanC", y="percep_speed")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g1 <- g1 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="Average Stress", y="Perceptual Speed"))
 g1
 
 
@@ -214,7 +255,7 @@ lmerTest::summary((model_4))
 #Physical Activity --------------
 eq5 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
                   phys_pmeanC + phys_wp +
-                  ( 1 + year_in_study |id)")
+                  ( 1 + year_in_study + phys_wp |id)")
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
 lmerTest::summary((model_5))
 
@@ -232,13 +273,10 @@ lmerTest::summary((model_5))
 0.32204/ (sqrt( 10492))
 
 
-
-
-
  # gender X PA
  eq6 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
                    phys_pmeanC*msex + phys_wp*msex +
-                   ( 1 + year_in_study |id)")
+                   ( 1 + year_in_study + phys_wp|id)")
  model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
  lmerTest::summary((model_6))
 
@@ -256,16 +294,31 @@ lmerTest::summary((model_5))
  #resid         0.1037
  0.32204/ (sqrt( 10492))
  
- 
 
+ #stress------------------------------
+ eq5b <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+                  pss_pmeanC + pss_wp +
+                  ( 1 + year_in_study + pss_wp |id)")
+ model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
+ lmerTest::summary((model_5b))
+ 
+ 
+ 
+ eq5b <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+                  pss_pmeanC*msex + pss_wp*msex +
+                    ( 1 + year_in_study + pss_wp |id)")
+ model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
+ lmerTest::summary((model_5b))
+ 
 
 ################# interaction with stress 
 #---- PSS and interaction
 
 #Physical Activity --------------
+
 eq7 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
-                  phys_pmeanC  + phys_wp*pss_pmeanC +
-                  ( 1 + year_in_study |id)")
+                  phys_pmeanC*pss_pmeanC  + pss_wp*phys_wp +
+                  ( 1 + year_in_study + pss_wp + phys_wp |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
 #df= 
@@ -273,6 +326,7 @@ lmerTest::summary((model_7))
 #dev =  
 13472.8 - 8868.3 
 
+13472.8 - 3200
 
 #int           0.38644
 0.62165  / (sqrt( 7836))
@@ -282,7 +336,11 @@ lmerTest::summary((model_7))
 0.31813/ (sqrt( 7836))
 
 
-
+eq7a <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
+                  phys_pmeanC*pss_pmeanC +  pss_wp*phys_wp +
+                  ( 1 + year_in_study + phys_wp |id)")
+model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_7a))
 
 
 
@@ -297,6 +355,25 @@ lmerTest::summary((model_7))
 # #df from model 5 versus 7
 # 
 # 
+
+names(ds0)
+
+#keep re-reunning this to see different people in the sample  IT WORKED
+ids <- sample(unique(ds0$id),1)
+ds0 %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id, cholesterol, al_count_BL, al_count_wave, al_catg_BL, al_catg_wave
+  )
+
+describe(ds0$al_catg_BL)
+
+ids <- sample(unique(ds0$id),1)
+ds0 %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id, physical_activity, phys_pmean, phys_wp, phys_pmeanC)
+
 
 
 

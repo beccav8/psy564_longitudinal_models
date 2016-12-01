@@ -81,6 +81,7 @@ range(ds0$year_in_study, na.rm=TRUE)  # 0 to 18
 mean(ds0$year_in_study, na.rm=TRUE)
 sd(ds0$year_in_study, na.rm=TRUE)
 
+library(psych)
 
 # --- outcomes -------
 
@@ -142,6 +143,7 @@ summary(ds0$pss_wp)
 hist(ds0$pss)
 
 describeBy(ds0$pss, group=ds0$year_in_study)
+describe(ds0$pss)
 #majority of data is between wave 2 and 9
 
 table(ds0$pss_wp, na.rm=FALSE)

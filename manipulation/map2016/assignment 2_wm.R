@@ -70,6 +70,7 @@ indwm + facet_wrap(~id, nrow=4) +
  stat_smooth(method=lm, se=TRUE)+
 theme1
 
+
 #PA
 indphys<- ggplot(graph_sample, aes(x= year_in_study, y= physical_activity)) +geom_point()
 indphys + facet_wrap(~id, nrow=4) +
@@ -77,7 +78,13 @@ stat_smooth(method=lm, se=TRUE)+
 theme1
 
 #pss
-indpss<- ggplot(graph_sample, aes(x= year_in_study, y= physical_activity)) +geom_point()
+indpss<- ggplot(graph_sample, aes(x= year_in_study, y= pss)) +geom_point()
+indpss + facet_wrap(~id, nrow=4) +
+  stat_smooth(method=lm, se=TRUE) +
+  theme1
+
+#pss
+indpss<- ggplot(graph_sample, aes(x= year_in_study, y= pss_pmeanC)) +geom_point()
 indpss + facet_wrap(~id, nrow=4) +
   stat_smooth(method=lm, se=TRUE) +
   theme1
@@ -86,6 +93,48 @@ indpss + facet_wrap(~id, nrow=4) +
 
 source("./scripts/multiplot-function.R")
 source("./scripts/graph_themes.R")
+
+graph_sample$idg<-as.character(graph_sample$id)
+g1<- ggplot2::ggplot(graph_sample, aes_string(x= "year_in_study", y="wm", group="idg")) +
+ geom_line() + stat_smooth(aes(group=1), method="lm", se=TRUE) +
+  stat_summary(aes(group=1), geom = "point", fun.y=mean)
+g1
+  
+
+
+g2<- ggplot2::ggplot(graph_sample, aes_string(x= "year_in_study", y="percep_speed", group="idg")) +
+  geom_line() + stat_smooth(aes(group=1), method="lm", se=TRUE) +
+  stat_summary(aes(group=1), geom = "point", fun.y=mean)
+g2
+
+multiplot(g1,g2)
+
+
+graph_sample$idg<-as.character(graph_sample$id)
+g1<- ggplot2::ggplot(graph_sample, aes_string(x= "year_in_study", y="pss", group="idg")) +
+  geom_line() + stat_smooth(aes(group=1), method="lm", se=TRUE) +
+  stat_summary(aes(group=1), geom = "point", fun.y=mean)
+g1
+
+
+
+g2<- ggplot2::ggplot(graph_sample, aes_string(x= "year_in_study", y="physical_activity", group="idg")) +
+  geom_line() + stat_smooth(aes(group=1), method="lm", se=TRUE) +
+  stat_summary(aes(group=1), geom = "point", fun.y=mean)
+g2
+
+multiplot(g1,g2)
+
+
+g2<- ggplot2::ggplot(ds0, aes_string(x= "pss_pmeanC", y="physical_activity")) +
+  # geom_line() +
+  stat_smooth(method="lm", se=TRUE) +
+  stat_summary(aes(group=1), geom = "point", fun.y=mean)
+g2
+
+
+
+describe(ds0$phys_wp)
 
 str(ds0$msexg)
 table(ds0$msexg)
@@ -104,6 +153,14 @@ g1 <- g1 + labs(list(
   x="Year in Study", y="Working Memory"))
 g1
 
+g4<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y="percep_speed", linetype="Sex")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g4 <- g4 + labs(list(
+  # title= "Physical Activity Over Time",
+  x="Year in Study", y="Physical Activity Score"))
+g4
 
 g2<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y="pss", linetype="Sex")) +
   geom_point(shape=10, size=1)+
@@ -126,7 +183,10 @@ g3
 
 
 
-over_time<- multiplot(g1, g2, g3) 
+
+outcome_over_time<- multiplot(g1, g4)
+
+predictors_over_time<- multiplot(g2, g3) 
           
 g4<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y="phys_wp", linetype="Sex")) +
   geom_point(shape=10, size=1)+
@@ -150,13 +210,13 @@ g5
 # ds0<- subset(ds0, phys_wp > -10)
 # ds0<- subset(ds0, phys_wp < 2) 
 
-g6<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="pss_wp", linetype="Sex")) +
+g6<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="pss_pmeanC")) +
   geom_point(shape=10, size=1)+
   stat_smooth(method=lm, se=TRUE)+
   theme1
 g6 <- g6 + labs(list(
   # title= "Coupled Change of PA and PSS",
-  x="Within Person PA", y="Within person PSS"))
+  x="Within Person PA", y="Person Mean PSS"))
 g6
 
 
@@ -173,6 +233,8 @@ g7 <- g7 + labs(list(
   x="person mean PA", y="person mean PSS"))
 g7
 
+
+describe(ds0$pss)
 
 #--models
 range(ds0$year_in_study, na.rm=TRUE)
@@ -343,7 +405,7 @@ lmerTest::summary((model_6))
 
 #Physical Activity --------------
 eq7 <- as.formula("wm ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
-phys_pmeanC + phys_wp*pss_pmeanC +
+phys_pmeanC + phys_wp*pss_pmeanC + 
                     ( 1 + year_in_study |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))

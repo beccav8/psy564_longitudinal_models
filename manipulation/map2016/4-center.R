@@ -23,6 +23,16 @@ requireNamespace("car") # For it's `recode()` function.
 dto <- readRDS("./data/unshared/derived/map2016/dto-AL_subset.rds")
 # ---- inspect-data -------------------------------------------------------------
 # the list is composed of the following elements
+
+
+ids <- sample(unique(dto$id),1)
+dto %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id, cholesterol, al_count_BL, al_count_wave, al_catg_BL, al_catg_wave
+  )
+
+
 names(dto)
 head(dto)
 data<-dto
@@ -167,7 +177,7 @@ myvars<- c("id","year_in_study","age_bl","age_at_visit", "time_since_dx","age_at
            "nle", "nle_wp", "nle_pmean", "nle_pmeanC", "nle_gmc",
            "pss", "pss_pmean", "pss_pmeanC", "pss_gmc", "pss_wp", 
            "al_count_BL","al_count_wave","al_catg_BL", "al_catg_wave", 
-           "physical_activity","phys_gmc","phys_gmedc","phys_wp", 
+           "physical_activity","phys_gmc","phys_gmedc","phys_wp", "cholesterol",
            "phys_pmean",  "phys_pmeanC", "age_bl_gmc")
 
 
