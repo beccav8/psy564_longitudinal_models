@@ -170,20 +170,12 @@ data$age_bl_gmc<- (data$age_bl) - (mean(data$age_bl, na.rm=TRUE))
 ##-- select only the variables I want (i.e. further refine)
 
 names(data)
-
-myvars<- c("id","year_in_study","age_bl","age_at_visit", "time_since_dx","age_at_visit_meanc","age_at_visit65",
-           "dementia",  "edu", "msex","race","apoe", "social_isolation",
-           "episodic","percep_speed","semantic","wm","global","dig_b","dig_f","mmse",
-           "nle", "nle_wp", "nle_pmean", "nle_pmeanC", "nle_gmc",
-           "pss", "pss_pmean", "pss_pmeanC", "pss_gmc", "pss_wp", 
-           "al_count_BL","al_count_wave","al_catg_BL", "al_catg_wave", 
-           "physical_activity","phys_gmc","phys_gmedc","phys_wp", "cholesterol",
-           "phys_pmean",  "phys_pmeanC", "age_bl_gmc")
+str(data)
 
 
-d <- data[myvars]
+d <- data
 
-str(d)
+
 d$id<-as.numeric(d$id)
 d$year_in_study<-as.numeric(d$year_in_study)
 d$dementia<-as.numeric(d$dementia)
@@ -193,6 +185,7 @@ d$edu<-as.numeric(d$edu)
 d$msex<-as.numeric(d$msex)
 d$race<-as.numeric(d$race)
 d$apoe<-as.numeric(d$apoe)
+
 d$episodic<-as.numeric(d$episodic)
 d$percep_speed<-as.numeric(d$percep_speed)
 d$semantic<-as.numeric(d$semantic)
@@ -201,14 +194,21 @@ d$global<-as.numeric(d$global)
 d$dig_b<-as.numeric(d$dig_b)
 d$dig_f<-as.numeric(d$dig_f)
 d$mmse<-as.numeric(d$mmse)
+d$sdmt<-as.numeric(d$sdmt)
+d$wl_im<-as.numeric(d$wl_im)
+d$wl_del<-as.numeric(d$wl_del)
+d$wl_rec<-as.numeric(d$wl_rec)
+
 d$nle<-as.numeric(d$nle)
 d$pss<-as.numeric(d$pss)
 d$physical_activity<-as.numeric(d$physical_activity)
 d$al_count_BL<-as.numeric(d$al_count_BL)
 d$al_count_wave<-as.numeric(d$al_count_wave)
-d$al_catg_BL<-as.numeric(d$al_catg_BL)
-d$al_catg_wave<-as.numeric(d$al_catg_wave)
-d$social_isolation<-as.numeric(d$social_isolation)
+d$cholesterol<-as.numeric(d$cholesterol)
+d$hdlchlstrl  <-as.numeric(d$hdlchlstrl ) 
+d$ldlchlstrl<-as.numeric (d$ldlchlstrl)
+d$glucose<-as.numeric(d$glucose)
+
 d$phys_gmc<-as.numeric(d$phys_gmc)
 d$phys_gmedc<-as.numeric(d$phys_gmedc)
 d$phys_wp<-as.numeric(d$phys_wp)

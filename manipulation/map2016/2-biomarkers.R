@@ -443,7 +443,8 @@ names(ds)
 
 myvars<- c("id","study","year_in_study","cogdx","dementia", "age_bl","age_at_visit","age_death","edu", "msex","race","apoe","date_at_baseline", 
            "cesdsum","episodic","percep_orient", "percep_speed","semantic","wm","global","dig_b","dig_f","mmse",
-           "sdmt","wl_im","wl_del","wl_rec","nle","pss","physical_activity", "cholesterol", 
+           "sdmt","wl_im","wl_del","wl_rec","nle","pss","physical_activity",
+           "cholesterol", "hdlchlstrl", "hdlratio", "ldlchlstrl", "glucose", "creatinine", "hba1c", 
            "al_count_BL", "al_count_wave", "al_catg_BL", "al_catg_wave","social_isolation")
 
 ds2<- ds[myvars]
