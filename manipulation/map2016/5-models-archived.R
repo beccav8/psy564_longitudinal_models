@@ -32,6 +32,8 @@ source("./scripts/functions-for-glm-models.R")
 source("./scripts/multiplot-function.R")
 source("./scripts/map-specific-graphs.R")
 source("./scripts/graph_themes.R")
+source("./scripts/multiplot-function.R")
+source("./scripts/graph_themes.R")
 
 # source("./scripts/graph-presets.R") # fonts, colors, themes
 
@@ -54,132 +56,6 @@ ds0  <- readRDS(path_input0) #total raw data
 names(ds0)
 # str(ds0)
 
-#---variable information 
-
-#pss
-hist(ds0$pss) #relatively normal dist
-sd(ds0$pss, na.rm=TRUE) #.83
-describe(ds0$pss)
-agostino.test(ds0$pss)
-eq_0 <- as.formula("pss ~ 1 +            
-                   (1  |id)")
-0.07515 / (  0.07515 + 0.18618)
-model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
-lmerTest::summary((model_ucm))
-
-#PA
-# hist(ds0$ #relatively normal dist
-# sd(ds0$, na.rm=TRUE) #.83
-# describe(ds0$)
-# agostino.test(ds0$)
-# eq_0 <- as.formula(" ~ 1 +            
-#                    (1  |id)")
-# 
-# model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_ucm))
-
-#sdmt perceptual speed
-
-hist(ds0$sdmt) 
-sd(ds0$sdmt, na.rm=TRUE) #13.12
-describe(ds0$sdmt) # mean= 35.75, sd=13.13,  min=0 max=77
-agostino.test(ds0$sdmt)
-
-eq_0 <- as.formula("sdmt ~ 1 +            
-                   (1  |id)")
-model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
-lmerTest::summary((model_ucm))
-137.91 / (137.91+49.81) #73%
-
-
-
-
-ds0$msexg<-as.character(ds0$msex)
-
-set.seed(1)
-ids <- sample(ds0$id,20)
-graph_sample <- ds0 %>%  dplyr::filter( id %in% ids)
-length(unique(graph_sample$id))
-
-
-#indiviudal growth plots-------
-
-#percep_speed
-indwm<- ggplot(graph_sample, aes(x= year_in_study, y= percep_speed)) +geom_point()
-indwm + facet_wrap(~id, nrow=4) +
-  stat_smooth(method=lm, se=TRUE)+
-  theme1
-
-ds0$msexg <- ifelse(ds0$msexg >=1, 
-                    c("Male"), c("Female")) 
-library(reshape)
-ds0 <- rename(ds0, c(msexg="Sex"))
-
-g5<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y="percep_speed", linetype="Sex")) +
-  geom_point(shape=10, size=1)+
-  stat_smooth(method=lm, se=TRUE)+
-  theme1
-g5 <- g5 + labs(list(
-  # title= "Person centered Perceived Stress Over Time",
-  x="Time", y="Person mean centered Percevied Stress"))
-g5
-##### average over time
-
-source("./scripts/multiplot-function.R")
-source("./scripts/graph_themes.R")
-
-str(ds0$msexg)
-table(ds0$msexg)
-
-ds0$msexg <- ifelse(ds0$msexg >=1, 
-                    c("Male"), c("Female")) 
-library(reshape)
-ds0 <- rename(ds0, c(msexg="Sex"))
-
-g1<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y="percep_speed", linetype="Sex")) +
-  geom_point(shape=10, size=1)+
-  stat_smooth(method=lm, se=TRUE)+
-  theme1
-g1 <- g1 + labs(list(
-  # title= "Changes in Working Memory Over Time, by Gender",
-  x="Year in Study", y="Working Memory"))
-g1
-
-
-
-g1<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="percep_speed")) +
-  geom_point(shape=10, size=1)+
-  stat_smooth(method=lm, se=TRUE)+
-  theme1
-g1 <- g1 + labs(list(
-  # title= "Changes in PS Over Time, by Gender",
-  x="Within Person (more than usual) PA", y="perceptual speed"))
-g1
-
-
-g1<- ggplot2::ggplot(ds0, aes_string(x= "phys_pmeanC", y="percep_speed")) +
-  geom_point(shape=10, size=1)+
-  stat_smooth(method=lm, se=TRUE)+
-  theme1
-g1 <- g1 + labs(list(
-  # title= "Changes in PS Over Time, by Gender",
-  x="Average Physical Activity", y="Perceptual Speed"))
-g1
-
-
-
-g1<- ggplot2::ggplot(ds0, aes_string(x= "pss_pmeanC", y="percep_speed")) +
-  geom_point(shape=10, size=1)+
-  stat_smooth(method=lm, se=TRUE)+
-  theme1
-g1 <- g1 + labs(list(
-  # title= "Changes in PS Over Time, by Gender",
-  x="Average Stress", y="Perceptual Speed"))
-g1
-
-
-
-#--models
 
 
 #PS
@@ -247,11 +123,11 @@ lmerTest::summary((model_3))
 #df= 
 10588 -   10584
 #dev =  
- 13871.8 - 13858.7
+13871.8 - 13858.7
 
 
 #int 0.606840
- 0.77900/ (sqrt(10594))
+0.77900/ (sqrt(10594))
 #year 0.006888
 0.08299/ (sqrt(10594))
 #resid 0.104434
@@ -282,9 +158,11 @@ lmerTest::summary((model_4))
 
 
 
-
 #Physical Activity --------------
-eq5 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+
+describe(ds0$sdmt)
+ds0$sdmt2<-ds0$sdmt/2
+eq5 <- as.formula("sdmt2 ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
                   phys_pmeanC + phys_wp +
                   ( 1 + year_in_study + phys_wp |id)")
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
@@ -304,42 +182,42 @@ lmerTest::summary((model_5))
 0.32204/ (sqrt( 10492))
 
 
- # gender X PA
- eq6 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
-                   phys_pmeanC*msex + phys_wp*msex +
-                   ( 1 + year_in_study + phys_wp|id)")
- model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
- lmerTest::summary((model_6))
+# gender X PA
+eq6 <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+                  phys_pmeanC*msex + phys_wp*msex +
+                  ( 1 + year_in_study + phys_wp|id)")
+model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
+lmerTest::summary((model_6))
 
 
- #df= 
+#df= 
 10478 - 10476 
- #dev =  
- 13472.9 - 13472.8
- 
- 
- #int           0.54
- 0.73512 / (sqrt( 10492))
- #year          0.0065
- 0.08122/ (sqrt( 10492))
- #resid         0.1037
- 0.32204/ (sqrt( 10492))
- 
+#dev =  
+13472.9 - 13472.8
 
- #stress------------------------------
- eq5b <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
-                  pss_pmeanC + pss_wp +
-                  ( 1 + year_in_study + pss_wp |id)")
- model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
- lmerTest::summary((model_5b))
- 
- 
- 
- eq5b <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
-                  pss_pmeanC*msex + pss_wp*msex +
-                    ( 1 + year_in_study + pss_wp |id)")
- model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
- lmerTest::summary((model_5b))
+
+#int           0.54
+0.73512 / (sqrt( 10492))
+#year          0.0065
+0.08122/ (sqrt( 10492))
+#resid         0.1037
+0.32204/ (sqrt( 10492))
+
+
+#stress------------------------------
+eq5b <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+                   pss_pmeanC + pss_wp +
+                   ( 1 + year_in_study + pss_wp |id)")
+model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_5b))
+
+
+
+eq5b <- as.formula("percep_speed ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+                   pss_pmeanC*msex + pss_wp*msex +
+                   ( 1 + year_in_study + pss_wp |id)")
+model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_5b))
 ################# interaction with stress 
 #---- PSS and interaction
 

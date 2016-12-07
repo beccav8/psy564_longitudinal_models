@@ -1,0 +1,263 @@
+# # The purpose of this script is to create a data object (dto) which will hold all data and metadata.
+# # Run the lines below to stitch a basic html output.
+# knitr::stitch_rmd(
+#   script="./manipulation/map2016/Level1_models_full_workingmem.R",
+#   output="./manipulation/map2016/output/level1_models_wm_full.md"
+# )
+# # The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
+# 
+options(scipen=20)
+# ----- load-source ------
+
+rm(list=ls(all=TRUE))  #Clear the variables from previous runs.
+cat("\f") # clear console
+
+# Attach these packages so their functions don't need to be qualified: http://r-pkgs.had.co.nz/namespace.html#search-path
+library(magrittr) # enables piping : %>%
+library(lmerTest)
+library(outliers)
+library(psych)
+library(moments)
+
+
+
+# Call `base::source()` on any repo file that defines functions needed below.  Ideally, no real operations are performed.
+source("./scripts/common-functions.R") # used in multiple reports
+source("./scripts/graph-presets.R")
+source("./scripts/general-graphs.R")  #in scripts folder
+source("./scripts/specific-graphs.R")
+source("./scripts/specific-graphs-pred.R")
+source("./scripts/graphs-pred.R")
+source("./scripts/graphs-predVID.R")
+source("./scripts/functions-for-glm-models.R")
+source("./scripts/multiplot-function.R")
+source("./scripts/map-specific-graphs.R")
+source("./scripts/graph_themes.R")
+source("./scripts/multiplot-function.R")
+source("./scripts/graph_themes.R")
+
+# source("./scripts/graph-presets.R") # fonts, colors, themes
+
+# Verify these packages are available on the machine, but their functions need to be qualified: http://r-pkgs.had.co.nz/namespace.html#search-path
+requireNamespace("ggplot2") # graphing
+# requireNamespace("readr") # data input
+requireNamespace("tidyr") # data manipulation
+requireNamespace("dplyr") # Avoid attaching dplyr, b/c its function names conflict with a lot of packages (esp base, stats, and plyr).
+requireNamespace("testit")# For asserting conditions meet expected patterns.
+requireNamespace("nlme") # estimate mixed models | esp. gls()
+requireNamespace("lme4") # estimate mixed models | esp. lmer()
+requireNamespace("arm")  # process model objects
+getwd()
+
+# ----- specify-objects ------
+path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds" 
+
+# ----- load-data ------
+ds0  <- readRDS(path_input0) #total raw data  
+names(ds0)
+# str(ds0)
+
+#---variable information 
+
+#pss
+hist(ds0$pss) #relatively normal dist
+sd(ds0$pss, na.rm=TRUE) #.83
+describe(ds0$pss)
+agostino.test(ds0$pss)
+eq_0 <- as.formula("pss ~ 1 +            
+                   (1  |id)")
+0.07515 / (  0.07515 + 0.18618) #28%BP
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
+
+#PA
+# hist(ds0$ #relatively normal dist
+# sd(ds0$, na.rm=TRUE) #.83
+# describe(ds0$)
+# agostino.test(ds0$)
+# eq_0 <- as.formula(" ~ 1 +            
+#                    (1  |id)")
+# 
+# model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_ucm))
+
+#sdmt  ------- perceptual speed
+
+hist(ds0$sdmt) 
+sd(ds0$sdmt, na.rm=TRUE) #13.12
+describe(ds0$sdmt) # mean= 35.75, sd=13.13,  min=0 max=77
+agostino.test(ds0$sdmt)
+
+eq_0 <- as.formula("sdmt ~ 1 +            
+                   (1  |id)")
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
+137.91 / (137.91+49.81) #73%
+
+
+#dig_b --- working memory
+hist(ds0$dig_b) 
+sd(ds0$dig_b, na.rm=TRUE) #2.181367
+describe(ds0$dig_b) # mean= 5.92, sd=2.18,  min=0  max=12
+agostino.test(ds0$dig_b)
+
+eq_0 <- as.formula("dig_b ~ 1 +            
+                   (1  |id)")
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
+2.804 / (2.804+2.086) #57%
+
+
+#--- graphs
+
+ds0$msexg<-as.character(ds0$msex)
+
+ds0$msexg <- ifelse(ds0$msexg >=1, 
+                    c("Male"), c("Female")) 
+library(reshape)
+ds0 <- rename(ds0, c(msexg="Sex"))
+
+set.seed(1)
+ids <- sample(ds0$id,20)
+graph_sample <- ds0 %>%  dplyr::filter( id %in% ids)
+length(unique(graph_sample$id))
+
+
+
+
+#indiviudal growth plots-------
+
+#percep_speed-sdmt
+indwm<- ggplot(graph_sample, aes(x= year_in_study, y= sdmt)) +geom_point()
+indwm + facet_wrap(~id, nrow=4) +
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+#working memory
+indwm<- ggplot(graph_sample, aes(x= year_in_study, y= dig_b)) +geom_point()
+indwm + facet_wrap(~id, nrow=4) +
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+
+# over time -----------
+
+g1<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y="sdmt", linetype="Sex")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g1 <- g1 + labs(list(
+  # title= "Changes in Working Memory Over Time, by Gender",
+  x="Year in Study", y="perceptual Speed"))
+g1
+
+g2<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y="dig_b", linetype="Sex")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g2 <- g2 + labs(list(
+  # title= "Changes in Working Memory Over Time, by Gender",
+  x="Year in Study", y="Working Memory"))
+g2
+
+g3<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y="pss", linetype="Sex")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g3 <- g3 + labs(list(
+  # title= "Changes in Working Memory Over Time, by Gender",
+  x="Year in Study", y="percevied stress"))
+g3
+
+g4<- ggplot2::ggplot(ds0, aes_string(x= "year_in_study", y=" ", linetype="Sex")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g4 <- g4 + labs(list(
+  # title= "Changes in Working Memory Over Time, by Gender",
+  x="Year in Study", y="physical Activity"))
+g4
+
+####-----BP effects----
+
+#phys BP
+g1<- ggplot2::ggplot(ds0, aes_string(x= "phys_bp", y="sdmt")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g1 <- g1 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="PA_WP", y="sdmt"))
+g1
+
+g2<- ggplot2::ggplot(ds0, aes_string(x= "phys_bp", y="dig_b")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g2 <- g2 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="PA_WP", y="working memory"))
+g2
+
+#pss BP
+
+g3<- ggplot2::ggplot(ds0, aes_string(x= "pss_bp", y="sdmt")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g3 <- g3 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="PSS", y="sdmt"))
+g3
+
+g4<- ggplot2::ggplot(ds0, aes_string(x= "pss_bp", y="dig_b")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g4 <- g4 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="PSS", y="working memory"))
+g4
+
+
+
+####-----WP effects----
+
+#phys WP
+
+g1<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="sdmt")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g1 <- g1 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="PA_WP", y="sdmt"))
+g1
+
+g2<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="dig_b")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g2 <- g2 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="PA_WP", y="working memory"))
+g2
+
+#pss WP
+
+g3<- ggplot2::ggplot(ds0, aes_string(x= "pss_wp", y="sdmt")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g3 <- g3 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="PSS", y="sdmt"))
+g3
+
+g4<- ggplot2::ggplot(ds0, aes_string(x= "pss_wp", y="dig_b")) +
+  geom_point(shape=10, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g4 <- g4 + labs(list(
+  # title= "Changes in PS Over Time, by Gender",
+  x="PSS", y="working memory"))
+g4
+
