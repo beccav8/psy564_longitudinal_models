@@ -54,205 +54,124 @@ path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds"
 # ----- load-data ------
 ds0  <- readRDS(path_input0) #total raw data  
 names(ds0)
-# str(ds0)
 
-describe(ds0$sdmt)
-ds0$sdmt_origional<-ds0$sdmt
-ds0$sdmt<-ds0$sdmt/2
 
 #models--------------------------
 
-eq <- as.formula("sdmt ~ 1 +          
+eq <- as.formula("dig_b ~ 1 +          
                  ( 1  |id)")
 model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
 lmerTest::summary((model))
-#resid var= 12.45
+#resid var= 1.974
 
-eq <- as.formula("sdmt ~ 1 + year_in_study +          
+eq <- as.formula("dig_b ~ 1 + year_in_study +          
                  ( 1  |id)")
 model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
 lmerTest::summary((model))
-#df= 10587    
-#dev =  59601.7
+#df= 11243  dev=43476.4
 
 
-eq <- as.formula("sdmt ~ 1 + year_in_study +          
+eq <- as.formula("dig_b ~ 1 + year_in_study +          
                  ( 1 + year_in_study |id)")
 model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
 lmerTest::summary((model))
-#df= 10585   
-#dev =  58014.5
+#df=  11241  
+#dev =  43153.4
 
-10587-10585
-59601.7-58014.5
+11241  - 11243
+43476.4 -  43153.4 
 
-#int 31.3347
-5.5977/ (sqrt(10591))
-#year 0.4034
-0.6351/ (sqrt(10591))
-#resid 7.1566
-2.6752 / (sqrt(10591))
 
 #pseudo r^2
 
-(12.45 - 7.1566 ) / 12.45
+(2.086 - 1.7793)/2.086
 
 
 
-# #AGE BL-------------
-# 
-# eq2 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + 
-#                   ( 1 + year_in_study |id)")
-# model_2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_2))
-# 
-# #chi sq
-# #df
-# #df= 
-# 10585 -  10583 
-# #deviance
-# 58014.5- 57653.7 
-# 
-# 
-# #int 27.5670
-# 5.2504/ (sqrt(10591))
-# #year 0.3081
-# 0.5551/ (sqrt(10591))
-# #resid 7.1819
-# 2.6799/ (sqrt(10591))
-# 
-# ################ + gender
-# 
-# eq3 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + 
-#                   ( 1 + year_in_study |id)")
-# model_3<- lmerTest::lmer(eq3, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_3))
-# 
-# #df= 
-# 10583- 10581
-# #dev =  
-# 57653.7-57644.1
-# 
-# 
-# #int 27.3997
-# 5.2345/ (sqrt(10591))
-# #year  0.308
-# 0.5551/ (sqrt(10591))
-# #resid 7.1821
-# 2.6799 / (sqrt(10591))
-# 
 
 
-################# + education 
-
-
-eq4 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu + 
+eq4 <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu + 
                   ( 1 + year_in_study |id)")
 model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
 lmerTest::summary((model_4))
-# 
-# #df= 
-# 10581- 10579
-# #dev
-# 57644.1- 57471.3
+
+11241-11235 
+43476.4-42904.6
+
 #compared to random time model
-10585- 10579
-#dev
-58014.5 - 57471.3
 
 
-#int 24.5726
-4.9571/ (sqrt(10591))
-#year  0.3101
-0.5568/ (sqrt(10591))
-#resid 7.1787
-2.6793  / (sqrt(10591))
 
 
 
 #Physical Activity --------------
-eq5 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
-                  year_in_study*phys_pmeanC + phys_wp +
+eq5 <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+                 phys_pmeanC*year_in_study + phys_wp +
                   ( 1 + year_in_study |id)")
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
 lmerTest::summary((model_5))
+# 42023.1    11041 
 
 #the model with the random effects of PA is a better model than the one witout
-56614.6- 56600.6 
-10451 - 10448 
 
 
-eq5 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
-                   + phys_pmeanC*year_in_study + phys_wp +
+eq5a <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+                  + phys_pmeanC*year_in_study + phys_wp +
                   ( 1 + year_in_study + phys_wp |id)")
-model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5))
+model_5a<- lmerTest::lmer(eq5a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_5a))
+# 42020.5    11038 
+anova(model_5, model_5a)
 
-#df= 
-10579 - 10449 
-#dev =  
-57471.3 - 56616.9
+42020.5 - 42023.1   
+11038 - 11041
 
-#int 24.1643
-4.9096/ (sqrt(10466))
-#year  0.271076
-0.5206 / (sqrt(10466))
-#phys_wp 0.0048
-0.0695/ (sqrt(10466))
-#resid  7.073466
-2.6596  / (sqrt(10466))
 
 #wp varience explained compred to the random effects of time only
-(7.1566 -  7.066991)/(7.1566)
+(1.7793 -  1.7608033)/(1.7793)
+#varience in the intercept explained by PA?
+(2.9036   - 2.5765122) / 2.9036
+#varience in the slope explained by PA? 
+(0.0222 - 0.0158043) / .0222
 
-# # gender X PA
-# eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
-#                   phys_pmeanC*msex + phys_wp*msex +
-#                   ( 1 + year_in_study + phys_wp|id)")
-# model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
-# lmerTest::summary((model_6))
+#does PA moderate the effects of gender on the intercept and slope
 # 
+# eq5s <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+#                    + phys_pmeanC*year_in_study*msex + phys_wp*msex +
+#                    ( 1 + year_in_study + phys_wp |id)")
+# model_5s<- lmerTest::lmer(eq5s, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_5s))
+
+
 
 
 #stress------------------------------
 
-eq5b <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+eq5b <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
                    pss_pmeanC*year_in_study + pss_wp +
                    ( 1 + year_in_study  |id)")
 model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_5b))
-#df= 
+# 12719.1     3282 
 
 #the addition of pss_wp in the random effects is NS
 #people aren't very differnt in their stress fluctuations 
 #therefore there is nothing to explain
-17674.8
-3193
 
-eq5b <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+eq5b <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
                    pss_pmeanC*year_in_study + pss_wp +
                    ( 1 + year_in_study + pss_wp |id)")
 model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_5b))
-#df= 
-10579 - 3191 
-#dev =  
-57471.3 - 17674.5
+# 12716.9     3279
 
-#int 18.91792
-4.349 / (sqrt(3208))
-#year  0.12653
-0.3557 / (sqrt(3208))
-#pss_wp 0.08321
-0.2885/ (sqrt(3208))
-#resid   6.70488
-2.5894/ (sqrt(3208))
+12719.1-12716.9     
+3282-3279
 
-
-# eq5b <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
-#                    pss_pmeanC*msex + pss_wp*msex +
+# eq5b <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+#                    year_in_study*pss_pmeanC*msex + pss_wp*msex +
 #                    ( 1 + year_in_study + pss_wp |id)")
-# model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
+# model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE)
 # lmerTest::summary((model_5b))
 
 
@@ -263,8 +182,8 @@ lmerTest::summary((model_5b))
 
 #Physical Activity --------------
 
-eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
-                  phys_pmeanC*pss_pmeanC  + phys_wp*pss_pmeanC +
+eq7 <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
+                  phys_pmeanC*year_in_study*pss_pmeanC  + phys_wp*pss_pmeanC +
                   ( 1 + year_in_study + phys_wp  |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))

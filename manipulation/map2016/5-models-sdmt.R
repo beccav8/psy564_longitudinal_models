@@ -205,6 +205,13 @@ lmerTest::summary((model_5))
 #wp varience explained compred to the random effects of time only
 (7.1566 -  7.066991)/(7.1566)
 
+
+#varience in the intercept explained by PA?
+(24.5726 - 24.112608) / 24.5726
+
+#varience in the slope explained by PA? 
+(0.3101 - 0.265695) / 0.3101
+
 # # gender X PA
 # eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
 #                   phys_pmeanC*msex + phys_wp*msex +
@@ -226,8 +233,8 @@ lmerTest::summary((model_5b))
 #the addition of pss_wp in the random effects is NS
 #people aren't very differnt in their stress fluctuations 
 #therefore there is nothing to explain
-17674.8
-3193
+17674.8-17672.6
+3193-3190
 
 eq5b <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
                    pss_pmeanC*year_in_study + pss_wp +
@@ -264,7 +271,7 @@ lmerTest::summary((model_5b))
 #Physical Activity --------------
 
 eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
-                  phys_pmeanC*pss_pmeanC  + phys_wp*pss_pmeanC +
+                  phys_pmeanC*year_in_study*pss_pmeanC  + phys_wp*pss_pmeanC +
                   ( 1 + year_in_study + phys_wp  |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))

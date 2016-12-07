@@ -56,8 +56,39 @@ path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds"
 ds0  <- readRDS(path_input0) #total raw data  
 names(ds0)
 # str(ds0)
+length(unique(ds0$id))
+1367 + 485
 
 #---variable information 
+
+#--demographics
+# Baseline measures
+pathFileBL       <- file.path("./data/unshared/raw/dataset_484_basic_2016-09-09.csv")
+BL_raw   <- read.csv(pathFileBL, stringsAsFactors = FALSE) %>% # baseline measure
+  # dplyr::rename(id = projid)%>% 
+  dplyr::select(-dplyr::ends_with(".1")) # remove duplicated variables
+# longitudinal observations
+
+#sex
+table(BL_raw$msex)
+#485 males
+#1367 females
+
+#education
+mean(ds0$edu, na.rm=TRUE)
+range(ds0$edu, na.rm=TRUE)
+sd(ds0$edu, na.rm=TRUE)
+
+describe(ds0$age_bl)
+hist(ds0$age_bl)
+
+#year in study--------------------------
+
+range(ds0$year_in_study, na.rm=TRUE)  # 0 to 18
+mean(ds0$year_in_study, na.rm=TRUE)   #4.06
+describe(ds0$year_in_study)
+#-----explore-physical-activity--
+
 
 #pss
 hist(ds0$pss) #relatively normal dist
@@ -71,15 +102,34 @@ model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE)
 lmerTest::summary((model_ucm))
 
 #PA
-# hist(ds0$ #relatively normal dist
-# sd(ds0$, na.rm=TRUE) #.83
-# describe(ds0$)
-# agostino.test(ds0$)
-# eq_0 <- as.formula(" ~ 1 +            
-#                    (1  |id)")
+describe(ds0$physical_activity)
+qplot(ds0$physical_activity,
+      geom="histogram",
+      binwidth = 0.1,
+      xlim=c(0,20),
+      ylim=c(0,500))
+
+eq_0 <- as.formula("physical_activity ~ 1 +
+                   (1  |id)")
+
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE)
+lmerTest::summary((model_ucm))
+
+5.627 / (5.627+6.741) #45% BP
+
+# ds0$physical_activity1<-(ds0$physical_activity) + 0.1  
+
+# ds0$physLOG<- log(ds0$physical_activity1)
+# hist(ds0$physLOG)
+# qplot(ds0$physLOG,
+#       geom="histogram",
+#       binwidth = 0.1,
+#       xlim=c(-3,4))
+# hist(ds0$physLOG)
 # 
-# model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_ucm))
+# agostino.test(ds0$physLOG)
+
+
 
 #sdmt  ------- perceptual speed
 
@@ -88,9 +138,14 @@ sd(ds0$sdmt, na.rm=TRUE) #13.12
 describe(ds0$sdmt) # mean= 35.75, sd=13.13,  min=0 max=77
 agostino.test(ds0$sdmt)
 
+d<-ds0
+d$sdmt <- d$sdmt/2 
+hist(d$sdmt) 
+describe(d$sdmt) # mean= 35.75, sd=13.13,  min=0 max=77
+
 eq_0 <- as.formula("sdmt ~ 1 +            
                    (1  |id)")
-model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+model_ucm<- lmerTest::lmer(eq_0, data=d, REML= FALSE) 
 lmerTest::summary((model_ucm))
 137.91 / (137.91+49.81) #73%
 
