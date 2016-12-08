@@ -279,22 +279,24 @@ g4
 #phys WP
 
 g1<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="sdmt")) +
-  geom_point(shape=10, size=1)+
+  geom_point(shape=4, size=1)+
   stat_smooth(method=lm, se=TRUE)+
   theme1
 g1 <- g1 + labs(list(
-  # title= "Changes in PS Over Time, by Gender",
-  x="PA_WP", y="sdmt"))
+  title= "Coupled Change between Physical Activity and Symbol Digit Modality",
+  x="Physical Activity (WP)", y="SDMT"))
 g1
 
 g2<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="dig_b")) +
-  geom_point(shape=10, size=1)+
+  geom_point(shape=4, size=1)+
   stat_smooth(method=lm, se=TRUE)+
   theme1
 g2 <- g2 + labs(list(
-  # title= "Changes in PS Over Time, by Gender",
-  x="PA_WP", y="working memory"))
+  title="Coupled Change between Physical Activity and Digit Span Backward",
+  x="Physical Activity", y="Digit Span Backward"))
 g2
+
+multiplot(g1, g2)
 
 #pss WP
 

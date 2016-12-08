@@ -86,12 +86,7 @@ lmerTest::summary((model))
 10587-10585
 59601.7-58014.5
 
-#int 31.3347
-5.5977/ (sqrt(10591))
-#year 0.4034
-0.6351/ (sqrt(10591))
-#resid 7.1566
-2.6752 / (sqrt(10591))
+
 
 #pseudo r^2
 
@@ -150,23 +145,6 @@ eq4 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + y
                   ( 1 + year_in_study |id)")
 model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
 lmerTest::summary((model_4))
-# 
-# #df= 
-# 10581- 10579
-# #dev
-# 57644.1- 57471.3
-#compared to random time model
-10585- 10579
-#dev
-58014.5 - 57471.3
-
-
-#int 24.5726
-4.9571/ (sqrt(10591))
-#year  0.3101
-0.5568/ (sqrt(10591))
-#resid 7.1787
-2.6793  / (sqrt(10591))
 
 
 
@@ -207,10 +185,10 @@ lmerTest::summary((model_5))
 
 
 #varience in the intercept explained by PA?
-(24.5726 - 24.112608) / 24.5726
+(24.5726 - 24.1624) / 24.5726
 
 #varience in the slope explained by PA? 
-(0.3101 - 0.265695) / 0.3101
+(0.3101 - 0.2732) / 0.3101
 
 # # gender X PA
 # eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
@@ -275,6 +253,28 @@ eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  
                   ( 1 + year_in_study + phys_wp  |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
+
+
+g1<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="sdmt")) +
+  geom_point(shape=4, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g1 <- g1 + labs(list(
+  title= "Coupled Change between Physical Activity and Symbol Digit Modality",
+  x="Physical Activity (WP)", y="SDMT"))
+g1
+
+g2<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="dig_b")) +
+  geom_point(shape=4, size=1)+
+  stat_smooth(method=lm, se=TRUE)+
+  theme1
+g2 <- g2 + labs(list(
+  title="Coupled Change between Physical Activity and Digit Span Backward",
+  x="Physical Activity", y="Digit Span Backward"))
+g2
+
+multiplot(g1, g2)
+
 
 
 

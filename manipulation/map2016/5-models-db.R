@@ -89,7 +89,6 @@ lmerTest::summary((model))
 
 
 
-
 eq4 <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu + 
                   ( 1 + year_in_study |id)")
 model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
@@ -129,10 +128,12 @@ anova(model_5, model_5a)
 
 #wp varience explained compred to the random effects of time only
 (1.7793 -  1.7608033)/(1.7793)
-#varience in the intercept explained by PA?
-(2.9036   - 2.5765122) / 2.9036
-#varience in the slope explained by PA? 
-(0.0222 - 0.0158043) / .0222
+#varience in the intercept explained by PA BP?
+(2.9036   -  2.57920 ) / 2.9036
+#varience in the slope explained by PA BP? 
+(0.02033 - 0.01632) / 0.02033
+
+
 
 #does PA moderate the effects of gender on the intercept and slope
 # 
