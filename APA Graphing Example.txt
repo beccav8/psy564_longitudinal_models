@@ -1,0 +1,28 @@
+ggplot(apa_g.data_1, aes(x=variable, y=value)) +
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width=0.5,
+               position=position_dodge(0.2), size=0.5, aes(group=type))+
+  scale_fill_manual(values=c("black","white"))+
+  scale_shape_manual(values=c(15,21))+
+    stat_summary(fun.y = mean, geom="line",size=1.2,position=position_dodge(0.2),aes(group=type))+
+  stat_summary(fun.y = mean, geom="point",size=4,position=position_dodge(0.2),aes(group=type,shape=type,fill=type))+
+  scale_x_discrete("Occasion", labels=c("September Start","Thanksgiving","Halloweeen",
+                                        "November Papers","December Finals","January Start",
+                                        "February Midterms","Reading Break","March Midterms",
+                                        "March Papers","April Exams"))+
+  scale_y_continuous("Response", limits=c(1,4), breaks=c(1,2,3,4), labels=c("Never","Seldom","Sometimes","Often"))+
+  theme_bw()+
+  geom_vline(xintercept=5.5,linetype="dotted")+
+  annotate("text", x=6.6, y=1.4, label="End of First Semester")+
+  labs(title = "Drinking Behaviours Across the Academic Year")+
+  theme(plot.title=element_text(face="bold", size=16),
+    axis.text.x=element_text(angle=90,size=14,face="italic"),
+                        panel.grid.major = element_blank(),
+                        panel.grid.minor = element_blank(),
+        axis.text.y=element_text(size=14,face="italic"),
+        axis.title.y=element_text(face="bold", size=14, angle=90),
+        axis.title.x=element_text(face="bold", size=14),
+        legend.key=element_blank(),
+        legend.key.size = unit(1.5, "lines"),
+        legend.title = element_blank(),
+        legend.text = element_text(size=12),
+        legend.position = c(0.8,0.8))

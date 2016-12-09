@@ -146,6 +146,8 @@ eq4 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + y
 model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
 lmerTest::summary((model_4))
 
+58014.5 - 57471.3
+10585 -10579 
 
 
 #Physical Activity --------------
@@ -206,7 +208,11 @@ eq5b <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + 
                    ( 1 + year_in_study  |id)")
 model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_5b))
-#df= 
+#df=
+#int:18.88
+#slope:0.12
+(24.57 - 18.88)/24.57 
+(0.3101 - 0.12)/0.3101
 
 #the addition of pss_wp in the random effects is NS
 #people aren't very differnt in their stress fluctuations 
@@ -255,27 +261,53 @@ model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE)
 lmerTest::summary((model_7))
 
 
+
+
+#graphs
+
 g1<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="sdmt")) +
-  geom_point(shape=4, size=1)+
-  stat_smooth(method=lm, se=TRUE)+
-  theme1
+  stat_smooth(method=lm, colour= "black", se=TRUE)+
+  geom_point(size=1)
+
 g1 <- g1 + labs(list(
   title= "Coupled Change between Physical Activity and Symbol Digit Modality",
   x="Physical Activity (WP)", y="SDMT"))
+  
+
+g1<- g1 + theme(text=element_text(family='Times'),
+           # legend.title=element_blank())
+           panel.background = theme_rect(fill = "white", colour="black"))
+
+
+g1<- g1 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                panel.background = element_blank())
+
+g1 <- g1 +theme(panel.background = element_rect(fill = "white", colour = "black",
+    size = 1))
 g1
 
+
 g2<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="dig_b")) +
-  geom_point(shape=4, size=1)+
-  stat_smooth(method=lm, se=TRUE)+
-  theme1
+  stat_smooth(method=lm, colour= "black", se=TRUE)+
+  geom_point(size=1)
+
+
 g2 <- g2 + labs(list(
   title="Coupled Change between Physical Activity and Digit Span Backward",
-  x="Physical Activity", y="Digit Span Backward"))
+  x="Physical Activity (WP)", y="Digit Span Backward"))
+
+g2<- g2 + theme(text=element_text(family='Times'),
+                legend.title=element_blank())
+
+g2<- g2 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+g2 <- g2 +theme(panel.background = element_rect(fill = "white", colour = "black",
+                                                size = 1))
 g2
 
+
 multiplot(g1, g2)
-
-
 
 
 
