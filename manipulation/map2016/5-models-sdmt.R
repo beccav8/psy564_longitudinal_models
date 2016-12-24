@@ -173,14 +173,21 @@ lmerTest::summary((model_5))
 #dev =  
 57471.3 - 56616.9
 
-#int 24.1643
-4.9096/ (sqrt(10466))
-#year  0.271076
-0.5206 / (sqrt(10466))
-#phys_wp 0.0048
-0.0695/ (sqrt(10466))
-#resid  7.073466
-2.6596  / (sqrt(10466))
+#int
+24.112608 
+4.9105  / (sqrt(10466))            
+#year_in_study 
+0.265695
+0.5155 / (sqrt(10466))            
+#phys_wp        
+0.005506
+0.0742/(sqrt(10466))        
+#Residual                
+7.066991
+2.6584/(sqrt(10466))    
+
+
+
 
 #wp varience explained compred to the random effects of time only
 (7.1566 -  7.066991)/(7.1566)
@@ -231,13 +238,13 @@ lmerTest::summary((model_5b))
 57471.3 - 17674.5
 
 #int 18.91792
-4.349 / (sqrt(3208))
+4.355 / (sqrt(3208))
 #year  0.12653
 0.3557 / (sqrt(3208))
-#pss_wp 0.08321
-0.2885/ (sqrt(3208))
-#resid   6.70488
-2.5894/ (sqrt(3208))
+#pss_wp 0.10
+0.32/ (sqrt(3208))
+#resid   6.69
+2.58/ (sqrt(3208))
 
 
 # eq5b <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +

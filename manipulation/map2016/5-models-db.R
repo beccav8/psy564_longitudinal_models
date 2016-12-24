@@ -125,6 +125,10 @@ anova(model_5, model_5a)
 42020.5 - 42023.1   
 11038 - 11041
 
+1.6 / sqrt(11056)
+0.12 / sqrt(11056)
+0.014/ sqrt (11056)
+1.33/sqrt(11056)
 
 #wp varience explained compred to the random effects of time only
 (1.7793 -  1.7608033)/(1.7793)
@@ -172,6 +176,14 @@ lmerTest::summary((model_5b))
 12719.1-12716.9     
 3282-3279
 
+#se
+#int
+1.62 / sqrt(3297)
+0.10/ sqrt(3297)
+0.23 / sqrt(3297)
+1.29/ sqrt(3297)
+
+
 # eq5b <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
 #                    year_in_study*pss_pmeanC*msex + pss_wp*msex +
 #                    ( 1 + year_in_study + pss_wp |id)")
@@ -194,5 +206,5 @@ lmerTest::summary((model_7))
 
 
 
-
+print(model_7,correlation=TRUE)
 
