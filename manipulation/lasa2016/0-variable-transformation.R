@@ -140,18 +140,80 @@ names(ds0)
 
 # ---- physical-activity --------------------------------------
 
+#PA variables include biking, gardening, sports (1 and 2), and walking
+#light and heavy household work are excluded to make the composite more comparable to MAP
+
+#this varible was created by    (freq over the past 2 weeks X minuites each time) /2 =minutes per week
+
+
+#########hat do i do if i have the minutes, but not the frequency 
+########## this variable is not created yet###################
+
+
+ids <- sample(unique(ds0$id),1)
+ds0 %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id, 
+                # walking_freq, walking_min,biking_freq, biking_min,
+                # garden_freq, garden_min, 
+                sport1_freq, sport1_min, sport2_freq, sport2_min)       
+
+
+
+# a vlue of -2 seems to represent missing data e.g.
+#      id sport1_freq sport1_min sport2_freq sport2_min
+# 1 31568          10         30           4         10
+# 2 31568          -2         -2          -2         -2
+# 3 31568          -2         -2          -2         -2
+# 
+
+#but I'm not sure what -1 means...
+
+# e.g.
+#      id sport1_freq sport1_min sport2_freq sport2_min
+# 5 15723          -1         30          -1         75
+# 6 15723           2        120           2         30
+# 7 15723          NA         NA          NA         NA
+# > 
+
+
+# describe(ds0$physical_activity)
 
 # ---- stress -----------------------------------------------
 
 
+
+
 # ---- pss ----
+head(ds0$pss)
+
+describeBy(ds0$pss, ds0$wave)
+#only availavle at wave 7
+ds0$pss[ds0$pss < 0] <-NA
+describe(ds0$pss)
+
+
 
 # ---- nle ----
+
+ids <- sample(unique(ds0$id),1)
+ds0 %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id, nle_1, nle_2, nle_3)       
+
 
 
 # ---- other ------------------------------------------------
 
 # ---- mastery ----
+
+ds0$mastery5[ds0$mastery5 < 0] <-NA
+
+#wave 1 - 4 only
+
+describeBy(ds0$mastery5, ds0$wave)
 
 # ---- self-efficacy ----
 
