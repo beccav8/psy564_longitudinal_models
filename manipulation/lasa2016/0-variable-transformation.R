@@ -514,7 +514,7 @@ names(ds0)
 
 ds0$NLE_total <- test2$NLE_total
 
-# ---- other ------------------------------------------------ LEFT OFF HERE
+# ---- other ------------------------------------------------ 
 
 # ---- mastery ----
 
@@ -526,12 +526,30 @@ describeBy(ds0$mastery5, ds0$wave)
 
 # ---- self-efficacy ----
 
-ids <- sample(unique(ds0$id),1)
-ds0 %>%
-  dplyr::filter(id %in% ids ) %>%
-  dplyr::group_by(id) %>%
-  dplyr::select(id,coding1, coding2,coding3,coding_mean)
+#wave 1-4 only
 
+ds0$se[ds0$se < 0] <-NA
+
+describe(ds0$se)
+describeBy(ds0$se, ds0$wave)
+
+
+# ---- save-to-disk ------------------------------------------------------------
+
+# Save as a compressed, binary R dataset.  
+# It's no longer readable with a text editor, but it saves metadata (eg, factor information).
+saveRDS(ds0, file="./data/unshared/derived/lasa_2016/dto_trans.rds", compress="xz")
+
+# ---- object-verification ------------------------------------------------
+# the production of the dto object is now complete
+# we verify its structure and content:
+dto <- readRDS("./data/unshared/derived/lasa_2016/dto_trans.rds")
+names(dto)
+# this is a flat data.frame containing combined variable
+
+
+# a <- statsBy(data.subset, "ID", cors=T)
+# print(a, short=F)
 
 
 
