@@ -71,6 +71,29 @@ table(bl$male)
 # FALSE  TRUE 
 # 2128  1981 
 
+ds0$maleg<-as.character(ds0$male)
+
+#sex for graphing
+
+table(ds0$maleg)
+# FALSE=0=male  TRUE=1=female
+# 14896         13867 
+
+head(ds0$maleg)
+ds0$maleg[ds0$maleg == "FALSE"] <- 0
+ds0$maleg[ds0$maleg == "TRUE"] <- 1
+
+
+ds0$maleg <- ifelse(ds0$maleg == 1, 
+                    c("Female"), c("Male")) 
+
+library(reshape)
+ds0 <- rename(ds0, c(maleg="Sex"))
+
+table(ds0$Sex)
+
+
+
 #education
 mean(ds0$edu, na.rm=TRUE)  # 9.15     MAP: 14.73 (SD= 3.16, range= 0-28) 
 range(ds0$edu, na.rm=TRUE) # 5-18
@@ -165,20 +188,6 @@ lmerTest::summary((model_ucm))
 
 #--- graphs
 
-ds0$male<-as.character(ds0$male)
-
-ds0$maleg<-ds0$male
-table(ds0$maleg)
-
-ds0$maleg[ds0$maleg == "FALSE"] <- 0
-ds0$maleg[ds0$maleg == "TRUE"] <- 1
-
-
-ds0$maleg <- ifelse(ds0$maleg >=1, 
-                    c("Male"), c("Female")) 
-
-library(reshape)
-ds0 <- rename(ds0, c(maleg="Sex"))
 
 set.seed(1)
 ids <- sample(ds0$id,20)
@@ -454,3 +463,19 @@ g4 <- g4 + labs(list(
 g4
 
 #nothing is happening
+
+
+
+
+# ---- save-to-disk ------------------------------------------------------------
+
+# Save as a compressed, binary R dataset.  
+# It's no longer readable with a text editor, but it saves metadata (eg, factor information).
+saveRDS(ds0, file="./data/unshared/derived/lasa_2016/dto_4analyses.rds", compress="xz")
+
+# ---- object-verification ------------------------------------------------
+# the production of the dto object is now complete
+# we verify its structure and content:
+dto <- readRDS("./data/unshared/derived/lasa_2016/dto_4analyses.rds")
+names(dto)
+# this is a flat data.frame containing combined variable

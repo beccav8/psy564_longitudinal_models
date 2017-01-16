@@ -26,6 +26,8 @@ requireNamespace("car") # For it's `recode()` function.
 # ---- load-data --------------------------------------------------------------------
 getwd()
 
+## origional data composition is in the LASA repository (manipulation folder)
+
 ds0 <- readRDS("C:/Users/Rebecca/Documents/GitHub/LASA/data-unshared/derived/dto.rds")
 names(ds0)
 
@@ -46,8 +48,8 @@ describe(ds0$male)
 #baseline 
 bl <- ds0[ which(ds0$wave==1), ] #4109 observations, thus, all unique id's accounted for
 table(bl$male)
-#FALSE  TRUE 
-#2128  1981
+#FALSE=0=male  TRUE=1=female 
+#2128          1981
 
 
 table(ds0$bycohort)
@@ -58,7 +60,7 @@ ds0$edu[ds0$edu <0] <-NA
 
 # ---- cognitive outcomes -----------------------------------------
 
-# ---- coding ------
+# ---- coding ------ processing speed (comparable to SDMT)
 
 #take the mean of all 3 trials to get a score for each participant - must exclude -1 (this is missing data)
 #note: the same cases who have -1 on coding trial 1, also have it on coding trial 2 and 3, therefore, easy to clean
@@ -96,7 +98,8 @@ describe(ds0$coding1)
 describe(ds0$coding2)
 describe(ds0$coding3)
 
-#new variable coding_mean
+#new variable coding_mean -i.e. coding is the mean of all 3 trials of coding 
+
 ds0$coding_mean<- ((ds0$coding1 + ds0$coding2 + ds0$coding3)) /3 
 describe(ds0$coding_mean) #mean = 25.28, n=1485
 
@@ -105,7 +108,7 @@ ds0 <- ds0[, -which(names(ds0) %in% c("coding1", "coding2", "coding3"))]
 names(ds0)
 
 
-# ---- scaled-raven ----
+# ---- scaled-raven ---- fluid intelligence (no comparison in MAP)
 
 #-2 mean no valid data
 
@@ -121,13 +124,14 @@ ds0 <- ds0[, -which(names(ds0) %in% c("raven_a", "raven_b"))]
 names(ds0)
 unique(ds0[,"raven_total"])
 
-# ---- mmse ----
+# ---- mmse ---- (comparable to mmse in MAP)
 
 describe(ds0$mmse)
 ds0$mmse[ds0$mmse < 0] <-NA
 describe(ds0$mmse)
 
-# ---- word-test -----
+# ---- word-test ----- (episodic memory, digit backward, a working memory measure
+#was only measured at one wave in LASA, therefore no comparison)
 
 #there were several options when selecting which word_test varible to use.
 #in LASA repository (1-compose-data-frame), I select the highest score of the three trials as my outcome
@@ -148,10 +152,12 @@ names(ds0)
 #light and heavy household work are excluded to make the composite more comparable to MAP
 
 #this varible was created by    (freq over the past 2 weeks X minuites each time) /2 =minutes per week
+#mins per week was then transformed into hours per week, so that it is equivalent to MAP
 
 
-#########hat do i do if i have the minutes, but not the frequency 
-########## this variable is not created yet###################
+######### In some instances, I had the minutes, but not the frequency (i.e. how many times that week they engaged in that
+#many mins)
+########## therefore, this information has to be excluded (ie. -1 in the freq. column is NA)
 
 
 ids <- sample(unique(ds0$id),1)
@@ -166,8 +172,8 @@ ds0 %>%
 
 
 # a vlue of -2 seems to represent missing data e.g.
-#      id sport1_freq sport1_min sport2_freq sport2_min
-# 1 31568          10         30           4         10
+#      id sport1_freq sport1_min    sport2_freq sport2_min
+# 1 31568          10         30           4         10   =40
 # 2 31568          -2         -2          -2         -2
 # 3 31568          -2         -2          -2         -2
 # 
@@ -175,8 +181,8 @@ ds0 %>%
 #but I'm not sure what -1 means...
 
 # e.g.
-#      id sport1_freq sport1_min sport2_freq sport2_min
-# 5 15723          -1         30          -1         75
+#      id sport1_freq sport1_min     sport2_freq sport2_min
+# 5 15723          -1         30          -1         75  = ?? 
 # 6 15723           2        120           2         30
 # 7 15723          NA         NA          NA         NA
 # > 

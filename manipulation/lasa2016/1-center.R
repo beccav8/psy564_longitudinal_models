@@ -34,10 +34,9 @@ data<-dto
 
 #edu-----------------------------------------
 
-
-
-
-
+describe(data$edu)  #men is 9.15 (5 - 18)
+data$edu_gmc<- (data$edu) - (mean(data$edu, na.rm=TRUE))
+describe(data$edu_gmc) #mean is now 0, range = -4.15 8.85
 #center age ----------------------------------------------------
 
 #center at mean age-------------------------
@@ -69,7 +68,8 @@ data %>%
 
 
 data$age_bl_gmc<- (data$age_bl) - (mean(data$age_bl, na.rm=TRUE))
-
+describe(data$age_bl) #68.13
+describe(data$age_bl_gmc) #-13.35 17.51
 
 
 #nle ----------------------------------------
@@ -78,7 +78,8 @@ data <- rename(data, c(NLE_total = "nle"))
 
 names(data)
 
-#GRAND MEAN CENTERING 
+#GRAND MEAN CENTERING  #mean is 0.116921
+describe(data$nle)
 data$nle_gmc <- (data$nle) - (mean(data$nle, na.rm=TRUE))
 
 #PERSON MEAN CENTER (WP) 
@@ -113,6 +114,10 @@ data$pss_wp <- data$pss-data$pss_pmean
 #center person means around the mean (BP) - this is the variable i will use if I want PSS as a TIVC
 data$pss_bp <- data$pss_pmean - (mean(data$pss, na.rm=TRUE))
 
+describe(data$pss)
+#mean pss= 11.6386   0 - 38
+describe(data$pss_bp) #-11.64 26.36
+
 ids <- sample(unique(data$id),1)
 data %>%
   dplyr::filter(id %in% ids ) %>%
@@ -140,6 +145,7 @@ data %>%
   dplyr::group_by(id) %>%
   dplyr::select(id,se, se_pmean, se_wp, se_gmc, se_bp)
 
+describe(data$se)
 
 #mastery------------------------------------
 
@@ -161,6 +167,7 @@ data %>%
   dplyr::group_by(id) %>%
   dplyr::select(id,mastery5, mastery5_pmean, mastery5_wp, mastery5_gmc, mastery5_bp)
 
+describe(data$mastery5)
 
 #PA-------------------------------------------
 data <- rename(data, c(PA_hours_wk = "phys"))
@@ -183,6 +190,8 @@ data %>%
   dplyr::select(id,phys, phys_pmean, phys_wp, phys_gmc, phys_bp)
 
 
+describe(data$phys)
+
 # ---- save-to-disk ------------------------------------------------------------
 
 # Save as a compressed, binary R dataset.  
@@ -194,7 +203,6 @@ saveRDS(data, file="./data/unshared/derived/lasa_2016/dto_3center.rds", compress
 # we verify its structure and content:
 dto <- readRDS("./data/unshared/derived/lasa_2016/dto_3center.rds")
 names(dto)
-# this is a flat data.frame containing combined variable
 
 
 

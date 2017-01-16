@@ -47,7 +47,7 @@ hist(data$nle)
 
 ######--------------- center PA ------------------------################
 
-#GRAND MEAN CENTERING 
+#GRAND MEAN CENTERING   ##mean is 2.94
 data$phys_gmc <- (data$physical_activity) - (mean(data$physical_activity, na.rm=TRUE))
 
 #MEDIAN CENTER?
@@ -68,7 +68,7 @@ data %>%
   dplyr::group_by(id) %>%
   dplyr::select(id,physical_activity, phys_pmean, phys_pmeanC, phys_wp, phys_gmc, phys_gmedc)
 
-
+describe(data$physical_activity)
 ###----------------------- center pysical activity after transformation ------------------------
 
 # summary(data$physical_activity)
@@ -114,7 +114,7 @@ data %>%
 
 
 ##------- center-pss------------------------------------------------------
-#GRAND MEAN CENTERING 
+#GRAND MEAN CENTERING mean PSS = 2.02
 data$pss_gmc <- (data$pss) - (mean(data$pss, na.rm=TRUE))
 
 #PERSON MEAN CENTER
@@ -132,6 +132,8 @@ data %>%
   dplyr::group_by(id) %>%
   dplyr::select(id,pss, pss_pmean, pss_wp, pss_gmc, pss_pmeanC)
 
+
+describe(data$pss)
 
 
 ##------- center-nle------------------------------------------------------
@@ -157,7 +159,7 @@ data %>%
   dplyr::group_by(id) %>%
   dplyr::select(id,nle, nle_pmean, nle_wp, nle_gmc, nle_pmeanC)
 
-summary(data$nle)
+describe(data$nle)
 summary(data$nle_gmc)
 
 
@@ -205,8 +207,17 @@ data %>%
 #-- center age at bl
 
 data$age_bl_gmc<- (data$age_bl) - (mean(data$age_bl, na.rm=TRUE))
+describe(data$age_bl)
+#-- center education 
+
+describe(data$edu) #0-28, mean is 14.73, median is 15
+data$edu_gmc<- (data$edu) - (mean(data$edu, na.rm=TRUE))
+describe(data$edu_gmc)
+#new mean is 0, range is -14.73 to 13.27.
 
 
+
+#-- recode gender so that it matches LASA
 
 
 ##-- select only the variables I want (i.e. further refine)
