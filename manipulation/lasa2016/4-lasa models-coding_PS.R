@@ -77,9 +77,9 @@ lmerTest::summary((model_ucm))
 #resid
 13.52/ sqrt(1485)
 
-1.96*sqrt(28.76)
--0.12210 + (1.96*sqrt(28.76))
--0.12210 - (1.96*sqrt(28.76)) 
+# 1.96*sqrt(28.76) -i think this is wrong
+# -0.12210 + (1.96*sqrt(28.76))
+# -0.12210 - (1.96*sqrt(28.76)) 
 #CI -11 - 11
 
 #residual chi square test or wald test to determine if there is significant variability in outcome
@@ -359,14 +359,14 @@ g1 <- g1 +theme(panel.background = element_rect(fill = "white", colour = "black"
 g1
 
 
-g2<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="dig_b")) +
+g2<- ggplot2::ggplot(ds0, aes_string(x= "nle_wp", y="coding_mean")) +
   stat_smooth(method=lm, colour= "black", se=TRUE)+
   geom_point(size=1)
 
 
 g2 <- g2 + labs(list(
-  title="Coupled Change between Physical Activity and Digit Span Backward",
-  x="Physical Activity (WP)", y="Digit Span Backward"))
+  title="Coupled Change between NLE and Coding (processing speed)",
+  x="NLE (WP)", y="coding/processing speed"))
 
 g2<- g2 + theme(text=element_text(family='Times'),
                 legend.title=element_blank())

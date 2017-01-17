@@ -2,7 +2,7 @@
 # # Run the lines below to stitch a basic html output.
 # knitr::stitch_rmd(
 #   script="./manipulation/map2016/Level1_models_full_workingmem.R",
-#   output="./manipulation/map2016/output/level1_models_word_test_full.md"
+#   output="./manipulation/map2016/output/level1_models_mmse_full.md"
 # )
 # # The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
 
@@ -61,22 +61,24 @@ str(ds0)
 
 # ----- Fully-unconditional-model ------
 #yi= B0 + ei
-eq_0 <- as.formula("word_test ~ 1 +            
+eq_0 <- as.formula("mmse ~ 1 +            
                    (1  |id)")
 
 model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
 lmerTest::summary((model_ucm))
 
 #ICC
-2.714 / ( 2.714 + 3.267)
-# 45% BP and 55 % WP (i.e makes sense, people are likely to differ from others more than themselves)
+1.708  / (1.708  + 2.891)
+
+100-37
+# 37% BP and 63 % WP (i.e makes sense, people are likely to differ from others more than themselves)
 
 
-#SE = SD/ sqrt(n)
-#int
-2.714 / sqrt(1299)
-#resid
-3.267/ sqrt(1299)
+#SE = SD/ sqrt(n) fix these #'s
+# #int
+# 2.714 / sqrt(1299)
+# #resid
+# 3.267/ sqrt(1299)
 
 # 1.96*sqrt(2.714 ) ? check how to do this again - hoffman
 # -0.12210 + (1.96*sqrt(28.76))
@@ -88,13 +90,13 @@ lmerTest::summary((model_ucm))
 
 
 
-eq <- as.formula("word_test ~ 1 + wave +          
+eq <- as.formula("mmse ~ 1 + wave +          
                  ( 1  |id)")
 model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
 lmerTest::summary((model))
 
 
-eq1 <- as.formula("word_test ~ 1 + wave +          
+eq1 <- as.formula("mmse ~ 1 + wave +          
                   ( 1 + wave |id)")
 model1<- lmerTest::lmer(eq1, data=ds0, REML= FALSE) 
 lmerTest::summary((model1))
@@ -103,23 +105,23 @@ lmerTest::summary((model1))
 
 #2df, dif of 80
 anova(model, model1) 
-# object: word_test ~ 1 + wave + (1 | id)
-# ..1: word_test ~ 1 + wave + (1 + wave | id)
-#         Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
-# FE      4 5492.1 5512.7 -2742.0   5484.1                           
-#  RE     6 5489.5 5520.5 -2738.8   5477.5 6.5519      2    0.03778 *
-
+object: mmse ~ 1 + wave + (1 | id)
+# ..1: mmse ~ 1 + wave + (1 + wave | id)
+# Df    AIC   BIC  logLik deviance Chisq Chi Df            Pr(>Chisq)    
+# object  4 15680 15706 -7836.2    15672                                       
+# ..1     6 15326 15364 -7657.2    15314 358.1      2 < 0.00000000000000022 ***
+#   ---
 #pseudo r^2 (percent of additional residual var accounted for)
 
-( 2.893   -  2.73639 ) /  2.893 
-# 5% of the residual varience from the first model was accounted for by the 
+( 2.694   -  2.2049) /   2.694  
+# 18 % of the residual varience from the first model was accounted for by the 
 # inclusion of random effects of wave in model 1
 
 
 
 # #AGE BL-------------
 # 
-# eq2 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + 
+# eq2 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + 
 #                   ( 1 + wave |id)")
 # model_2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
 # lmerTest::summary((model_2))
@@ -141,7 +143,7 @@ anova(model, model1)
 # 
 # ################ + gender
 # 
-# eq3 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + 
+# eq3 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + 
 #                   ( 1 + wave |id)")
 # model_3<- lmerTest::lmer(eq3, data=ds0, REML= FALSE) 
 # lmerTest::summary((model_3))
@@ -164,7 +166,7 @@ anova(model, model1)
 ################# + education 
 
 
-eq4 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu + 
+eq4 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu + 
                   ( 1 + wave |id)")
 model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
 lmerTest::summary((model_4))
@@ -172,9 +174,9 @@ lmerTest::summary((model_4))
 
 #deviance and df compared to model 1 , sig  better fit
 anova(model1, model_4)
-# Df    AIC    BIC  logLik deviance  Chisq Chi Df   Pr(>Chisq)    
-# 1       6 5489.5 5520.5 -2738.8   5477.5                               
-# 4      12 5458.3 5520.4 -2717.2   5434.3 43.172      6 0.0000001079 ***
+# #      Df   AIC   BIC  logLik deviance  Chisq Chi Df            Pr(>Chisq)    
+# object  6 15326 15364 -7657.2    15314                                        
+# ..1    12 15210 15285 -7592.9    15186 128.62      6 < 0.00000000000000022 ***
 
 # higher wave is associated with poorer scores
 # being a male are associated with poorer baseline scores
@@ -184,7 +186,7 @@ anova(model1, model_4)
 
 
 #Physical Activity --------------
-eq5 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq5 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
                   wave*phys_bp + phys_wp +
                   ( 1 + wave |id)")
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
@@ -192,7 +194,7 @@ lmerTest::summary((model_5))
 
 
 
-eq6 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq6 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
                   + phys_bp*wave + phys_wp +
                   ( 1 + wave + phys_wp |id)")
 model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
@@ -200,34 +202,33 @@ lmerTest::summary((model_6))
 
 anova(model_5, model_6)
 # 
-# Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
-# 5      15 5462.7 5540.2 -2716.3   5432.7                         
-# 6      18 5464.3 5557.4 -2714.2   5428.3 4.3992      3     0.2215
+#        Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)   
+# object 15 15213 15307 -7591.7    15183                            
+# ..1    18 15204 15316 -7583.8    15168 15.705      3   0.001303 **
 
-#no sig difference when we include WP effects of PA, therefore
-#no varience in WP PA fluctuations to explain by stress  
+#wp_pa sig improves model fit!   
 
 
 #model 6
-
-#int
-2.147836
-1.4655  / (sqrt(1299))            
-#wave 
-0.0375086
-0.1937 / (sqrt(1299))            
-#phys_wp        
-0.0008881
-0.0298 /(sqrt(1299))        
-#Residual                
-2.6944449 
-1.6415/(sqrt(1299))    
+    #fix these values ---
+# #int
+# 2.147836
+# 1.4655  / (sqrt(1299))            
+# #wave 
+# 0.0375086
+# 0.1937 / (sqrt(1299))            
+# #phys_wp        
+# 0.0008881
+# 0.0298 /(sqrt(1299))        
+# #Residual                
+# 2.6944449 
+# 1.6415/(sqrt(1299))    
 
 
 
 #wp varience explained compred to the random effects of time only
 summary(model1)
-(2.73639 -    2.6944449 )/(2.73639)  #1.5%
+(2.73639 -    2.190346  )/(2.73639)  #20%
 
 # 
 # #varience in the intercept explained by PA?
@@ -237,7 +238,7 @@ summary(model1)
 # (0.3101 - 0.2732) / 0.3101
 
 # # gender X PA
-# eq6 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+# eq6 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
 #                   phys_bp*male + phys_wp*male +
 #                   ( 1 + wave + phys_wp|id)")
 # model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
@@ -249,14 +250,14 @@ summary(model1)
 
 #----------pss-
 
-# eq5b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+# eq5b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
 #                    pss_pmeanC*wave + pss_wp +
 #                    ( 1 + wave  |id)")
 
 #pss is only measured at one wave
 
 names(ds0)
-eq5b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq5b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
                    pss_gmc +
                    ( 1 + wave  |id)")
 
@@ -273,12 +274,12 @@ lmerTest::summary((model_5b))
 #-------------nle-
 
 names(ds0)
-eq6a <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq6a <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
                    nle_bp*wave + nle_wp +
                    ( 1 + wave  |id)")
 
 
-eq6b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq6b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
                    nle_bp*wave + nle_wp +
                    ( 1 + wave + nle_wp |id)")
 
@@ -289,11 +290,11 @@ model_6b<- lmerTest::lmer(eq6b, data=ds0, REML= FALSE)
 lmerTest::summary((model_6b))
 
 anova(model_6a, model_6b)
-# Df    AIC    BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
-# 6a      15 5444.3 5521.8 -2707.2   5414.3                        
-# 6b      18 5445.0 5538.1 -2704.5   5409.0 5.296      3     0.1514
+#        Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# object 15 15206 15300 -7588.3    15176                             
+# ..1    18 15194 15306 -7578.8    15158 18.944      3  0.0002808 ***
 
-#only nle bp is sig
+#only nle wp is sig (+)
 
 #model 6b
 #fix below numbers ----
@@ -307,7 +308,7 @@ anova(model_6a, model_6b)
 # 2.58/ (sqrt(3208))
 
 
-# eq5b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+# eq5b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
 #                    nle_bp*male*wave + nle_bp*male +
 #                    ( 1 + wave + nle_wp |id)")
 # model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE)
@@ -321,13 +322,13 @@ anova(model_6a, model_6b)
 
 #Physical Activity --------------
 
-eq7 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu +
+eq7 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu +
                   nle_bp*phys_bp + nle_bp*phys_wp +
                   ( 1 + wave + nle_wp  |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
 
-eq7a <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu +
+eq7a <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu +
                    nle_wp*phys_bp + nle_wp*phys_wp +
                    ( 1 + wave + nle_wp  |id)")
 model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 
@@ -336,13 +337,13 @@ lmerTest::summary((model_7a))
 
 #graphs
 
-g1<- ggplot2::ggplot(ds0, aes_string(x= "nle_bp", y="word_test")) +
+g1<- ggplot2::ggplot(ds0, aes_string(x= "nle_bp", y="mmse")) +
   stat_smooth(method=lm, colour= "black", se=TRUE)+
   geom_point(size=1)
 
 g1 <- g1 + labs(list(
   title= "Coupled Change between Physical Activity and Symbol Digit Modality",
-  x="NLE (WP)", y="word_test"))
+  x="NLE (WP)", y="mmse"))
 
 
 g1<- g1 + theme(text=element_text(family='Times'),
@@ -356,11 +357,6 @@ g1<- g1 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_b
 g1 <- g1 +theme(panel.background = element_rect(fill = "white", colour = "black",
                                                 size = 1))
 g1
-
-
-
-
-
 
 
 
