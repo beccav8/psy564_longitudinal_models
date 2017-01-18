@@ -510,16 +510,29 @@ test2$nle_12[test2$nle_12 == "no"] <-0
 
 test2$nle_12<- as.numeric(test2$nle_12)
 
+
+table(test2$widow)
+#divorced, married, never marries, widowhood, registered, partnership
+
+test2$widow = ifelse( test2$widow == "widowhood", 1, 0)
+
+table(test2$relocate)
+test2$relocate = ifelse( test2$relocate == "Yes", 1, 0)
+
 str(test2)
 
-test2$NLE_total<- rowSums ( cbind(test2$nle_1, test2$nle_2, test2$nle_3, test2$nle_4, test2$nle_5, test2$nle_6, test2$nle_7, test2$nle_8, test2$nle_9, test2$nle_10, test2$nle_11, test2$nle_12), na.rm=TRUE)
+test2$NLE_total<- rowSums ( cbind(test2$nle_1, test2$nle_2, test2$nle_3, test2$nle_4, test2$nle_5, test2$nle_6, test2$nle_7, test2$nle_8, test2$nle_9, test2$nle_10, test2$nle_11, test2$nle_12, test2$widow, test2$relocate), na.rm=TRUE)
 
 describe(test2$NLE_total)
 
-names(ds0)
 
 ds0$NLE_total <- test2$NLE_total
 
+
+describe(ds0$NLE_total)
+ds0 <- ds0[, -which(names(ds0) %in% c("relocate", "widow"))]
+
+names(ds0)
 # ---- other ------------------------------------------------ 
 
 # ---- mastery ----

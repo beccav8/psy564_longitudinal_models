@@ -128,6 +128,15 @@ agostino.test(ds0$pss) #data is skewed
 # lmerTest::summary((model_ucm))
 
 
+hist(ds0$nle,
+     main="NLE",
+     xlim=c(0,10))
+
+describe(ds0$nle)
+describeBy(ds0$nle, ds0$wave) #i.e. only wave 7
+
+agostino.test(ds0$nle) #data is skewed 
+
 #PA
 describe(ds0$phys)
 hist(ds0$phys,

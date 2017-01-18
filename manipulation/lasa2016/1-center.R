@@ -78,7 +78,7 @@ data <- rename(data, c(NLE_total = "nle"))
 
 names(data)
 
-#GRAND MEAN CENTERING  #mean is 0.116921
+#GRAND MEAN CENTERING  #mean is 0.18
 describe(data$nle)
 data$nle_gmc <- (data$nle) - (mean(data$nle, na.rm=TRUE))
 
