@@ -28,7 +28,8 @@ getwd()
 
 ## origional data composition is in the LASA repository (manipulation folder)
 
-ds0 <- readRDS("C:/Users/Rebecca/Documents/GitHub/LASA/data-unshared/derived/dto.rds")
+# ds0 <- readRDS("C:/Users/Rebecca/Documents/GitHub/LASA/data-unshared/derived/dto.rds") #laptop
+ds0 <- readRDS("C:/Users/beccav8/Documents/GitHub/LASA/data-unshared/derived/dto.rds") #campus
 names(ds0)
 
 # ---- tweak-data ------------------------------------
