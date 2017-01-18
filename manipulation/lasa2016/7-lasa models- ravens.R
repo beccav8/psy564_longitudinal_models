@@ -2,7 +2,7 @@
 # # Run the lines below to stitch a basic html output.
 # knitr::stitch_rmd(
 #   script="./manipulation/map2016/Level1_models_full_workingmem.R",
-#   output="./manipulation/map2016/output/level1_models_coding_mean_full.md"
+#   output="./manipulation/map2016/output/level1_models_raven_total_full.md"
 # )
 # # The above lines are executed only when the file is run in RStudio, !! NOT when an Rmd/Rnw file calls it !!
 
@@ -61,114 +61,37 @@ str(ds0)
 
 # ----- Fully-unconditional-model ------
 #yi= B0 + ei
-eq_0 <- as.formula("coding_mean ~ 1 +            
+eq_0 <- as.formula("raven_total ~ 1 +            
                    (1  |id)")
 
 model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
 lmerTest::summary((model_ucm))
 
 #ICC
-28.76 / (28.76 + 13.52)
-# 68% BP and 32 % WP (i.e makes sense, people are likely to differ from others more than themselves)
-
-
-#SE = SD/ sqrt(n)
-#int
-5.362 / sqrt(1485)
-#resid
-13.52/ sqrt(1485)
-
-# 1.96*sqrt(28.76) -i think this is wrong
-# -0.12210 + (1.96*sqrt(28.76))
-# -0.12210 - (1.96*sqrt(28.76)) 
-#CI -11 - 11
-
-#residual chi square test or wald test to determine if there is significant variability in outcome
-#HLM
 
 
 
 
-eq <- as.formula("coding_mean ~ 1 + wave +          
+eq <- as.formula("raven_total ~ 1 + wave +          
                  ( 1  |id)")
 model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
 lmerTest::summary((model))
-#df= 1481    
-#dev =  8050.1
 
 
-eq1 <- as.formula("coding_mean ~ 1 + wave +          
-                 ( 1 + wave |id)")
+eq1 <- as.formula("raven_total ~ 1 + wave +          
+                  ( 1 + wave |id)")
 model1<- lmerTest::lmer(eq1, data=ds0, REML= FALSE) 
 lmerTest::summary((model1))
-#df= 1479 
-#dev =  7970.1 
-
-#compared to UCM
-(13.52 - 6.642 ) / 13.52
-
-8050.1 - 7970.1 
-1481- 1479 
-
-#2df, dif of 80
-anova(model, model1) #same thing  chisq=79.997 df=2 p < 0.00000000000000022 ***
-
-#pseudo r^2 (percent of additional residual var accounted for)
-
-(8.203  -  6.642) / 8.203
-# 20% of the residual varience from the first model was accounted for by the 
-# inclusion of random effects of wave in model 1
 
 
 
-# #AGE BL-------------
-# 
-# eq2 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + 
-#                   ( 1 + wave |id)")
-# model_2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_2))
-# 
-# #chi sq
-# #df
-# #df= 
-# 10585 -  10583 
-# #deviance
-# 58014.5- 57653.7 
-# 
-# 
-# #int 27.5670
-# 5.2504/ (sqrt(10591))
-# #year 0.3081
-# 0.5551/ (sqrt(10591))
-# #resid 7.1819
-# 2.6799/ (sqrt(10591))
-# 
-# ################ + gender
-# 
-# eq3 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + 
-#                   ( 1 + wave |id)")
-# model_3<- lmerTest::lmer(eq3, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_3))
-# 
-# #df= 
-# 10583- 10581
-# #dev =  
-# 57653.7-57644.1
-# 
-# 
-# #int 27.3997
-# 5.2345/ (sqrt(10591))
-# #year  0.308
-# 0.5551/ (sqrt(10591))
-# #resid 7.1821
-# 2.6799 / (sqrt(10591))
-# 
+anova(model, model1) 
 
 
-################# + education 
 
 
-eq4 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu + 
+
+eq4 <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu + 
                   ( 1 + wave |id)")
 model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
 lmerTest::summary((model_4))
@@ -176,19 +99,10 @@ lmerTest::summary((model_4))
 
 #deviance and df compared to model 1 , sig  better fit
 anova(model1, model_4)
-# chisq = 63.852 df=  6  p = 0.000000000007397 ***
 
-# higher wave is associated with poorer scores
-# higher age at baseline, and being a male are associated with poorer baseline scores
-# higher edu at baseline is associated with higher scores
-
-#only age at baseline is associated with a steeper decline in slope, edu and sex dont' influence rate of decline
-
-
-names(ds0)
 
 #Physical Activity --------------
-eq5 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq5 <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
                   wave*phys_bp + phys_wp +
                   ( 1 + wave |id)")
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
@@ -196,43 +110,19 @@ lmerTest::summary((model_5))
 
 
 
-eq6 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq6 <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
                   + phys_bp*wave + phys_wp +
                   ( 1 + wave + phys_wp |id)")
 model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
 lmerTest::summary((model_6))
 
 anova(model_5, model_6)
-
-#        Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
-#   5    15 7931.0 8010.6 -3950.5   7901.0                         
-#   6    18 7936.9 8032.3 -3950.4   7900.9 0.1857      3     0.9799
-
-#no sig difference when we include WP effects of PA, therefore
-#no varience in WP PA fluctuations to explain by stress  
-
-
-#model 6
-
-#int
-26.50393433 
-5.14819  / (sqrt(1485))            
-#wave 
-0.30829714
-0.55524 / (sqrt(1485))            
-#phys_wp        
-0.00004607
-0.006787/(sqrt(1485))        
-#Residual                
-6.60962
-2.5709/(sqrt(1485))    
-
-
+# NS
 
 
 #wp varience explained compred to the random effects of time only
 summary(model1)
-(6.642 -   6.60962373 )/(6.642)  #0.5%
+(2.73639 -    2.190346  )/(2.73639)  #20%
 
 # 
 # #varience in the intercept explained by PA?
@@ -242,7 +132,7 @@ summary(model1)
 # (0.3101 - 0.2732) / 0.3101
 
 # # gender X PA
-# eq6 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+# eq6 <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
 #                   phys_bp*male + phys_wp*male +
 #                   ( 1 + wave + phys_wp|id)")
 # model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
@@ -254,14 +144,14 @@ summary(model1)
 
 #----------pss-
 
-# eq5b <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+# eq5b <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
 #                    pss_pmeanC*wave + pss_wp +
 #                    ( 1 + wave  |id)")
 
 #pss is only measured at one wave
 
 names(ds0)
-eq5b <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq5b <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
                    pss_gmc +
                    ( 1 + wave  |id)")
 
@@ -278,12 +168,12 @@ lmerTest::summary((model_5b))
 #-------------nle-
 
 names(ds0)
-eq6a <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq6a <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
                    nle_bp*wave + nle_wp +
-                    ( 1 + wave  |id)")
+                   ( 1 + wave  |id)")
 
 
-eq6b <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq6b <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
                    nle_bp*wave + nle_wp +
                    ( 1 + wave + nle_wp |id)")
 
@@ -294,10 +184,11 @@ model_6b<- lmerTest::lmer(eq6b, data=ds0, REML= FALSE)
 lmerTest::summary((model_6b))
 
 anova(model_6a, model_6b)
-#         Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)   
-# 6a      15 7923.8 8003.4 -3946.9   7893.8                            
-# 6b     18 7917.6 8013.1 -3940.8   7881.6   12.204      3   0.006715 **
+#        Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
+# object 15 15206 15300 -7588.3    15176                             
+# ..1    18 15194 15306 -7578.8    15158 18.944      3  0.0002808 ***
 
+#only nle wp is sig (+)
 
 #model 6b
 #fix below numbers ----
@@ -311,7 +202,7 @@ anova(model_6a, model_6b)
 # 2.58/ (sqrt(3208))
 
 
-# eq5b <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+# eq5b <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
 #                    nle_bp*male*wave + nle_bp*male +
 #                    ( 1 + wave + nle_wp |id)")
 # model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE)
@@ -325,28 +216,28 @@ anova(model_6a, model_6b)
 
 #Physical Activity --------------
 
-eq7 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu +
+eq7 <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu +
                   nle_bp*phys_bp + nle_bp*phys_wp +
                   ( 1 + wave + nle_wp  |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
 
-eq7a <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu +
-                  nle_wp*phys_bp + nle_wp*phys_wp +
-                  ( 1 + wave + nle_wp  |id)")
+eq7a <- as.formula("raven_total ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu +
+                   nle_wp*phys_bp + nle_wp*phys_wp +
+                   ( 1 + wave + nle_wp  |id)")
 model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7a))
 
 
 #graphs
 
-g1<- ggplot2::ggplot(ds0, aes_string(x= "phys_wp", y="coding_mean")) +
+g1<- ggplot2::ggplot(ds0, aes_string(x= "nle_bp", y="raven_total")) +
   stat_smooth(method=lm, colour= "black", se=TRUE)+
   geom_point(size=1)
 
 g1 <- g1 + labs(list(
   title= "Coupled Change between Physical Activity and Symbol Digit Modality",
-  x="Physical Activity (WP)", y="coding_mean"))
+  x="NLE (WP)", y="raven_total"))
 
 
 g1<- g1 + theme(text=element_text(family='Times'),
@@ -360,32 +251,4 @@ g1<- g1 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_b
 g1 <- g1 +theme(panel.background = element_rect(fill = "white", colour = "black",
                                                 size = 1))
 g1
-
-
-g2<- ggplot2::ggplot(ds0, aes_string(x= "nle_wp", y="coding_mean")) +
-  stat_smooth(method=lm, colour= "black", se=TRUE)+
-  geom_point(size=1)
-
-
-g2 <- g2 + labs(list(
-  title="Coupled Change between NLE and Coding (processing speed)",
-  x="NLE (WP)", y="coding/processing speed"))
-
-g2<- g2 + theme(text=element_text(family='Times'),
-                legend.title=element_blank())
-
-g2<- g2 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-                panel.background = element_blank(), axis.line = element_line(colour = "black"))
-
-g2 <- g2 +theme(panel.background = element_rect(fill = "white", colour = "black",
-                                                size = 1))
-g2
-
-
-multiplot(g1, g2)
-
-
-
-
-
 

@@ -67,6 +67,7 @@ eq <- as.formula("sdmt ~ 1 +
 model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
 lmerTest::summary((model))
 #resid var= 12.45
+34.48 / (34.48 + 12.45)
 
 eq1 <- as.formula("sdmt ~ 1 + year_in_study +          
                  ( 1  |id)")
@@ -159,11 +160,19 @@ anova(model2, model_4)
   ---
 
 #Physical Activity --------------
+
 eq5 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
                   year_in_study*phys_pmeanC + phys_wp +
                   ( 1 + year_in_study |id)")
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
 lmerTest::summary((model_5))
+
+# varience around intercept of demographic model
+(24.5726 -24.1624) / 24.572
+# time
+(0.3101  - 0.2732) /0.3101
+
+(7.1787 - 7.0986) / 7.1787 
 
 
 eq5a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
@@ -290,16 +299,17 @@ anova(model_6, model_6a)
 #---- PSS and interaction
 
 
-#Physical Activity --------------
+# Interaction --------------
 
 eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
-                  nle_pmeanC*phys_pmeanC + nle_pmeanC*phys_wp +
+                  nle_pmeanC*phys_pmeanC*year_in_study + nle_pmeanC*phys_wp*year_in_study +
                   ( 1 + year_in_study + nle_wp  |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
 
+
 eq7a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
-                   nle_wp*phys_pmeanC + nle_wp*phys_wp +
+                   nle_wp*phys_pmeanC*year_in_study + nle_wp*phys_wp*year_in_study +
                    ( 1 + year_in_study + nle_wp  |id)")
 model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7a))

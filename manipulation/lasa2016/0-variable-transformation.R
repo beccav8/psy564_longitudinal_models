@@ -51,9 +51,11 @@ bl <- ds0[ which(ds0$wave==1), ] #4109 observations, thus, all unique id's accou
 table(bl$male)
 #FALSE=0=male  TRUE=1=female 
 #2128          1981
-
+2128 + 1981
 
 table(ds0$bycohort)
+
+describe(ds0$wave)
 
 table(ds0$edu)
 #what does a value of -1 mean? LASA site doesn't indicate this

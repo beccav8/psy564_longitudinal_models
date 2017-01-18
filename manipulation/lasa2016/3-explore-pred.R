@@ -121,19 +121,21 @@ describeBy(ds0$pss, ds0$wave) #i.e. only wave 7
 
 agostino.test(ds0$pss) #data is skewed 
 
-# eq_0 <- as.formula("pss ~ 1 +            
-#                    (1  |id)")
-# 0.07515 / (  0.07515 + 0.18618) #28%BP
-# model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_ucm))
 
+
+eq_0 <- as.formula("nle ~ 1 +            
+                   (1  |id)")
+0.07515 / (  0.07515 + 0.18618) 
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
+0.2159 / (0.2159 +  0.1378)
 
 hist(ds0$nle,
      main="NLE",
      xlim=c(0,10))
 
 describe(ds0$nle)
-describeBy(ds0$nle, ds0$wave) #i.e. only wave 7
+describeBy(ds0$nle, ds0$wave) 
 
 agostino.test(ds0$nle) #data is skewed 
 
