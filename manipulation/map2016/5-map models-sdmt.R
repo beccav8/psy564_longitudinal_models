@@ -48,6 +48,7 @@ requireNamespace("lme4") # estimate mixed models | esp. lmer()
 requireNamespace("arm")  # process model objects
 getwd()
 
+
 # ----- specify-objects ------
 path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds" 
 
@@ -60,6 +61,22 @@ describe(ds0$sdmt)
 ds0$sdmt_origional<-ds0$sdmt
 ds0$sdmt<-ds0$sdmt/2
 
+describe(ds0$pss)
+eq <- as.formula("pss ~ 1 +          
+                 ( 1  |id)")
+model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
+lmerTest::summary((model))
+0.07515/ (0.07515 + .186)
+
+
+
+describe(ds0$nle)
+eq <- as.formula("nle ~ 1 +          
+                 ( 1  |id)")
+model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
+lmerTest::summary((model))
+
+1.145 / (2.516 + 1.14 )
 #models--------------------------
 
 eq <- as.formula("sdmt ~ 1 +          

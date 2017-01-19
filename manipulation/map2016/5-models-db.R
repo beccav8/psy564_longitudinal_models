@@ -207,7 +207,7 @@ lmerTest::summary((model_5b))
 
 eq5b <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
                    nle_pmeanC*year_in_study + nle_wp +
-                   ( 1 + year_in_study + pss_wp |id)")
+                   ( 1 + year_in_study + nle_wp |id)")
 model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_5b))
 
