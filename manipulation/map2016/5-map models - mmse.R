@@ -55,6 +55,10 @@ path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds"
 ds0  <- readRDS(path_input0) #total raw data  
 names(ds0)
 
+#describe ----------------------
+
+describe(ds0$mmse)
+
 
 #models--------------------------
 
@@ -65,18 +69,22 @@ lmerTest::summary((model))
 
 eq <- as.formula("mmse ~ 1 + year_in_study +          
                  ( 1  |id)")
-model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
-lmerTest::summary((model))
+modela<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
+lmerTest::summary((modela))
 
 
 
 eq <- as.formula("mmse ~ 1 + year_in_study +          
                  ( 1 + year_in_study |id)")
-model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
-lmerTest::summary((model))
+modelb<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
+lmerTest::summary((modelb))
+
+#model versus model b pseudo r2
+
+(11.91 - 4.5984)  /11.91
 
 
-
+anova(modela, modelb)
 
 
 
@@ -88,7 +96,7 @@ lmerTest::summary((model_4))
 
 
 
-
+anova(modelb, model_4)
 
 
 #Physical Activity --------------
