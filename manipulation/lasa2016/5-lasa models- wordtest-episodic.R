@@ -164,7 +164,7 @@ anova(model, model1)
 ################# + education 
 
 
-eq4 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu + 
+eq4 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc + 
                   ( 1 + wave |id)")
 model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
 lmerTest::summary((model_4))
@@ -178,13 +178,13 @@ anova(model1, model_4)
 
 # higher wave is associated with poorer scores
 # being a male are associated with poorer baseline scores
-# higher edu at baseline is associated with higher scores
+# higher edu_gmc at baseline is associated with higher scores
 
 #no demographics effected rate of decline 
 
 
 #Physical Activity --------------
-eq5 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq5 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                   wave*phys_bp + phys_wp +
                   ( 1 + wave |id)")
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
@@ -192,7 +192,7 @@ lmerTest::summary((model_5))
 
 
 
-eq6 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq6 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                   + phys_bp*wave + phys_wp +
                   ( 1 + wave + phys_wp |id)")
 model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
@@ -237,7 +237,7 @@ summary(model1)
 # (0.3101 - 0.2732) / 0.3101
 
 # # gender X PA
-# eq6 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+# eq6 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
 #                   phys_bp*male + phys_wp*male +
 #                   ( 1 + wave + phys_wp|id)")
 # model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
@@ -249,14 +249,14 @@ summary(model1)
 
 #----------pss-
 
-# eq5b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+# eq5b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
 #                    pss_pmeanC*wave + pss_wp +
 #                    ( 1 + wave  |id)")
 
 #pss is only measured at one wave
 
 names(ds0)
-eq5b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq5b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                    pss_gmc +
                    ( 1 + wave  |id)")
 
@@ -273,12 +273,12 @@ lmerTest::summary((model_5b))
 #-------------nle-
 
 names(ds0)
-eq6a <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq6a <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                    nle_bp*wave + nle_wp +
                    ( 1 + wave  |id)")
 
 
-eq6b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+eq6b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                    nle_bp*wave + nle_wp +
                    ( 1 + wave + nle_wp |id)")
 
@@ -307,7 +307,7 @@ anova(model_6a, model_6b)
 # 2.58/ (sqrt(3208))
 
 
-# eq5b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu +
+# eq5b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
 #                    nle_bp*male*wave + nle_bp*male +
 #                    ( 1 + wave + nle_wp |id)")
 # model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE)
@@ -321,13 +321,13 @@ anova(model_6a, model_6b)
 
 #Physical Activity --------------
 
-eq7 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu +
+eq7 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc +
                   nle_bp*phys_bp + nle_bp*phys_wp +
                   ( 1 + wave + nle_wp  |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
 
-eq7a <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu +
+eq7a <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc +
                    nle_wp*phys_bp + nle_wp*phys_wp +
                    ( 1 + wave + nle_wp  |id)")
 model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 

@@ -225,7 +225,7 @@ describe(data$edu_gmc)
 names(data)
 
 myvars<- c("id","year_in_study","age_bl","age_at_visit", "time_since_dx","age_at_visit_meanc","age_at_visit65",
-           "dementia",  "edu", "msex","race","apoe", 
+           "dementia",  "edu", "edu_gmc", "msex","race","apoe", 
            "episodic","percep_speed","semantic","wm","global",
            "dig_b","dig_f","mmse", "sdmt", "wl_im","wl_del","wl_rec",
            "nle", "nle_wp", "nle_pmean", "nle_pmeanC", "nle_gmc",

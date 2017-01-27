@@ -162,7 +162,7 @@ anova(model1, model2)
 ################# + education 
 
 
-eq4 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu + 
+eq4 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc + 
                   ( 1 + year_in_study |id)")
 model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
 lmerTest::summary((model_4))
@@ -178,7 +178,7 @@ anova(model2, model_4)
 
 #Physical Activity --------------
 
-eq5 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+eq5 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                   year_in_study*phys_pmeanC + phys_wp +
                   ( 1 + year_in_study |id)")
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
@@ -192,7 +192,7 @@ lmerTest::summary((model_5))
 (7.1787 - 7.0986) / 7.1787 
 
 
-eq5a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+eq5a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    + phys_pmeanC*year_in_study + phys_wp +
                   ( 1 + year_in_study + phys_wp |id)")
 model_5a<- lmerTest::lmer(eq5a, data=ds0, REML= FALSE) 
@@ -232,7 +232,7 @@ anova(model_5, model_5a)
 # (0.3101 - 0.2732) / 0.3101
 
 # # gender X PA
-# eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+# eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
 #                   phys_pmeanC*msex + phys_wp*msex +
 #                   ( 1 + year_in_study + phys_wp|id)")
 # model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
@@ -244,7 +244,7 @@ anova(model_5, model_5a)
 
 #PSS ----
 
-eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    pss_pmeanC*year_in_study + pss_wp +
                    ( 1 + year_in_study  |id)")
 model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
@@ -255,7 +255,7 @@ lmerTest::summary((model_6))
 (24.57 - 18.88)/24.57 
 (0.3101 - 0.12)/0.3101
 
-eq6a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+eq6a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    pss_pmeanC*year_in_study + pss_wp +
                    ( 1 + year_in_study + pss_wp |id)")
 model_6a<- lmerTest::lmer(eq6a, data=ds0, REML= FALSE) 
@@ -284,14 +284,22 @@ anova(model_6, model_6a)
 
 #NLE-- 
 
-eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    nle_pmeanC*year_in_study + nle_wp +
                   ( 1 + year_in_study  |id)")
 model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
 lmerTest::summary((model_6))
 
+#intercept: 18.696
+#slope 0.12
 
-eq6a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
+#reduction of BP var compared to model 2:
+
+#model 2, intercept var = 24.57, slope var = 0.31 residual =7.1787
+(24.57 - 18.696 )/ 24.57
+(0.31 - 0.12)/ 0.31
+
+eq6a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                   nle_pmeanC*year_in_study + nle_wp +
                    ( 1 + year_in_study + nle_wp |id)")
 model_6a<- lmerTest::lmer(eq6a, data=ds0, REML= FALSE) 
@@ -304,11 +312,9 @@ anova(model_6, model_6a)
 # ..1    18 17757 17866 -8860.4    17721 9.7997      3    0.02035 *
 
 
-# eq5b <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu +
-#                    pss_pmeanC*msex + pss_wp*msex +
-#                    ( 1 + year_in_study + pss_wp |id)")
-# model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_5b))
+#reduction in residual WP compared to random time slope
+
+(7.1566 - 6.57487) / 7.1566
 
 
 
@@ -318,14 +324,14 @@ anova(model_6, model_6a)
 
 # Interaction --------------
 
-eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
+eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc +
                   nle_pmeanC*phys_pmeanC*year_in_study + nle_pmeanC*phys_wp*year_in_study +
                   ( 1 + year_in_study + nle_wp  |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
 
 
-eq7a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu +
+eq7a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc +
                    nle_wp*phys_pmeanC*year_in_study + nle_wp*phys_wp*year_in_study +
                    ( 1 + year_in_study + nle_wp  |id)")
 model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 

@@ -101,6 +101,28 @@ eq_0 <- as.formula("pss ~ 1 +
 model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
 lmerTest::summary((model_ucm))
 
+
+
+#pss
+hist(ds0$nle) #relatively normal dist
+sd(ds0$nle, na.rm=TRUE) #.83
+describe(ds0$nle)
+agostino.test(ds0$nle)
+eq_0 <- as.formula("nle ~ 1 +            
+                   (1  |id)")
+
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
+
+#3339 obs
+
+
+table(ds0$nle)
+
+# n = 3339 observations, 1007 unique id's
+# n for total participants = 11672
+
+
 #PA
 describe(ds0$physical_activity)
 qplot(ds0$physical_activity,
