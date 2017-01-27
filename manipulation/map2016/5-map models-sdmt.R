@@ -192,6 +192,8 @@ lmerTest::summary((model_5))
 (7.1787 - 7.0986) / 7.1787 
 
 
+anova(model_4, model_5)
+
 eq5a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    + phys_pmeanC*year_in_study + phys_wp +
                   ( 1 + year_in_study + phys_wp |id)")

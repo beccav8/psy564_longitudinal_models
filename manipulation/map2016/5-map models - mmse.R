@@ -111,6 +111,12 @@ model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE)
 lmerTest::summary((model_5))
 # 42023.1    11041 
 
+
+anova(model_4, model_5)
+
+#Number of obs: 11324, groups:  id, 1848
+#Number of obs: 11074, groups:  id, 1846
+
 #intercept: 8.36
 #slope: 0.6315
 

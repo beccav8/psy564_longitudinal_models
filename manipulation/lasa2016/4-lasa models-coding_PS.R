@@ -58,6 +58,12 @@ names(ds0)
 options(scipen=20)
 
 str(ds0)
+describe(ds0$coding_mean)
+describe(ds0$word_test)
+describe(ds0$mmse)
+
+
+#91 mins of
 
 # ----- Fully-unconditional-model ------
 #yi= B0 + ei
@@ -115,9 +121,7 @@ anova(model, model1) #same thing  chisq=79.997 df=2 p < 0.00000000000000022 ***
 
 #pseudo r^2 (percent of additional residual var accounted for)
 
-(8.203  -  6.642) / 8.203
-# 20% of the residual varience from the first model was accounted for by the 
-# inclusion of random effects of wave in model 1
+
 
 
 
@@ -195,6 +199,13 @@ model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE)
 lmerTest::summary((model_5))
 
 
+# 4 versus 5
+#int
+(26.7764 - 26.7091) / 26.77
+#wave
+(0.3206 - 0.3162) / .32
+
+
 
 eq6 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                   + phys_bp*wave + phys_wp +
@@ -210,6 +221,9 @@ anova(model_5, model_6)
 
 #no sig difference when we include WP effects of PA, therefore
 #no varience in WP PA fluctuations to explain by stress  
+
+# Residual compared to model 1 
+(6.642 - 6.6096233) / 6.64
 
 
 #model 6

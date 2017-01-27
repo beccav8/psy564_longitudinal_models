@@ -61,6 +61,75 @@ names(ds0)
 length(unique(ds0$id))  #4109 participants  1852 in MAP
 
 
+
+#PA
+describe(ds0$phys)
+# n = 28763
+#range = 0-91
+
+hist(ds0$phys,
+     main="Physical Activity",
+     xlim=c(0,30))
+
+
+test<-ds0
+
+#90 hours of exercise per week is high, probably outliers
+#i.e
+
+90/7 # =12 hours per day, thats half the day
+60/7 #= 8.5 hours per day
+50/7 # = 7 hours per day
+
+describe(test$phys)
+test$phys[test$phys > 80] <- NA
+28763 - 28761
+#2 people are higher than 80 (11 hours per day), cut them out
+
+describe(test$phys)
+
+
+test$phys[test$phys > 70] <- NA
+28763 - 28759
+#4 people are higher than 70 (10 hours per day), cut them out
+
+
+#consider 70 and higher outliers 
+
+test$phys[test$phys > 60] <- NA
+28763 - 28757
+#6 people are higher than 60 (8.5 hours per day), cut them out
+
+
+test$phys[test$phys > 50] <- NA
+28763 - 28741
+#22 people, 
+
+
+test$phys[test$phys > 40] <- NA
+28763 - 28717
+
+#46 people are higher than 40 (5.7 hour per day- reasonable )
+
+describe(ds0$phys)
+#eliminate outliers  (4)
+ds0$phys[ds0$phys > 70] <- NA
+28763 - 28759
+
+
+eq_0 <- as.formula("phys ~ 1 +
+                   (1  |id)")
+
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE)
+lmerTest::summary((model_ucm))
+
+# ICC = random intercept vari / sum of random int var + risidual var
+8.74 / (8.74 + 8.305 ) #50.33 % BP
+
+agostino.test(ds0$phys) #skewed 
+
+names(ds0)
+
 #--demographics-------------------------------
 
 # Baseline measures
@@ -139,25 +208,6 @@ describeBy(ds0$nle, ds0$wave)
 
 agostino.test(ds0$nle) #data is skewed 
 
-#PA
-describe(ds0$phys)
-hist(ds0$phys,
-     main="Physical Activity",
-     xlim=c(0,30))
-
-
-eq_0 <- as.formula("phys ~ 1 +
-                   (1  |id)")
-
-model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE)
-lmerTest::summary((model_ucm))
-
-# ICC = random intercept vari / sum of random int var + risidual var
-9.022 / (9.022 + 8.903 ) #50.33 % BP
-
-agostino.test(ds0$phys) #skewed 
-
-names(ds0)
 
 
 #----cognitive-----------------------------------------------------------------------
@@ -195,6 +245,17 @@ eq_0 <- as.formula("word_test ~ 1 +
 model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
 lmerTest::summary((model_ucm))
 2.714 / (2.714 +3.267) #45%
+
+
+#mmse---
+describe(ds0$mmse)
+
+eq_0 <- as.formula("mmse ~ 1 +            
+                   (1  |id)")
+model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
+
+1.708 / (1.708 + 2.891)
 
 
 #--- graphs

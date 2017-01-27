@@ -111,9 +111,7 @@ anova(model, model1)
 
 #pseudo r^2 (percent of additional residual var accounted for)
 
-( 2.893   -  2.73639 ) /  2.893 
-# 5% of the residual varience from the first model was accounted for by the 
-# inclusion of random effects of wave in model 1
+(3.267 - 2.73) / 3.267 
 
 
 
@@ -190,7 +188,11 @@ eq5 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
 lmerTest::summary((model_5))
 
+#compared to demographic model
+(2.33998 - 2.33544)  /2.33998      
+(0.04226 - 0.04021)  /0.04226
 
+anova(model_4, model_5)
 
 eq6 <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                   + phys_bp*wave + phys_wp +
@@ -206,6 +208,9 @@ anova(model_5, model_6)
 
 #no sig difference when we include WP effects of PA, therefore
 #no varience in WP PA fluctuations to explain by stress  
+
+#compared to 1B (time slope only)
+(2.73639 - 2.6944459) / 2.73639
 
 
 #model 6

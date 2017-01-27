@@ -112,6 +112,8 @@ model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE)
 lmerTest::summary((model_5))
 # 42023.1    11041 
 
+
+anova(model_4, model_5)
 #the model with the random effects of PA is a better model than the one witout
 
 

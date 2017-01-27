@@ -192,6 +192,7 @@ data %>%
 
 describe(data$phys)
 
+names(data)
 # ---- save-to-disk ------------------------------------------------------------
 
 # Save as a compressed, binary R dataset.  

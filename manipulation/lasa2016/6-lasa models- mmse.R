@@ -105,7 +105,7 @@ lmerTest::summary((model1))
 
 #2df, dif of 80
 anova(model, model1) 
-object: mmse ~ 1 + wave + (1 | id)
+#object: mmse ~ 1 + wave + (1 | id)
 # ..1: mmse ~ 1 + wave + (1 + wave | id)
 # Df    AIC   BIC  logLik deviance Chisq Chi Df            Pr(>Chisq)    
 # object  4 15680 15706 -7836.2    15672                                       
@@ -113,10 +113,10 @@ object: mmse ~ 1 + wave + (1 | id)
 #   ---
 #pseudo r^2 (percent of additional residual var accounted for)
 
-( 2.694   -  2.2049) /   2.694  
-# 18 % of the residual varience from the first model was accounted for by the 
+ 
+# 24 % of the residual varience from the first model was accounted for by the 
 # inclusion of random effects of wave in model 1
-
+(2.891 -   2.2049) / 2.891
 
 
 # #AGE BL-------------
@@ -192,7 +192,13 @@ eq5 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
 model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
 lmerTest::summary((model_5))
 
+(0.8714 - 0.86927 ) / 0.8714            
+(0.0870 - 0.08668) / 0.0870
 
+anova(model_4, model_5)
+
+
+# Number of obs: 3848, groups:  id, 550
 
 eq6 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                   + phys_bp*wave + phys_wp +
@@ -207,6 +213,11 @@ anova(model_5, model_6)
 # ..1    18 15204 15316 -7583.8    15168 15.705      3   0.001303 **
 
 #wp_pa sig improves model fit!   
+
+
+#compared to model 1B (time slope), residuals
+
+(2.2049 - 2.19034) / 2.2049
 
 
 #model 6
