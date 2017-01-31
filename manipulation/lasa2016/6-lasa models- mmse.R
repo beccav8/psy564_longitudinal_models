@@ -340,6 +340,7 @@ anova(model_6a, model_6b)
 eq7 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc +
                   nle_bp*phys_bp + nle_bp*phys_wp +
                   ( 1 + wave + nle_wp  |id)")
+
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
 

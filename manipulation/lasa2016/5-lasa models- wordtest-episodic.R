@@ -299,13 +299,15 @@ model_6b<- lmerTest::lmer(eq6b, data=ds0, REML= FALSE)
 lmerTest::summary((model_6b))
 
 anova(model_6a, model_6b)
-# Df    AIC    BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
-# 6a      15 5444.3 5521.8 -2707.2   5414.3                        
-# 6b      18 5445.0 5538.1 -2704.5   5409.0 5.296      3     0.1514
+
+lmerTest::summary(model1)
+(2.73639 -  2.60618) / 2.73639
 
 #only nle bp is sig
 
 #model 6b
+
+
 #fix below numbers ----
 # #int 18.91792
 # 4.355 / (sqrt(3208))

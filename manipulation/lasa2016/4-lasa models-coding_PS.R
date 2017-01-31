@@ -301,17 +301,26 @@ eq6b <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gm
                    nle_bp*wave + nle_wp +
                    ( 1 + wave + nle_wp |id)")
 
+
+
 model_6a<- lmerTest::lmer(eq6a, data=ds0, REML= FALSE) 
 lmerTest::summary((model_6a))
+
+anova(model_4, model_6a) #demographic versus inclusion of stress 
+lmerTest::summary((model_4))
+
+(26.7764 -27.0459) / 26.7764          
+(0.3206 - 0.3229) / 0.3206
+
 
 model_6b<- lmerTest::lmer(eq6b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_6b))
 
 anova(model_6a, model_6b)
-#         Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)   
-# 6a      15 7923.8 8003.4 -3946.9   7893.8                            
-# 6b     18 7917.6 8013.1 -3940.8   7881.6   12.204      3   0.006715 **
 
+
+lmerTest::summary(model1)
+(6.642  - 6.3020) / 6.642
 
 #model 6b
 #fix below numbers ----
