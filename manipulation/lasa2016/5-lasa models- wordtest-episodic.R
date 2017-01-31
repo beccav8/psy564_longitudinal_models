@@ -290,6 +290,11 @@ eq6b <- as.formula("word_test ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc 
 model_6a<- lmerTest::lmer(eq6a, data=ds0, REML= FALSE) 
 lmerTest::summary((model_6a))
 
+anova(model_4, model_6a)
+#int and slope varience comparison 
+(2.33998 - 2.41645)/2.33998       
+(0.042 - 0.04312)/0.042
+
 model_6b<- lmerTest::lmer(eq6b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_6b))
 

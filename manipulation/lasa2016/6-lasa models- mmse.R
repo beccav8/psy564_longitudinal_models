@@ -297,14 +297,18 @@ eq6b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
 model_6a<- lmerTest::lmer(eq6a, data=ds0, REML= FALSE) 
 lmerTest::summary((model_6a))
 
+anova(model_4, model_6a)
+
+
 model_6b<- lmerTest::lmer(eq6b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_6b))
 
 anova(model_6a, model_6b)
-#        Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)    
-# object 15 15206 15300 -7588.3    15176                             
-# ..1    18 15194 15306 -7578.8    15158 18.944      3  0.0002808 ***
 
+#resid varience compared to time slope only
+(2.2049 -  2.18889)/2.2049
+  
+  
 #only nle wp is sig (+)
 
 #model 6b
