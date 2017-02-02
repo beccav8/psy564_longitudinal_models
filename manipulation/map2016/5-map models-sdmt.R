@@ -19,7 +19,6 @@ library(outliers)
 library(psych)
 
 
-
 # Call `base::source()` on any repo file that defines functions needed below.  Ideally, no real operations are performed.
 source("./scripts/common-functions.R") # used in multiple reports
 source("./scripts/graph-presets.R")
