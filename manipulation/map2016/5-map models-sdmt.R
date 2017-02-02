@@ -57,8 +57,8 @@ names(ds0)
 # str(ds0)
 
 describe(ds0$sdmt)
-ds0$sdmt_origional<-ds0$sdmt
-ds0$sdmt<-ds0$sdmt/2
+# ds0$sdmt_origional<-ds0$sdmt
+# ds0$sdmt<-ds0$sdmt/2
 
 describe(ds0$pss)
 eq <- as.formula("pss ~ 1 +          
@@ -83,30 +83,22 @@ eq <- as.formula("sdmt ~ 1 +
 model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
 lmerTest::summary((model))
 #resid var= 12.45
-34.48 / (34.48 + 12.45)
+137.91 / (137.91 + 49.81)
 
 eq1 <- as.formula("sdmt ~ 1 + year_in_study +          
                  ( 1  |id)")
 model1<- lmerTest::lmer(eq1, data=ds0, REML= FALSE) 
 lmerTest::summary((model1))
-#df= 10587    
-#dev =  59601.7
+
 
 
 eq2 <- as.formula("sdmt ~ 1 + year_in_study +          
                  ( 1 + year_in_study |id)")
 model2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
 lmerTest::summary((model2))
-#df= 10585   
-#dev =  58014.5
-
-10587-10585
-59601.7-58014.5
 
 anova(model1, model2)
-#         Df   AIC   BIC logLik deviance  Chisq Chi Df            Pr(>Chisq)    
-# object  4 59610 59639 -29801    59602                                        
-# ..1     6 58027 58070 -29007    58015 1587.1      2 < 0.00000000000000022 ***
+
 
 #pseudo r^2
 
@@ -114,66 +106,25 @@ anova(model1, model2)
 
 
 
-# #AGE BL-------------
-# 
-# eq2 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + 
-#                   ( 1 + year_in_study |id)")
-# model_2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_2))
-# 
-# #chi sq
-# #df
-# #df= 
-# 10585 -  10583 
-# #deviance
-# 58014.5- 57653.7 
-# 
-# 
-# #int 27.5670
-# 5.2504/ (sqrt(10591))
-# #year 0.3081
-# 0.5551/ (sqrt(10591))
-# #resid 7.1819
-# 2.6799/ (sqrt(10591))
-# 
 # ################ + gender
 # 
 # eq3 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + 
 #                   ( 1 + year_in_study |id)")
 # model_3<- lmerTest::lmer(eq3, data=ds0, REML= FALSE) 
 # lmerTest::summary((model_3))
-# 
-# #df= 
-# 10583- 10581
-# #dev =  
-# 57653.7-57644.1
-# 
-# 
-# #int 27.3997
-# 5.2345/ (sqrt(10591))
-# #year  0.308
-# 0.5551/ (sqrt(10591))
-# #resid 7.1821
-# 2.6799 / (sqrt(10591))
-# 
 
-
-################# + education 
-
+################# demographic 
 
 eq4 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc + 
                   ( 1 + year_in_study |id)")
 model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
 lmerTest::summary((model_4))
 
-58014.5 - 57471.3
-10585 -10579 
+
 
 anova(model2, model_4)
-#         Df   AIC   BIC logLik deviance  Chisq Chi Df            Pr(>Chisq)    
-# 2        6 58027 58070 -29007    58015                                        
-# 4       12 57495 57583 -28736    57471 543.19      6 < 0.00000000000000022 ***
-  ---
+
+
 
 #Physical Activity --------------
 
@@ -184,14 +135,14 @@ model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE)
 lmerTest::summary((model_5))
 
 # varience around intercept of demographic model
-(24.5726 -24.1624) / 24.572
+(98.29 - 96.650 ) / 98.29
 # time
-(0.3101  - 0.2732) /0.3101
+( 1.24 - 1.093) /1.24
 
-(7.1787 - 7.0986) / 7.1787 
+( 28.71 - 28.39) /  28.71 
 
 
-anova(model_4, model_5)
+anova(model_4, model_5) #not fitted to same size data set- makes sense 
 
 eq5a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    + phys_pmeanC*year_in_study + phys_wp +
@@ -201,11 +152,8 @@ lmerTest::summary((model_5a))
 
 anova(model_5, model_5a)
 
-#        Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)   
-#  5    15 56645 56753 -28307    56615                            
-# 5a    18 56637 56767 -28300    56601 14.015      3   0.002885 **
 
-
+#wrong values, but this is how you test sig
 #int
 24.112608 
 4.9105  / (sqrt(10466))            
@@ -220,68 +168,39 @@ anova(model_5, model_5a)
 2.6584/(sqrt(10466))    
 
 
-
-
 #wp varience explained compred to the random effects of time only
-(7.1566 -  7.066991)/(7.1566)  #1.2%
+( 28.71 - 28.39) /  28.71 
 
-# 
-# #varience in the intercept explained by PA?
-# (24.5726 - 24.1624) / 24.5726
-# 
-# #varience in the slope explained by PA? 
-# (0.3101 - 0.2732) / 0.3101
-
-# # gender X PA
-# eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-#                   phys_pmeanC*msex + phys_wp*msex +
-#                   ( 1 + year_in_study + phys_wp|id)")
-# model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
-# lmerTest::summary((model_6))
-# 
 
 
 #stress------------------------------
 
 #PSS ----
 
-eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-                   pss_pmeanC*year_in_study + pss_wp +
-                   ( 1 + year_in_study  |id)")
-model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
-lmerTest::summary((model_6))
-#df=
-#int:18.88
-#slope:0.12
-(24.57 - 18.88)/24.57 
-(0.3101 - 0.12)/0.3101
+# eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+#                    pss_pmeanC*year_in_study + pss_wp +
+#                    ( 1 + year_in_study  |id)")
+# model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_6))
+# #df=
+# #int:18.88
+# #slope:0.12
+# (24.57 - 18.88)/24.57 
+# (0.3101 - 0.12)/0.3101
+# 
+# eq6a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+#                    pss_pmeanC*year_in_study + pss_wp +
+#                    ( 1 + year_in_study + pss_wp |id)")
+# model_6a<- lmerTest::lmer(eq6a, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_6a))
+# 
+# #the addition of pss_wp in the random effects is NS
+# #people aren't very differnt in their stress fluctuations 
+# #therefore there is nothing to explain
+# 
+# 
+# anova(model_6, model_6a)
 
-eq6a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-                   pss_pmeanC*year_in_study + pss_wp +
-                   ( 1 + year_in_study + pss_wp |id)")
-model_6a<- lmerTest::lmer(eq6a, data=ds0, REML= FALSE) 
-lmerTest::summary((model_6a))
-
-#the addition of pss_wp in the random effects is NS
-#people aren't very differnt in their stress fluctuations 
-#therefore there is nothing to explain
-
-
-anova(model_6, model_6a)
-#        Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
-# 6      15 17705 17796 -8837.4    17675                         
-# 6A     18 17709 17818 -8836.3    17673 2.1965      3     0.5326
-
-
-
-#int 18.91792
-4.355 / (sqrt(3208))
-#year  0.12653
-0.3557 / (sqrt(3208))
-#pss_wp 0.10
-0.32/ (sqrt(3208))
-#resid   6.69
-2.58/ (sqrt(3208))
 
 #NLE-- 
 
@@ -291,14 +210,16 @@ eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + y
 model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
 lmerTest::summary((model_6))
 
-#intercept: 18.696
-#slope 0.12
 
 #reduction of BP var compared to model 2:
+# varience around intercept of demographic model
+(98.29 - 74.78 ) / 98.29
+# time
+( 1.24 - 0.4645) /1.24
 
-#model 2, intercept var = 24.57, slope var = 0.31 residual =7.1787
-(24.57 - 18.696 )/ 24.57
-(0.31 - 0.12)/ 0.31
+#residual var
+
+( 28.71 - 26.996) /  28.71 
 
 eq6a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                   nle_pmeanC*year_in_study + nle_wp +
@@ -320,23 +241,47 @@ anova(model_6, model_6a)
 
 
 ################# interaction with stress 
-#---- PSS and interaction
 
 
 # Interaction --------------
 
-eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc +
-                  nle_pmeanC*phys_pmeanC*year_in_study + nle_pmeanC*phys_wp*year_in_study +
+# eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc +
+#                   nle_pmeanC*phys_pmeanC*year_in_study + nle_pmeanC*phys_wp*year_in_study +
+#                   ( 1 + year_in_study + nle_wp  |id)")
+# model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_7))
+# 
+# #
+# 
+# eq7a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc +
+#                    nle_wp*phys_pmeanC*year_in_study + nle_wp*phys_wp*year_in_study +
+#                    ( 1 + year_in_study + nle_wp  |id)")
+# model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_7a))
+
+
+# moderating effects of BP activity on BP and WP stress 
+
+ds0$sdmt <- ds0$sdmt/2
+
+eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
+
+                  nle_pmeanC*year_in_study*phys_pmeanC + nle_wp*phys_pmeanC +
+                 
                   ( 1 + year_in_study + nle_wp  |id)")
+
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
 
+#moderating effects of WP activity on BP and WP stress
 
-eq7a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc +
-                   nle_wp*phys_pmeanC*year_in_study + nle_wp*phys_wp*year_in_study +
-                   ( 1 + year_in_study + nle_wp  |id)")
-model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 
-lmerTest::summary((model_7a))
+eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
+                  
+                  nle_pmeanC*year_in_study*phys_wp + nle_wp*phys_wp +
+                  
+                  ( 1 + year_in_study + nle_wp  |id)")
+model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
+lmerTest::summary((model_7))
 
 
 
