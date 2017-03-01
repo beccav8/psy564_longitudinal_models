@@ -343,21 +343,22 @@ lmerTest::summary(model1)
 
 
 ################# interaction with stress 
+#---- PSS and interaction
 
 
-eq7 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc + 
+#Physical Activity --------------
 
-                  nle_bp*wave*phys_bp + nle_bp*phys_wp +
-                  nle_wp*phys_bp + nle_wp*phys_wp +
-                 
-                  ( 1 + wave + nle_wp |id)")
-
-
+eq7 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc +
+                  nle_bp*phys_bp + nle_bp*phys_wp +
+                  ( 1 + wave + nle_wp  |id)")
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
 
-
-
+eq7a <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc +
+                  nle_wp*phys_bp + nle_wp*phys_wp +
+                  ( 1 + wave + nle_wp  |id)")
+model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_7a))
 
 
 #graphs

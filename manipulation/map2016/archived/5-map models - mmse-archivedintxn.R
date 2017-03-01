@@ -190,22 +190,9 @@ lmerTest::summary(modelb)
 
 #interacrtion --------------
 
-# Hypothesis 3: effects of BP stress are moderated by BP and WP physical activity 
-# Hypothesis 4: effects of WP stress will be moderated by BP and WP physical activity
-
-
-eq7 <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
-
-                  nle_pmeanC*year_in_study*phys_pmeanC + nle_pmeanC*phys_wp +
-                  nle_wp*phys_pmeanC + nle_wp*phys_wp +
-                 
-                  ( 1 + year_in_study + nle_wp |id)")
-
-
-model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
-lmerTest::summary((model_7))
-
-
-
-
-
+# eq7 <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc +
+#                   phys_pmeanC*year_in_study*pss_pmeanC  + phys_wp*pss_pmeanC +
+#                   ( 1 + year_in_study + phys_wp  |id)")
+# model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_7))
+# 
