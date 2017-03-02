@@ -242,7 +242,7 @@ anova(model_5a, model_5b)
 
 eq7 <- as.formula("db ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
                   
-                  nle_pmeanC*year_in_study*phys_pmeanC + nle_pmeanC*phys_wp +
+                  nle_pmeanC*phys_pmeanC + nle_pmeanC*phys_wp +
                   nle_wp*phys_pmeanC + nle_wp*phys_wp +
                   
                   ( 1 + year_in_study + nle_wp |id)")

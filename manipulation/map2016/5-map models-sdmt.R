@@ -250,7 +250,7 @@ anova(model_6, model_6a)
 
 eq7 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
                   
-                  nle_pmeanC*year_in_study*phys_pmeanC + nle_pmeanC*phys_wp +
+                  nle_pmeanC*phys_pmeanC + nle_pmeanC*phys_wp +
                   nle_wp*phys_pmeanC + nle_wp*phys_wp +
                   
                   ( 1 + year_in_study + nle_wp |id)")
@@ -260,8 +260,10 @@ model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE)
 lmerTest::summary((model_7))
 
 
-
 # ds0$sdmt <- ds0$sdmt/2
+
+
+
 
 
 

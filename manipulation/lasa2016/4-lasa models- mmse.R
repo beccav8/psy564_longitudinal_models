@@ -332,31 +332,13 @@ anova(model_6a, model_6b)
 
 
 ################# interaction with stress 
-#---- PSS and interaction
-
-
-#Physical Activity --------------
-
-eq7 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc +
-                  nle_bp*phys_bp + nle_bp*phys_wp +
-                  ( 1 + wave + nle_wp  |id)")
-
-model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
-lmerTest::summary((model_7))
-
-eq7a <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc +
-                   nle_wp*phys_bp + nle_wp*phys_wp +
-                   ( 1 + wave + nle_wp  |id)")
-model_7a<- lmerTest::lmer(eq7a, data=ds0, REML= FALSE) 
-lmerTest::summary((model_7a))
-
 
 #-------- interaction
 
 
 eq7 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc + 
 
-                  nle_bp*wave*phys_bp + nle_bp*phys_wp +
+                  nle_bp*phys_bp + nle_bp*phys_wp +
                   nle_wp*phys_bp + nle_wp*phys_wp +
                  
                   ( 1 + wave + nle_wp |id)")
@@ -364,32 +346,5 @@ eq7 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc +
 
 model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
 lmerTest::summary((model_7))
-
-
-
-#graphs
-
-g1<- ggplot2::ggplot(ds0, aes_string(x= "nle_bp", y="mmse")) +
-  stat_smooth(method=lm, colour= "black", se=TRUE)+
-  geom_point(size=1)
-
-g1 <- g1 + labs(list(
-  title= "Coupled Change between Physical Activity and Symbol Digit Modality",
-  x="NLE (WP)", y="mmse"))
-
-
-g1<- g1 + theme(text=element_text(family='Times'),
-                # legend.title=element_blank())
-                panel.background = theme_rect(fill = "white", colour="black"))
-
-
-g1<- g1 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-                panel.background = element_blank())
-
-g1 <- g1 +theme(panel.background = element_rect(fill = "white", colour = "black",
-                                                size = 1))
-g1
-
-
 
 

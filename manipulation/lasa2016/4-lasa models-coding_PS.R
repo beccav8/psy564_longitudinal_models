@@ -347,7 +347,7 @@ lmerTest::summary(model1)
 
 eq7 <- as.formula("coding_mean ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc + 
 
-                  nle_bp*wave*phys_bp + nle_bp*phys_wp +
+                  nle_bp*phys_bp + nle_bp*phys_wp +
                   nle_wp*phys_bp + nle_wp*phys_wp +
                  
                   ( 1 + wave + nle_wp |id)")
@@ -357,6 +357,61 @@ model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE)
 lmerTest::summary((model_7))
 
 
+#hypothetical graph
+
+
+describe(ds0$phys_wp)
+#-32.74 - 63.08, range = 95.82
+95.82/3
+
+#low=
+-32.74 +31.94 #-31 to -0.8
+#medium
+-0.8 + 31.94  # -0.8 - 31.14
+#high
+31.14 + 32.94  # 31.14 - 64.08
+
+test<- ds0
+
+test$phys_wpCAT[test$phys_wp< 0] <- "low"
+test$phys_wpCAT[ 0<= test$phys_wp & test$phys_wp <= 10] <- "med"
+test$phys_wpCAT[11<= test$phys_wp] <-"high"
+
+
+# describeBy(test$phys_wpCAT, group=test$phys_wpCAT)
+
+table(test$phys_wpCAT)
+
+
+library(ggplot2)
+
+p1 <- ggplot(data = test, aes(x = nle_wp, y = coding_mean, group = phys_wpCAT, colour= phys_wpCAT)) +       
+  geom_line() + geom_point() + stat_smooth(method=lm, se=FALSE)
+
+p1
+
+str(test)
+
+#low PA: as NLE increases, scores decline
+#med/high PA, as NLE increases, scores decline, but are higher
+
+
+#----
+
+describe(test$nle_wp)
+
+test$nle_wpCAT[test$nle_wp< -1] <- "low"
+test$nle_wpCAT[ -1.1<= test$nle_wp & test$nle_wp <= 2] <- "med"
+test$nle_wpCAT[2<= test$nle_wp] <-"high"
+
+
+
+p1 <- ggplot(data = test, aes(x = phys_wp, y = coding_mean, group = nle_wpCAT, colour= nle_wpCAT)) +       
+  geom_line() + geom_point() + stat_smooth(method=lm, se=FALSE)
+
+p1
+
+str(test)
 
 
 
