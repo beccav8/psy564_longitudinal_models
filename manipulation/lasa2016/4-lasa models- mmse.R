@@ -289,6 +289,10 @@ eq6a <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                    nle_bp*wave + nle_wp +
                    ( 1 + wave  |id)")
 
+#compared to demographic model, intercept and slope varience 
+(0.87454 - .871 ) / 0.87454        
+(0.08656 - 0.087) /0.08656
+
 
 eq6b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                    nle_bp*wave + nle_wp +

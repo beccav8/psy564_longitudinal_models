@@ -165,6 +165,7 @@ lmerTest::summary((model_5a))
 (2.57 - 2.62 )/2.57
 (0.020 - 0.01) / 0.020
 
+
 #the addition of pss_wp in the random effects is NS
 #people aren't very differnt in their stress fluctuations 
 #therefore there is nothing to explain

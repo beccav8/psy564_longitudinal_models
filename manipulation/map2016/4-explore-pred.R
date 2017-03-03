@@ -102,12 +102,13 @@ model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE)
 lmerTest::summary((model_ucm))
 
 
+#nle 
 
-#pss
 hist(ds0$nle) #relatively normal dist
 sd(ds0$nle, na.rm=TRUE) #.83
 describe(ds0$nle)
 agostino.test(ds0$nle)
+
 eq_0 <- as.formula("nle ~ 1 +            
                    (1  |id)")
 
@@ -121,6 +122,17 @@ table(ds0$nle)
 
 # n = 3339 observations, 1007 unique id's
 # n for total participants = 11672
+
+describeBy(ds0$nle, ds0$year_in_study)
+
+ids <- sample(unique(ds0$id),15)
+test<- ds0 %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id,nle)
+
+describeBy(test$nle, test$id)
+
 
 
 #PA
@@ -138,6 +150,17 @@ model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE)
 lmerTest::summary((model_ucm))
 
 5.627 / (5.627+6.741) #45% BP
+
+ids <- sample(unique(ds0$id),15)
+test<- ds0 %>%
+  dplyr::filter(id %in% ids ) %>%
+  dplyr::group_by(id) %>%
+  dplyr::select(id,physical_activity)
+
+describeBy(test$physical_activity, test$id)
+
+
+
 
 # ds0$physical_activity1<-(ds0$physical_activity) + 0.1  
 
