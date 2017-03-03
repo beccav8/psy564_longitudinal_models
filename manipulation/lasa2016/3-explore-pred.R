@@ -117,6 +117,20 @@ ds0$phys[ds0$phys > 70] <- NA
 28763 - 28759
 
 
+
+describeBy(ds0$phys, ds0$wave)
+
+test30<- ds0[ which(ds0$phys>30),]
+test40<-ds0[which(ds0$phys>40),]
+test50<- ds0[ which(ds0$phys>50),]
+test60<-ds0[which(ds0$phys>60),]   #two seperate people are greater than 60
+
+describeBy(test50$phys, test50$id)
+hist(test50$phys)
+hist(ds0$phys)
+
+table(ds0$phys)
+
 eq_0 <- as.formula("phys ~ 1 +
                    (1  |id)")
 

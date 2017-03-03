@@ -240,7 +240,7 @@ anova(model_5a, model_5b)
 # Hypothesis 4: effects of WP stress will be moderated by BP and WP physical activity
 
 
-eq7 <- as.formula("db ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
+eq7 <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
                   
                   nle_pmeanC*phys_pmeanC + nle_pmeanC*phys_wp +
                   nle_wp*phys_pmeanC + nle_wp*phys_wp +

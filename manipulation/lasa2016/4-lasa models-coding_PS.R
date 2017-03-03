@@ -357,6 +357,8 @@ model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE)
 lmerTest::summary((model_7))
 
 
+library(sjPlot)
+
 #hypothetical graph
 
 
@@ -373,9 +375,9 @@ describe(ds0$phys_wp)
 
 test<- ds0
 
-test$phys_wpCAT[test$phys_wp< 0] <- "low"
-test$phys_wpCAT[ 0<= test$phys_wp & test$phys_wp <= 10] <- "med"
-test$phys_wpCAT[11<= test$phys_wp] <-"high"
+test$phys_wpCAT[test$phys_wp< -0.8] <- "low"
+test$phys_wpCAT[ -0.9<= test$phys_wp & test$phys_wp <= 31] <- "med"
+test$phys_wpCAT[32<= test$phys_wp] <-"high"
 
 
 # describeBy(test$phys_wpCAT, group=test$phys_wpCAT)
