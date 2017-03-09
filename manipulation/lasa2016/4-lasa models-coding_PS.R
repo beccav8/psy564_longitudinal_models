@@ -374,14 +374,16 @@ describe(ds0$phys_wp)
 31.14 + 32.94  # 31.14 - 64.08
 
 test<- ds0
+names(test)
+# test$phys_wpCAT[test$phys_wp< -0.8] <- "low"
+# test$phys_wpCAT[ -0.9<= test$phys_wp & test$phys_wp <= 31] <- "med"
+# test$phys_wpCAT[32<= test$phys_wp] <-"high"
 
 test$phys_wpCAT[test$phys_wp< -0.8] <- "low"
-test$phys_wpCAT[ -0.9<= test$phys_wp & test$phys_wp <= 31] <- "med"
-test$phys_wpCAT[32<= test$phys_wp] <-"high"
-
+test$phys_wpCAT[ -0.9<= test$phys_wp & test$phys_wp <= 10.99] <- "med"
+test$phys_wpCAT[11<= test$phys_wp] <-"high"
 
 # describeBy(test$phys_wpCAT, group=test$phys_wpCAT)
-
 table(test$phys_wpCAT)
 
 
@@ -392,7 +394,21 @@ p1 <- ggplot(data = test, aes(x = nle_wp, y = coding_mean, group = phys_wpCAT, c
 
 p1
 
-str(test)
+
+test2<- ds0
+
+test2$phys_wpCAT[test2$phys_wp< -0.8] <- "low"
+test2$phys_wpCAT[ -0.9<= test2$phys_wp & test2$phys_wp <= 15.99] <- "med"
+test2$phys_wpCAT[16<= test2$phys_wp] <-"high"
+
+
+table(test2$phys_wpCAT)
+
+p1 <- ggplot(data = test2, aes(x = nle_wp, y = coding_mean, group = phys_wpCAT, colour= phys_wpCAT)) +       
+  geom_line() + geom_point() + stat_smooth(method=lm, se=FALSE)
+
+p1
+
 
 #low PA: as NLE increases, scores decline
 #med/high PA, as NLE increases, scores decline, but are higher

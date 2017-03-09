@@ -563,5 +563,10 @@ saveRDS(ds0, file="./data/unshared/derived/lasa_2016/dto_4analyses.rds", compres
 # the production of the dto object is now complete
 # we verify its structure and content:
 dto <- readRDS("./data/unshared/derived/lasa_2016/dto_4analyses.rds")
+
+
+save(ds0, file="./data/unshared/derived/lasa_2016/mplus_lasa.RData", ascii=TRUE)
+save(ds0, file="./data/unshared/derived/lasa_2016/mplus_lasa.csv")
+
 names(dto)
 # this is a flat data.frame containing combined variable
