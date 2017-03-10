@@ -80,7 +80,12 @@ myvars <- c ("id", "male", "edu", "edu_gmc", "wave",  "age_at_visit", "age_at_vi
 mpLasa<- ds0[myvars]                              
 str(mpLasa)
 
+na.zero <- function (x) {
+  x[is.na(x)] <- -999
+  return(x)
+}
 
+mpLasa<- na.zero(mpLasa)
 
 
 # "nle_1"             
@@ -94,12 +99,7 @@ str(mpLasa)
 # ---- save-to-disk ------------------------------------------------------------
 
 
-save(ds0, file="./data/unshared/derived/lasa_2016/mplus_lasa.csv", )
-
-
-# Save as a compressed, binary R dataset.  
-# It's no longer readable with a text editor, but it saves metadata (eg, factor information).
-saveRDS(ds0, file="./data/unshared/derived/lasa_2016/dto_4analyses.rds", compress="xz")
+save(mpLasa, file="./data/unshared/derived/lasa_2016/mpLasa.dat", col.names=F, row.names=F)
 
 # ---- object-verification ------------------------------------------------
 # the production of the dto object is now complete
