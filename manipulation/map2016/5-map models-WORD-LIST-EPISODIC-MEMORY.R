@@ -55,24 +55,26 @@ path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds"
 ds0  <- readRDS(path_input0) #total raw data  
 names(ds0)
 
+describe(ds0$PA_bl_BP)
+
 
 #models--------------------------
 
-eq <- as.formula("dig_b ~ 1 +          
+eq <- as.formula("wl_im ~ 1 +          
                  ( 1  |id)")
 model_ucm<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
 lmerTest::summary((model_ucm))
-#resid var= 1.974
+21.48 / (21.49 + 9.53)
 
-eq <- as.formula("dig_b ~ 1 + year_in_study +          
+eq <- as.formula("wl_im ~ 1 + year_in_study +          
                  ( 1  |id)")
 model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
 lmerTest::summary((model))
 #df= 11243  dev=43476.4
 
 
-eq1 <- as.formula("dig_b ~ 1 + year_in_study +          
-                 ( 1 + year_in_study |id)")
+eq1 <- as.formula("wl_im ~ 1 + year_in_study +          
+                  ( 1 + year_in_study |id)")
 model1<- lmerTest::lmer(eq1, data=ds0, REML= FALSE) 
 lmerTest::summary((model1))
 #df=  11241  
@@ -101,67 +103,72 @@ anova(model_ucm, model1)
 
 # demographic 
 
-eq2 <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc + 
+eq2 <- as.formula("wl_im ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc + 
                   ( 1 + year_in_study |id)")
 model_2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
 lmerTest::summary((model_2))
 
-11241-11235 
-43476.4-42904.6
 
 #compared to random time model
-
+anova(model1, model_2)
 
 
 
 
 #Physical Activity --------------
-eq3a<- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-                 phys_pmeanC*year_in_study + phys_wp +
-                  ( 1 + year_in_study |id)")
-model_3a<- lmerTest::lmer(eq3a, data=ds0, REML= FALSE) 
-lmerTest::summary((model_3a))
-# 42023.1    11041 
-
-
-anova(model_2, model_3a)
-#the model with the random effects of PA is a better model than the one witout
-
-
-eq3b <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-                  + phys_pmeanC*year_in_study + phys_wp +
-                  ( 1 + year_in_study + phys_wp |id)")
-model_3b<- lmerTest::lmer(eq3b, data=ds0, REML= FALSE) 
-lmerTest::summary((model_3b))
-# 42020.5    11038 
-anova(model_3a, model_3b)
-
-42020.5 - 42023.1   
-11038 - 11041
-
-1.6 / sqrt(11056)
-0.12 / sqrt(11056)
-0.014/ sqrt (11056)
-1.33/sqrt(11056)
-
-#wp varience explained compred to the random effects of time only
-(1.7793 -  1.7608033)/(1.7793)
-#varience in the intercept explained by PA BP?
-(2.9036   -  2.57920 ) / 2.9036
-#varience in the slope explained by PA BP? 
-(0.02033 - 0.01632) / 0.02033
-
-
+# eq3a<- as.formula("wl_im ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+#                   phys_pmeanC*year_in_study + phys_wp +
+#                   ( 1 + year_in_study |id)")
+# model_3a<- lmerTest::lmer(eq3a, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_3a))
+# # 42023.1    11041 
+# 
+# 
+# anova(model_2, model_3a)
+# #the model with the random effects of PA is a better model than the one witout
+# 
+# 
+# eq3b <- as.formula("wl_im ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+#                    + phys_pmeanC*year_in_study + phys_wp +
+#                    ( 1 + year_in_study + phys_wp |id)")
+# model_3b<- lmerTest::lmer(eq3b, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_3b))
+# # 42020.5    11038 
+# anova(model_3a, model_3b)
+# 
+# 
+# 
+# #varience in the intercept explained by PA BP?
+# (14.0408   -  13.66478 ) / 14.0408
+# #varience in the slope explained by PA BP? 
+# (0.248 - 0.22129) / 0.248
+# 
+# 
 
 #does PA moderate the effects of gender on the intercept and slope
 # 
-# eq5s <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+# eq5s <- as.formula("wl_im ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
 #                    + phys_pmeanC*year_in_study*msex + phys_wp*msex +
 #                    ( 1 + year_in_study + phys_wp |id)")
 # model_5s<- lmerTest::lmer(eq5s, data=ds0, REML= FALSE) 
 # lmerTest::summary((model_5s))
 
 
+eq3a <- as.formula("wl_im ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+                  phys_pmeanC*year_in_study + phys_wp +
+                   ( 1 + year_in_study |id)")
+model_3a<- lmerTest::lmer(eq3a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_3a))
+
+
+eq3b <- as.formula("wl_im ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+                   + phys_pmeanC*year_in_study + phys_wp +
+                   ( 1 + year_in_study + phys_wp |id)")
+model_3b<- lmerTest::lmer(eq3b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_3b))
+
+
+anova(model_3a, model_3b)
 
 
 #stress------------------------------
@@ -169,7 +176,7 @@ anova(model_3a, model_3b)
 
 #---nle---------------
 
-eq4a <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+eq4a <- as.formula("wl_im ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    nle_pmeanC*year_in_study + nle_wp +
                    ( 1 + year_in_study  |id)")
 model_4a<- lmerTest::lmer(eq4a, data=ds0, REML= FALSE) 
@@ -177,16 +184,28 @@ lmerTest::summary((model_4a))
 # 12719.1     3282 
 
 
+#varience in the intercept explained by PA BP?
+(14.0408   -  12.5848 ) / 14.0408
+#varience in the slope explained by PA BP? 
+(0.248 - 0.1435) / 0.248
+
+
 #the addition of pss_wp in the random effects is NS
 #people aren't very differnt in their stress fluctuations 
 #therefore there is nothing to explain
 
-eq4b <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+eq4b <- as.formula("wl_im ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    nle_pmeanC*year_in_study + nle_wp +
                    ( 1 + year_in_study + nle_wp |id)")
 model_4b<- lmerTest::lmer(eq4b, data=ds0, REML= FALSE) 
 lmerTest::summary((model_4b))
 
+# names(ds0)
+# eqt <- as.formula("wl_im ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+#                    pss_pmeanC*year_in_study + pss_wp +
+#                    ( 1 + year_in_study + pss_wp |id)")
+# model_t<- lmerTest::lmer(eqt, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_t))
 
 anova(model_4a, model_4b)
 
@@ -227,7 +246,7 @@ sjt.lmer(model_2, model_3b, model_4b, depvar.labels= c("Model 2", "Model 3b", "M
 # Hypothesis 4: effects of WP stress will be moderated by BP and WP physical activity
 
 
-eq5 <- as.formula("dig_b ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
+eq5 <- as.formula("wl_im ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
                   
                   nle_pmeanC*phys_pmeanC + nle_pmeanC*phys_wp +
                   nle_wp*phys_pmeanC + nle_wp*phys_wp +

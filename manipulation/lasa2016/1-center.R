@@ -100,6 +100,23 @@ data %>%
                 nle, nle_pmean, nle_wp, nle_gmc, nle_bp)
 
 
+# describe(data$wave)
+# bl <- data[ which(data$wave==1), ] #baseline subset
+# names(bl)
+# describe(bl$NLE_total)
+# 
+# bl$nle_bl <- bl$NLE_total
+# sub<- bl[c("id", "nle_bl")]
+# 
+# #grand mean center PA at baseline 
+# 
+# sub$nle_bl_BP <- (sub$nle_bl) - (mean(sub$nle_bl, na.rm=TRUE))
+# 
+# 
+# data <- merge(data, sub, by="id")
+# 
+# names(data)
+
 #pss----------------------------------
 
 #GRAND MEAN CENTERING 
@@ -192,7 +209,25 @@ data %>%
 
 describe(data$phys)
 
+
+
+#-- PA at baseline 
+bl <- data[ which(data$wave==1), ] #baseline subset
+names(bl)
+
+bl$PA_bl <- bl$phys
+sub<- bl[c("id", "PA_bl")]
+
+#grand mean center PA at baseline 
+
+sub$PA_bl_BP <- (sub$PA_bl) - (mean(sub$PA_bl, na.rm=TRUE))
+
+
+data <- merge(data, sub, by="id")
+
 names(data)
+
+
 # ---- save-to-disk ------------------------------------------------------------
 
 # Save as a compressed, binary R dataset.  

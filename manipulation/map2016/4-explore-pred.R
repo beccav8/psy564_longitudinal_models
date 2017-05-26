@@ -117,8 +117,19 @@ lmerTest::summary((model_ucm))
 
 #3339 obs
 
+hist(ds0$nle_wp) #relatively normal dist
 
 table(ds0$nle)
+describeBy(ds0$nle, ds0$nle)
+
+hist(ds0$nle_pmeanC)
+hist(ds0$phys_pmeanC)
+hist(ds0$phys_wp)
+hist(ds0$physical_activity)
+
+hist(ds0$sdmt)
+
+
 
 # n = 3339 observations, 1007 unique id's
 # n for total participants = 11672
@@ -133,7 +144,12 @@ test<- ds0 %>%
 
 describeBy(test$nle, test$id)
 
+eq_1 <- as.formula("nle ~ year_in_study + 1 +
+                   (1  |id)")
 
+model<- lmerTest::lmer(eq_1, data=ds0, REML= FALSE)
+lmerTest::summary((model))
+#NLE does not change over time 
 
 #PA
 describe(ds0$physical_activity)
@@ -150,6 +166,14 @@ model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE)
 lmerTest::summary((model_ucm))
 
 5.627 / (5.627+6.741) #45% BP
+
+eq_1 <- as.formula("physical_activity ~ year_in_study + 1 +
+                   (1  |id)")
+
+model<- lmerTest::lmer(eq_1, data=ds0, REML= FALSE)
+lmerTest::summary((model))
+#PA decreases with time 
+
 
 ids <- sample(unique(ds0$id),15)
 test<- ds0 %>%
@@ -206,6 +230,10 @@ eq_0 <- as.formula("dig_b ~ 1 +
 model_ucm<- lmerTest::lmer(eq_0, data=ds0, REML= FALSE) 
 lmerTest::summary((model_ucm))
 2.804 / (2.804+2.086) #57%
+
+
+describe(ds0$wl_im)
+
 
 
 #--- graphs

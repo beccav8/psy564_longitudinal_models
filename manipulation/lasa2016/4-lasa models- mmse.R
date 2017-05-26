@@ -14,9 +14,7 @@ cat("\f") # clear console
 # Attach these packages so their functions don't need to be qualified: http://r-pkgs.had.co.nz/namespace.html#search-path
 library(magrittr) # enables piping : %>%
 library(lmerTest)
-library(outliers)
 library(psych)
-
 
 
 # Call `base::source()` on any repo file that defines functions needed below.  Ideally, no real operations are performed.
@@ -53,11 +51,13 @@ path_input0  <- "./data/unshared/derived/lasa_2016/dto_4analyses.rds"
 # ----- load-data ------
 ds0  <- readRDS(path_input0) #total raw data  
 names(ds0)
-# str(ds0)
+str(ds0)
 
 options(scipen=20)
 
 str(ds0)
+
+describe(ds0$PA_bl_BP)
 
 # ----- Fully-unconditional-model ------
 #yi= B0 + ei
@@ -102,13 +102,22 @@ model1<- lmerTest::lmer(eq1, data=ds0, REML= FALSE)
 lmerTest::summary((model1))
 
 
+# #----------table 1------- UCM vs time model (re)----------------
+# 
+# sjp.lmer(model_ucm, model1, depvar.labels= c("Model 0", "Model 1"),
+#          p.numeric=FALSE, show.icc = FALSE, show.r2 = FALSE, show.ci=FALSE, show.se=TRUE,
+#          show.re.var = TRUE)
+# 
+# #--------------------------------------------------------
+
+
 
 #2df, dif of 80
 anova(model, model1) 
 #object: mmse ~ 1 + wave + (1 | id)
 # ..1: mmse ~ 1 + wave + (1 + wave | id)
 # Df    AIC   BIC  logLik deviance Chisq Chi Df            Pr(>Chisq)    
-# object  4 15680 15706 -7836.2    15672                                       
+# object  4 15680 15706 -7836.2    15672                                   
 # ..1     6 15326 15364 -7657.2    15314 358.1      2 < 0.00000000000000022 ***
 #   ---
 #pseudo r^2 (percent of additional residual var accounted for)
@@ -119,61 +128,16 @@ anova(model, model1)
 (2.891 -   2.2049) / 2.891
 
 
-# #AGE BL-------------
-# 
-# eq2 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + 
-#                   ( 1 + wave |id)")
-# model_2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_2))
-# 
-# #chi sq
-# #df
-# #df= 
-# 10585 -  10583 
-# #deviance
-# 58014.5- 57653.7 
-# 
-# 
-# #int 27.5670
-# 5.2504/ (sqrt(10591))
-# #year 0.3081
-# 0.5551/ (sqrt(10591))
-# #resid 7.1819
-# 2.6799/ (sqrt(10591))
-# 
-# ################ + gender
-# 
-# eq3 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + 
-#                   ( 1 + wave |id)")
-# model_3<- lmerTest::lmer(eq3, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_3))
-# 
-# #df= 
-# 10583- 10581
-# #dev =  
-# 57653.7-57644.1
-# 
-# 
-# #int 27.3997
-# 5.2345/ (sqrt(10591))
-# #year  0.308
-# 0.5551/ (sqrt(10591))
-# #resid 7.1821
-# 2.6799 / (sqrt(10591))
-# 
+# demographics -------------------------------------
 
-
-################# + education 
-
-
-eq4 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc + 
+eq2 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc + 
                   ( 1 + wave |id)")
-model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
-lmerTest::summary((model_4))
+model_2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
+lmerTest::summary((model_2))
 
 
 #deviance and df compared to model 1 , sig  better fit
-anova(model1, model_4)
+anova(model1, model_2)
 # #      Df   AIC   BIC  logLik deviance  Chisq Chi Df            Pr(>Chisq)    
 # object  6 15326 15364 -7657.2    15314                                        
 # ..1    12 15210 15285 -7592.9    15186 128.62      6 < 0.00000000000000022 ***
@@ -185,107 +149,92 @@ anova(model1, model_4)
 #no demographics effected rate of decline 
 
 
-#Physical Activity --------------
-eq5 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
-                  wave*phys_bp + phys_wp +
-                  ( 1 + wave |id)")
-model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5))
-
-(0.8714 - 0.86927 ) / 0.8714            
-(0.0870 - 0.08668) / 0.0870
-
-anova(model_4, model_5)
-
-
-# Number of obs: 3848, groups:  id, 550
-
-eq6 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
-                  + phys_bp*wave + phys_wp +
-                  ( 1 + wave + phys_wp |id)")
-model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
-lmerTest::summary((model_6))
-
-anova(model_5, model_6)
+# #Physical Activity --------------
+# eq3a <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
+#                   wave*phys_bp + phys_wp +
+#                   ( 1 + wave |id)")
+# model_3a<- lmerTest::lmer(eq3a, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_3a))
 # 
-#        Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)   
-# object 15 15213 15307 -7591.7    15183                            
-# ..1    18 15204 15316 -7583.8    15168 15.705      3   0.001303 **
-
-#wp_pa sig improves model fit!   
-
-
-#compared to model 1B (time slope), residuals
-
-(2.2049 - 2.19034) / 2.2049
-
-
-#model 6
-    #fix these values ---
-# #int
-# 2.147836
-# 1.4655  / (sqrt(1299))            
-# #wave 
-# 0.0375086
-# 0.1937 / (sqrt(1299))            
-# #phys_wp        
-# 0.0008881
-# 0.0298 /(sqrt(1299))        
-# #Residual                
-# 2.6944449 
-# 1.6415/(sqrt(1299))    
-
-
-
-#wp varience explained compred to the random effects of time only
-summary(model1)
-(2.73639 -    2.190346  )/(2.73639)  #20%
-
+# (0.8714 - 0.86927 ) / 0.8714            
+# (0.0870 - 0.08668) / 0.0870
 # 
-# #varience in the intercept explained by PA?
-# (24.5726 - 24.1624) / 24.5726
+# anova(model_2, model_3a)
 # 
-# #varience in the slope explained by PA? 
-# (0.3101 - 0.2732) / 0.3101
+# 
+# # Number of obs: 3848, groups:  id, 550
+# 
+# eq3b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
+#                   + phys_bp*wave + phys_wp +
+#                   ( 1 + wave + phys_wp |id)")
+# model_3b<- lmerTest::lmer(eq3b, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_3b))
+# 
+# anova(model_3a, model_3b)
+# # 
+# #        Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)   
+# # object 15 15213 15307 -7591.7    15183                            
+# # ..1    18 15204 15316 -7583.8    15168 15.705      3   0.001303 **
+# 
+# #wp_pa sig improves model fit!   
+# 
+# 
+# #compared to model 1B (time slope), residuals
+# 
+# (2.2049 - 2.19034) / 2.2049
+# 
+# 
+# #model 6
+#     #fix these values ---
+# # #int
+# # 2.147836
+# # 1.4655  / (sqrt(1299))            
+# # #wave 
+# # 0.0375086
+# # 0.1937 / (sqrt(1299))            
+# # #phys_wp        
+# # 0.0008881
+# # 0.0298 /(sqrt(1299))        
+# # #Residual                
+# # 2.6944449 
+# # 1.6415/(sqrt(1299))    
+# 
+# 
+# 
+# #wp varience explained compred to the random effects of time only
+# summary(model1)
+# (2.73639 -    2.190346  )/(2.73639)  #20%
+# 
+# # 
+# # #varience in the intercept explained by PA?
+# # (24.5726 - 24.1624) / 24.5726
+# # 
+# # #varience in the slope explained by PA? 
+# # (0.3101 - 0.2732) / 0.3101
+# 
 
-# # gender X PA
-# eq6 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
-#                   phys_bp*male + phys_wp*male +
-#                   ( 1 + wave + phys_wp|id)")
-# model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE)
-# lmerTest::summary((model_6))
+eq3a <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
+                  phys_bp*wave +  phys_wp +
+                   ( 1 + wave |id)")
+model_3a<- lmerTest::lmer(eq3a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_3a))
 
+
+eq3b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
+                   + phys_bp*wave  + phys_wp +
+                   ( 1 + wave + phys_wp |id)")
+model_3b<- lmerTest::lmer(eq3b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_3b))
+
+
+anova(model_3a, model_3b)
 
 
 #stress------------------------------
-
-#----------pss-
-
-# eq5b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
-#                    pss_pmeanC*wave + pss_wp +
-#                    ( 1 + wave  |id)")
-
-#pss is only measured at one wave
-
-names(ds0)
-eq5b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
-                   pss_gmc +
-                   ( 1 + wave  |id)")
-
-#pss_bp is the score at wave 7, but treated as a time invarient covariate
-#this is problematic becaue it guages pss over the past month, and shouldnt be
-#generalized to all waves
-#but, pss_gmc (which is not treated as TICV, but just is one point of data) has too
-#few observations to run
-
-model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5b))
-
-
 #-------------nle-
 
 names(ds0)
-eq6a <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
+eq4a <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                    nle_bp*wave + nle_wp +
                    ( 1 + wave  |id)")
 
@@ -294,20 +243,22 @@ eq6a <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
 (0.08656 - 0.087) /0.08656
 
 
-eq6b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
+eq4b <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  + wave*edu_gmc +
                    nle_bp*wave + nle_wp +
                    ( 1 + wave + nle_wp |id)")
 
-model_6a<- lmerTest::lmer(eq6a, data=ds0, REML= FALSE) 
-lmerTest::summary((model_6a))
+model_4a<- lmerTest::lmer(eq4a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_4a))
 
-anova(model_4, model_6a)
+anova(model_2, model_4a)
 
 
-model_6b<- lmerTest::lmer(eq6b, data=ds0, REML= FALSE) 
-lmerTest::summary((model_6b))
+model_4b<- lmerTest::lmer(eq4b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_4b))
 
-anova(model_6a, model_6b)
+
+
+anova(model_4a, model_4b)
 
 #resid varience compared to time slope only
 (2.2049 -  2.18889)/2.2049
@@ -334,21 +285,39 @@ anova(model_6a, model_6b)
 # lmerTest::summary((model_5b))
 
 
+# #-----------------------table 2-------------------------------------------------------------
+# sjt.lmer(model_2, model_3b, model_4b, depvar.labels= c("Model 2", "Model 3b", "Model 4b"),
+#          p.numeric=FALSE, show.icc = FALSE, show.r2 = FALSE, show.ci=FALSE, show.se=TRUE,
+#          pred.labels = c("Time", "Age at baseline", "MaleT", "Education", "time x Age at baseline", "Time x MaleT", 
+#                          "Time x Education", "PA_BP", "PA_WP", "Time x PA_BP", "NLE_BP", "NLE_WP", "Time x NLE_BP"))  
+# 
+# #-------------------------------------------------------------------------------------------
+
 
 ################# interaction with stress 
 
 #-------- interaction
 
 
-eq7 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc + 
+eq5 <- as.formula("mmse ~ 1 + wave*age_bl_gmc + wave*male  +  wave*edu_gmc + 
 
                   nle_bp*phys_bp + nle_bp*phys_wp +
                   nle_wp*phys_bp + nle_wp*phys_wp +
                  
-                  ( 1 + wave + nle_wp |id)")
+                  ( 1 + wave + nle_wp + phys_wp |id)")
 
 
-model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
-lmerTest::summary((model_7))
+model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
+lmerTest::summary((model_5))
 
+
+# #table 3------------------------------------------------------------------------------
+# 
+# sjt.lmer(model_5, depvar.labels= c("Model 5"),
+#          p.numeric=FALSE, show.icc = FALSE, show.r2 = FALSE, show.ci=FALSE, show.se=TRUE,
+#          pred.labels = c("Time", "Age at baseline", "MaleT", "Education", "NLE_BP", "PA_BP", "PA_WP", "NLE_WP", "Time x Age at baseline", 
+#                          "Time x MaleT", "Time x Education", "NLE_BP x PA_BP", "NLE_BP x PA_WP", "PA_BP x NLE_WP", "PA_WP x NLE_WP")) 
+# 
+# #-------------------------------------------------------------------------------------
+# 
 

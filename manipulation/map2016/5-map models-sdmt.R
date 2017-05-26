@@ -60,13 +60,6 @@ describe(ds0$sdmt)
 # ds0$sdmt_origional<-ds0$sdmt
 # ds0$sdmt<-ds0$sdmt/2
 
-describe(ds0$pss)
-eq <- as.formula("pss ~ 1 +          
-                 ( 1  |id)")
-model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
-lmerTest::summary((model))
-0.07515/ (0.07515 + .186)
-
 
 
 describe(ds0$nle)
@@ -80,24 +73,24 @@ lmerTest::summary((model))
 
 eq <- as.formula("sdmt ~ 1 +          
                  ( 1  |id)")
-model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
-lmerTest::summary((model))
+model_ucm<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
 #resid var= 12.45
 137.91 / (137.91 + 49.81)
 
-eq1 <- as.formula("sdmt ~ 1 + year_in_study +          
+eq <- as.formula("sdmt ~ 1 + year_in_study +          
                  ( 1  |id)")
+model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
+lmerTest::summary((model))
+
+
+
+eq1 <- as.formula("sdmt ~ 1 + year_in_study +          
+                 ( 1 + year_in_study |id)")
 model1<- lmerTest::lmer(eq1, data=ds0, REML= FALSE) 
 lmerTest::summary((model1))
 
-
-
-eq2 <- as.formula("sdmt ~ 1 + year_in_study +          
-                 ( 1 + year_in_study |id)")
-model2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
-lmerTest::summary((model2))
-
-anova(model1, model2)
+anova(model, model1)
 
 
 #pseudo r^2
@@ -107,33 +100,40 @@ anova(model1, model2)
 (39.37 - 28.626)/ 39.37
 
 
-# ################ + gender
 # 
-# eq3 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + 
-#                   ( 1 + year_in_study |id)")
-# model_3<- lmerTest::lmer(eq3, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_3))
+#  #----------table 1------- UCM vs time model (re)----------------
+# 
+#  sjt.lmer(model_ucm, model1, depvar.labels= c("Model 0", "Model 1"),
+#           p.numeric=FALSE, show.icc = FALSE, show.r2 = FALSE, show.ci=FALSE, show.se=TRUE,
+#           show.re.var = TRUE)
+# 
+#  #--------------------------------------------------------
+
+
+
+
+
 
 ################# demographic 
 
-eq4 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc + 
+eq2 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc + 
                   ( 1 + year_in_study |id)")
-model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
-lmerTest::summary((model_4))
+model_2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
+lmerTest::summary((model_2))
 
 
 
-anova(model2, model_4)
+anova(model1, model_2)
 
 
 
 #Physical Activity --------------
 
-eq5 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+eq3a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                   year_in_study*phys_pmeanC + phys_wp +
                   ( 1 + year_in_study |id)")
-model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5))
+model_3a<- lmerTest::lmer(eq3a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_3a))
 
 # varience around intercept of demographic model
 (98.29 - 96.650 ) / 98.29
@@ -143,15 +143,16 @@ lmerTest::summary((model_5))
 ( 28.71 - 28.39) /  28.71 
 
 
-anova(model_4, model_5) #not fitted to same size data set- makes sense 
+anova(model_2, model_3a) #not fitted to same size data set- makes sense 
 
-eq5a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+eq3b <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    + phys_pmeanC*year_in_study + phys_wp +
                   ( 1 + year_in_study + phys_wp |id)")
-model_5a<- lmerTest::lmer(eq5a, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5a))
+model_3b<- lmerTest::lmer(eq3b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_3b))
 
-anova(model_5, model_5a)
+anova(model_3a, model_3b)
+
 
 
 #wrong values, but this is how you test sig
@@ -174,42 +175,33 @@ anova(model_5, model_5a)
 
 
 
+eq3a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+                  phys_pmeanC*year_in_study +  phys_wp +
+                   ( 1 + year_in_study |id)")
+model_3a<- lmerTest::lmer(eq3a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_3a))
+
+
+eq3b <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+                   + phys_pmeanC*year_in_study  + phys_wp +
+                   ( 1 + year_in_study + phys_wp |id)")
+model_3b<- lmerTest::lmer(eq3b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_3b))
+
+
+anova(model_3a, model_3b)
+
+
+
 #stress------------------------------
-
-#PSS ----
-
-# eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-#                    pss_pmeanC*year_in_study + pss_wp +
-#                    ( 1 + year_in_study  |id)")
-# model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_6))
-# #df=
-# #int:18.88
-# #slope:0.12
-# (24.57 - 18.88)/24.57 
-# (0.3101 - 0.12)/0.3101
-# 
-# eq6a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-#                    pss_pmeanC*year_in_study + pss_wp +
-#                    ( 1 + year_in_study + pss_wp |id)")
-# model_6a<- lmerTest::lmer(eq6a, data=ds0, REML= FALSE) 
-# lmerTest::summary((model_6a))
-# 
-# #the addition of pss_wp in the random effects is NS
-# #people aren't very differnt in their stress fluctuations 
-# #therefore there is nothing to explain
-# 
-# 
-# anova(model_6, model_6a)
-
 
 #NLE-- 
 
-eq6 <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+eq4a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    nle_pmeanC*year_in_study + nle_wp +
                   ( 1 + year_in_study  |id)")
-model_6<- lmerTest::lmer(eq6, data=ds0, REML= FALSE) 
-lmerTest::summary((model_6))
+model_4a<- lmerTest::lmer(eq4a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_4a))
 
 
 #reduction of BP var compared to model 2:
@@ -222,13 +214,13 @@ lmerTest::summary((model_6))
 
 ( 28.71 - 26.996) /  28.71 
 
-eq6a <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+eq4b <- as.formula("sdmt ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                   nle_pmeanC*year_in_study + nle_wp +
                    ( 1 + year_in_study + nle_wp |id)")
-model_6a<- lmerTest::lmer(eq6a, data=ds0, REML= FALSE) 
-lmerTest::summary((model_6a))
+model_4b<- lmerTest::lmer(eq4b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_4b))
 
-anova(model_6, model_6a)
+anova(model_4a, model_4b)
 
 #        Df   AIC   BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)  
 # object 15 17761 17852 -8865.3    17731                           
@@ -238,6 +230,20 @@ anova(model_6, model_6a)
 #reduction in residual WP compared to random time slope
 
 (7.1566 - 6.57487) / 7.1566
+
+
+#-----------------------table 2-------------------------------------------------------------
+sjt.lmer(model_2, model_3b, model_4b, depvar.labels= c("Model 2", "Model 3b", "Model 4b"),
+         p.numeric=FALSE, show.icc = FALSE, show.r2 = FALSE, show.ci=FALSE, show.se=TRUE,
+         pred.labels = c("Time", "Age at baseline", "MaleT", "Education", "time x Age at baseline", "Time x MaleT", 
+                         "Time x Education", "PA_BP", "PA_WP", "Time x PA_BP", "NLE_BP", "NLE_WP", "Time x NLE_BP"))  
+
+#-------------------------------------------------------------------------------------------
+
+
+
+
+
 
 
 
@@ -261,13 +267,33 @@ model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE)
 lmerTest::summary((model_7))
 
 
+
+#table 3------------------------------------------------------------------------------
+
+sjt.lmer(model_7, depvar.labels= c("Model 5"),
+         p.numeric=FALSE, show.icc = FALSE, show.r2 = FALSE, show.ci=FALSE, show.se=TRUE,
+         pred.labels = c("Time", "Age at baseline", "MaleT", "Education", "NLE_BP", "PA_BP", "PA_WP", "NLE_WP", "Time x Age at baseline", 
+                         "Time x MaleT", "Time x Education", "NLE_BP x PA_BP", "NLE_BP x PA_WP", "PA_BP x NLE_WP", "PA_WP x NLE_WP")) 
+
+#-------------------------------------------------------------------------------------
+
+
+
+
+
+
 # ds0$sdmt <- ds0$sdmt/2
 
 
+install.packages("sjPlot")
+install.packages("shiny")
+install.packages("sjmisc") 
 
+library(shiny)
+library(sjPlot)
+library(sjmisc)
 
-
-
+sjt.lmer(model_7)
 
 
 #graphs

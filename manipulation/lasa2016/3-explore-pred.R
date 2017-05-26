@@ -18,6 +18,7 @@ library(lmerTest)
 library(outliers)
 library(psych)
 library(moments)
+library(reshape)
 
 
 # Call `base::source()` on any repo file that defines functions needed below.  Ideally, no real operations are performed.
@@ -142,9 +143,28 @@ lmerTest::summary((model_ucm))
 
 agostino.test(ds0$phys) #skewed 
 
+eq_1 <- as.formula("phys ~ wave + 1 +
+                   (1  |id)")
+
+model<- lmerTest::lmer(eq_1, data=ds0, REML= FALSE)
+lmerTest::summary((model))
+#PA decreases with time 
+
+
+
 names(ds0)
 
 #--demographics-------------------------------
+
+#recode gender 
+table(ds0$male)
+
+library(reshape)
+library(plyr)
+library(dplyr)
+
+head(ds0$male)
+
 
 # Baseline measures
 bl <- ds0[ which(ds0$wave==1), ] #baseline subset
@@ -154,12 +174,14 @@ table(bl$male)
 # FALSE  TRUE 
 # 2128  1981 
 
+
+
 ds0$maleg<-as.character(ds0$male)
 
 #sex for graphing
 
 table(ds0$maleg)
-# FALSE=0=male  TRUE=1=female
+# FALSE=0=female  TRUE=1=male
 # 14896         13867 
 
 head(ds0$maleg)
@@ -168,13 +190,12 @@ ds0$maleg[ds0$maleg == "TRUE"] <- 1
 
 
 ds0$maleg <- ifelse(ds0$maleg == 1, 
-                    c("Female"), c("Male")) 
+                    c("male"), c("female")) 
 
 library(reshape)
 ds0 <- rename(ds0, c(maleg="Sex"))
 
 table(ds0$Sex)
-
 
 
 #education
@@ -222,6 +243,12 @@ describeBy(ds0$nle, ds0$wave)
 
 agostino.test(ds0$nle) #data is skewed 
 
+
+eq_1 <- as.formula("nle ~ wave + 1 +
+                   (1  |id)")
+
+model<- lmerTest::lmer(eq_1, data=ds0, REML= FALSE)
+lmerTest::summary((model))
 
 
 #----cognitive-----------------------------------------------------------------------

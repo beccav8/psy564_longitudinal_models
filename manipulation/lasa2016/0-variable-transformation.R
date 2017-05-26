@@ -28,8 +28,8 @@ getwd()
 
 ## origional data composition is in the LASA repository (manipulation folder)
 
-# ds0 <- readRDS("C:/Users/Rebecca/Documents/GitHub/LASA/data-unshared/derived/dto.rds") #laptop
-ds0 <- readRDS("C:/Users/beccav8/Documents/GitHub/LASA/data-unshared/derived/dto.rds") #campus
+ds0 <- readRDS("C:/Users/Rebecca/Documents/GitHub/LASA/data-unshared/derived/dto.rds") #laptop
+# ds0 <- readRDS("C:/Users/beccav8/Documents/GitHub/LASA/data-unshared/derived/dto.rds") #campus
 names(ds0)
 
 # ---- tweak-data ------------------------------------
@@ -45,6 +45,8 @@ ds0%>% get_n()
 
 describe(ds0$male)
 #coded as 0 or 1
+
+table(ds0$male)
 
 #baseline 
 bl <- ds0[ which(ds0$wave==1), ] #4109 observations, thus, all unique id's accounted for

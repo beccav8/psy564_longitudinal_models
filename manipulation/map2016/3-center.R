@@ -69,6 +69,25 @@ data %>%
   dplyr::select(id,physical_activity, phys_pmean, phys_pmeanC, phys_wp, phys_gmc, phys_gmedc)
 
 describe(data$physical_activity)
+
+
+
+#-- PA at baseline 
+bl <- data[ which(data$year_in_study==0), ] #baseline subset
+names(bl)
+
+bl$PA_bl <- bl$physical_activity
+sub<- bl[c("id", "PA_bl")]
+
+#grand mean center PA at baseline 
+
+sub$PA_bl_BP <- (sub$PA_bl) - (mean(sub$PA_bl, na.rm=TRUE))
+data <- merge(data, sub, by="id")
+
+
+names(data)
+
+
 ###----------------------- center pysical activity after transformation ------------------------
 
 # summary(data$physical_activity)
@@ -162,6 +181,18 @@ data %>%
 describe(data$nle)
 summary(data$nle_gmc)
 
+#-- nle at baseline 
+# bl <- data[ which(data$year_in_study==0), ] #baseline subset
+# names(bl)
+# describe(bl$nle)
+# 
+# bl$nle_bl <- bl$nle
+# sub<- bl[c("id", "nle_bl")]
+# 
+# #grand mean center PA at baseline 
+# 
+# sub$nle_bl_BP <- (sub$nle_bl) - (mean(sub$nle_bl, na.rm=TRUE))
+# data <- merge(data, sub, by="id")
 
 #####---------------center-age-----------------###############
 #center at mean age-------------------------
@@ -232,7 +263,7 @@ myvars<- c("id","year_in_study","age_bl","age_at_visit", "time_since_dx","age_at
            "pss", "pss_pmean", "pss_pmeanC", "pss_gmc", "pss_wp", 
            "al_count_BL","al_count_wave","al_catg_BL", "al_catg_wave", 
            "physical_activity","phys_gmc","phys_gmedc","phys_wp", "cholesterol",
-           "phys_pmean",  "phys_pmeanC", "age_bl_gmc")
+           "phys_pmean",  "phys_pmeanC", "PA_bl_BP", "age_bl_gmc")
 
 
 d <- data[myvars]
@@ -279,6 +310,7 @@ d$phys_pmean <-as.numeric(d$phys_pmean)
 d$nle <- as.numeric(d$nle)
 d$nle_gmc <- as.numeric(d$nle_gmc)
 d$nle_wp <- as.numeric(d$nle_wp)
+d$PA_bl_BP <- as.numeric(d$PA_bl_BP)
 
 str(d)
 

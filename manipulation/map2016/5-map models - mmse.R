@@ -17,6 +17,7 @@ library(magrittr) # enables piping : %>%
 library(lmerTest)
 library(outliers)
 library(psych)
+library(sjPlot)
 
 
 
@@ -55,17 +56,20 @@ path_input0  <- "./data/unshared/derived/map2016/map_full_bio_centered.rds"
 ds0  <- readRDS(path_input0) #total raw data  
 names(ds0)
 
+table(ds0$msex)
+
 #describe ----------------------
 
 describe(ds0$mmse)
 # describe(ds0$edu_gmc)
+describe(ds0$physical_activity)
 
 #models--------------------------
 
 eq <- as.formula("mmse ~ 1 +          
                  ( 1  |id)")
-model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
-lmerTest::summary((model))
+model_ucm<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
+lmerTest::summary((model_ucm))
 
 
 #bp level =
@@ -73,95 +77,112 @@ lmerTest::summary((model))
 
 eq <- as.formula("mmse ~ 1 + year_in_study +          
                  ( 1  |id)")
-modela<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
-lmerTest::summary((modela))
+model<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
+lmerTest::summary((model))
 
 
 
-eq <- as.formula("mmse ~ 1 + year_in_study +          
+eq1 <- as.formula("mmse ~ 1 + year_in_study +          
                  ( 1 + year_in_study |id)")
-modelb<- lmerTest::lmer(eq, data=ds0, REML= FALSE) 
-lmerTest::summary((modelb))
+model1<- lmerTest::lmer(eq1, data=ds0, REML= FALSE) 
+lmerTest::summary((model1))
 
 #model versus model b pseudo r2
 
 (11.91 - 4.5984)  /11.91
 
-
-anova(modela, modelb)
-
+anova(model, model1)
 
 
 
-eq4 <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc + 
+# 
+#  #----------table 1------- UCM vs time model (re)----------------
+# 
+#  sjt.lmer(model_ucm, model1, depvar.labels= c("Model 0", "Model 1"),
+#           p.numeric=FALSE, show.icc = FALSE, show.r2 = FALSE, show.ci=FALSE, show.se=TRUE,
+#           show.re.var = TRUE)
+# 
+#  #--------------------------------------------------------
+
+
+
+#demographics-------------------
+
+
+
+eq2 <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc + 
                   ( 1 + year_in_study |id)")
-model_4<- lmerTest::lmer(eq4, data=ds0, REML= FALSE) 
-lmerTest::summary((model_4))
+model_2<- lmerTest::lmer(eq2, data=ds0, REML= FALSE) 
+lmerTest::summary((model_2))
 
 
 
-anova(modelb, model_4)
+anova(model1, model_2)
 
-
+names(ds0)
 #Physical Activity --------------
-eq5 <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-                  phys_pmeanC*year_in_study + phys_wp +
-                  ( 1 + year_in_study |id)")
-model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5))
-# 42023.1    11041 
+# eq3a <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+#                   phys_pmeanC*year_in_study +  phys_wp +
+#                   ( 1 + year_in_study |id)")
+# model_3a<- lmerTest::lmer(eq3a, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_3a))
+# # 42023.1    11041 
+# 
+# 
+# anova(model_2, model_3a)
+# 
+# #Number of obs: 11324, groups:  id, 1848
+# #Number of obs: 11074, groups:  id, 1846
+# 
+# #intercept: 8.36
+# #slope: 0.6315
+# 
+# #improvement in intercept and slope (BP varience when adding BP_PA)
+# (8.6895 - 8.36)/ 8.69
+# (0.7592 - 0.6315 ) / 0.7592
+# 
+# eq3b <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+#                    + phys_pmeanC*year_in_study + phys_wp +
+#                    ( 1 + year_in_study + phys_wp |id)")
+# model_3b<- lmerTest::lmer(eq3b, data=ds0, REML= FALSE) 
+# lmerTest::summary((model_3b))
 
-
-anova(model_4, model_5)
-
-#Number of obs: 11324, groups:  id, 1848
-#Number of obs: 11074, groups:  id, 1846
-
-#intercept: 8.36
-#slope: 0.6315
-
-#improvement in intercept and slope (BP varience when adding BP_PA)
-(8.6895 - 8.36)/ 8.69
-(0.7592 - 0.6315 ) / 0.7592
-
-eq5a <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-                   + phys_pmeanC*year_in_study + phys_wp +
-                   ( 1 + year_in_study + phys_wp |id)")
-model_5a<- lmerTest::lmer(eq5a, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5a))
 # 42020.5    11038 
-anova(model_5, model_5a)
+
+
+eq3a <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+                  phys_pmeanC*year_in_study + phys_wp +
+                   ( 1 + year_in_study |id)")
+model_3a<- lmerTest::lmer(eq3a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_3a))
+
+
+eq3b <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+                   + phys_pmeanC*year_in_study  + phys_wp +
+                   ( 1 + year_in_study + phys_wp |id)")
+model_3b<- lmerTest::lmer(eq3b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_3b))
+
+
+
+
+anova(model_3a, model_3b)
 
 
 #WP residual var compared to time only model
 
-(4.5984 -4.18402)/4.5984
+# (4.5984 -4.18402)/4.5984
 
 
 #stress------------------------------
 
-eq5b <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-                   pss_pmeanC*year_in_study + pss_wp +
-                   ( 1 + year_in_study  |id)")
-model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5b))
-# 12719.1     3282 
-
-eq5b <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
-                   pss_pmeanC*year_in_study + pss_wp +
-                   ( 1 + year_in_study + pss_wp |id)")
-model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5b))
-# 12716.9     3279
-
-
 #---nle---------------
 
-eq5a <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+eq4a <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    nle_pmeanC*year_in_study + nle_wp +
                    ( 1 + year_in_study  |id)")
-model_5a<- lmerTest::lmer(eq5a, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5a))
+model_4a<- lmerTest::lmer(eq4a, data=ds0, REML= FALSE) 
+lmerTest::summary((model_4a))
 # 12719.1     3282 
 
 #model demographic  versus model 5a
@@ -171,18 +192,30 @@ lmerTest::summary((model_5a))
 
 
 
-eq5b <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
+eq4b <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  + year_in_study*edu_gmc +
                    nle_pmeanC*year_in_study + nle_wp +
                    ( 1 + year_in_study + nle_wp |id)")
-model_5b<- lmerTest::lmer(eq5b, data=ds0, REML= FALSE) 
-lmerTest::summary((model_5b))
+model_4b<- lmerTest::lmer(eq4b, data=ds0, REML= FALSE) 
+lmerTest::summary((model_4b))
 
 
-anova(model_5a, model_5b)
+anova(model_4a, model_4b)
 
 lmerTest::summary(modelb)
 
 (4.5984 - 1.93537) / 4.59
+
+
+#-----------------------table 2-------------------------------------------------------------
+sjt.lmer(model_2, model_3b, model_4b, depvar.labels= c("Model 2", "Model 3b", "Model 4b"),
+         p.numeric=FALSE, show.icc = FALSE, show.r2 = FALSE, show.ci=FALSE, show.se=TRUE,
+         pred.labels = c("Time", "Age at baseline", "MaleT", "Education", "time x Age at baseline", "Time x MaleT", 
+                         "Time x Education", "PA_BP", "PA_WP", "Time x PA_BP", "NLE_BP", "NLE_WP", "Time x NLE_BP"))  
+
+#-------------------------------------------------------------------------------------------
+
+
+
 
 ################# interaction with stress 
 #---- PSS and interaction
@@ -194,17 +227,28 @@ lmerTest::summary(modelb)
 # Hypothesis 4: effects of WP stress will be moderated by BP and WP physical activity
 
 
-eq7 <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
+eq5 <- as.formula("mmse ~ 1 + year_in_study*age_bl_gmc + year_in_study*msex  +  year_in_study*edu_gmc + 
 
                   nle_pmeanC*phys_pmeanC + nle_pmeanC*phys_wp +
                   nle_wp*phys_pmeanC + nle_wp*phys_wp +
+# year_in_study*phys_pmeanC + year_in_study*nle_pmeanC +
                  
                   ( 1 + year_in_study + nle_wp |id)")
 
 
-model_7<- lmerTest::lmer(eq7, data=ds0, REML= FALSE) 
-lmerTest::summary((model_7))
+model_5<- lmerTest::lmer(eq5, data=ds0, REML= FALSE) 
+lmerTest::summary((model_5))
 
+
+
+#table 3------------------------------------------------------------------------------
+
+sjt.lmer(model_5, depvar.labels= c("Model 5"),
+         p.numeric=FALSE, show.icc = FALSE, show.r2 = FALSE, show.ci=FALSE, show.se=TRUE,
+         pred.labels = c("Time", "Age at baseline", "MaleT", "Education", "NLE_BP", "PA_BP", "PA_WP", "NLE_WP", "Time x Age at baseline", 
+                         "Time x MaleT", "Time x Education", "NLE_BP x PA_BP", "NLE_BP x PA_WP", "PA_BP x NLE_WP", "PA_WP x NLE_WP")) 
+
+#-------------------------------------------------------------------------------------
 
 
 
